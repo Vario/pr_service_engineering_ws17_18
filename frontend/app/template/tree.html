@@ -1,0 +1,37 @@
+<!--Treeview-->
+<ul class="treeview" id = "">
+  <li>
+    <a href="#"><h4>APIs</h4></a>
+    <ul>
+      <div ng-repeat = "api in dabCtrl.data">
+          <li>
+            <a href="#" ng-click = "dabCtrl.show(api); dabCtrl.select(api)">
+              <img src="./img/api2.svg" class="img-fluid" alt="Responsive image">
+              {{api.name}}
+            </a>
+            <ul>
+              <div ng-repeat = "version in api.version">
+                <li ng-show = "api.active">
+                  <a ng-click = "dabCtrl.show(version); dabCtrl.select(api, version)" href="#">
+                    <img src="./img/folder_closed.svg" class="img-fluid" alt="Responsive image">
+                    {{version.name}}
+                  </a>
+                </li>
+                <ul>
+                  <div ng-repeat = "file in version.file">
+                    <li ng-show = "version.active">
+                      <a ng-click = "dabCtrl.select(api, version, file)" href="#">
+                        <img src="./img/file2.svg" class="img-fluid" alt="Responsive image">
+                        {{file.name}}
+                      </a>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+            </ul>
+          </li>
+      </div>
+    </ul>
+  </li>
+</ul>
+<!--Treeview-->
