@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col border">
+            <div class="row">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <ui-view name="apiupload"></ui-view>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row api-container">
+        <div class="col-md-6 col-lg-6">
+            <ui-view name="treeview"></ui-view>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <ui-view name="infoview"></ui-view>
+        </div>
+    </div>
+</div>
