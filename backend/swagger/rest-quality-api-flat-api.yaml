@@ -1,0 +1,244 @@
+swagger: '2.0'
+info:
+  title: REST-API Quality API
+  description: API for determing the Quality of REST APIs
+  version: 1.0.0
+host: quality.rest.patrickbuchner.at
+schemes:
+  - http
+basePath: /api/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /files:
+    post:
+      summary: Upload a file
+      parameters:
+        - name: file
+          in: body
+          description: The file to upload
+          required: true
+          schema:
+            $ref: '#/definitions/FileRequest'
+      tags:
+        - Files API
+      responses:
+        '200':
+          description: Documents successfully uploaded
+          schema:
+            $ref: '#/definitions/FileResponse'
+        '400':
+          description: Bad Request (e.g. not a json, required fields not available (title, version))
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+  /apis:
+    get:
+      summary: Get all available documents
+      tags:
+        - APIs API
+      responses:
+        '200':
+          description: Returned Documents
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ApiRequest'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+    post:
+      summary: Creates one or more new documents
+      parameters:
+        - name: apis
+          in: body
+          description: The documents to add
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ApiResponse'
+      tags:
+        - APIs API
+      responses:
+        '200':
+          description: Documents successfully added
+          schema:
+            $ref: '#/definitions/UpdateSuccess'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+  /reports:
+    post:
+      summary: Create a new report
+      parameters:
+        - name: file
+          in: body
+          description: Report Creation
+          required: true
+          schema:
+            $ref: '#/definitions/ReportRequest'
+      tags:
+        - Reports API
+      responses:
+        '200':
+          description: Documents successfully uploaded
+          schema:
+            $ref: '#/definitions/ReportResponse'
+        '400':
+          description: Bad Request (e.g. not a json, required fields not available (title, version))
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+definitions:
+  FileRequest:
+    type: object
+    required: [swagger]
+    properties:
+      api-id:
+        type: string
+      version:
+        type: string
+      swagger:
+        type: object
+        description: Swagger API Specification
+  FileResponse:
+    type: object
+    properties:
+      api-id:
+        type: string
+      version:
+        type: string
+      file-id:
+        type: string
+        format: uuid
+      timestamp:
+        type: string
+        format: date-time
+  ApiRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: Unique Identifier of the document (server-generated)
+      name:
+        type: string
+        description: Title of the API
+      versions:
+        type: array
+        items:
+          $ref: '#/definitions/VersionRequest'
+  ApiResponse:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Title of the API
+  VersionRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: Unique Identifier of the API version (server-generated)
+      number:
+        type: string
+        description: API Versioning
+        example: "v1"
+      revisions:
+        type: array
+        items:
+          $ref: '#/definitions/RevisionRequest'
+  VersionResponse:
+    type: object
+    properties:
+      number:
+        type: string
+        description: API Versioning
+        example: "v1"
+      document:
+        type: string
+        format: uuid
+        description: ID of the document where the version belongs to
+  RevisionRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      version:
+        type: string
+        format: uuid
+        description: ID of the version where the revision belongs to
+      file:
+        type: string
+        format: uuid
+        description: File UUID (compare /files API)
+      reports:
+        type: array
+        items:
+          $ref: '#/definitions/ReportRequest'
+  RevisionResponse:
+    type: object
+    properties:
+      version:
+        type: string
+        format: uuid
+        description: ID of the version where the revision belongs to
+      json:
+        type: string
+        format: json
+        description: Swagger JSON Specification
+      created:
+        type: string
+        format: date-time
+  ReportRequest:
+    type: object
+    properties:
+      type:
+        type: string
+        description: Type of Report (Validation, Comparison)
+        example: Validation
+      files:
+        type: array
+        items:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-11d4-a716-446655440000"
+  ReportResponse:
+    type: object
+    properties:
+      violations:
+        type: integer
+        description: Number of Rule Violations
+  UpdateSuccess:
+    type: object
+    properties:
+      created:
+        type: integer
+        format: int32
+      updated:
+        type: integer
+        format: int32
+      deleted:
+        type: integer
+        format: int32
+  ApplicationError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
