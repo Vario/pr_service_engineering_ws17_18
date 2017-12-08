@@ -53,28 +53,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/ApplicationError'
-    post:
-      summary: Creates one or more new documents
-      parameters:
-        - name: apis
-          in: body
-          description: The documents to add
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/ApiResponse'
-      tags:
-        - APIs API
-      responses:
-        '200':
-          description: Documents successfully added
-          schema:
-            $ref: '#/definitions/UpdateSuccess'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/ApplicationError'
   /reports:
     post:
       summary: Create a new report
