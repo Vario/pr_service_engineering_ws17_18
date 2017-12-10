@@ -11,11 +11,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * RevisionCreation
+ * RevisionResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class RevisionCreation   {
+public class RevisionResponse   {
   @JsonProperty("version")
   private UUID version = null;
 
@@ -25,7 +25,7 @@ public class RevisionCreation   {
   @JsonProperty("created")
   private DateTime created = null;
 
-  public RevisionCreation version(UUID version) {
+  public RevisionResponse version(UUID version) {
     this.version = version;
     return this;
   }
@@ -46,7 +46,7 @@ public class RevisionCreation   {
     this.version = version;
   }
 
-  public RevisionCreation json(String json) {
+  public RevisionResponse json(String json) {
     this.json = json;
     return this;
   }
@@ -66,7 +66,7 @@ public class RevisionCreation   {
     this.json = json;
   }
 
-  public RevisionCreation created(DateTime created) {
+  public RevisionResponse created(DateTime created) {
     this.created = created;
     return this;
   }
@@ -96,10 +96,10 @@ public class RevisionCreation   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RevisionCreation revisionCreation = (RevisionCreation) o;
-    return Objects.equals(this.version, revisionCreation.version) &&
-        Objects.equals(this.json, revisionCreation.json) &&
-        Objects.equals(this.created, revisionCreation.created);
+    RevisionResponse revisionResponse = (RevisionResponse) o;
+    return Objects.equals(this.version, revisionResponse.version) &&
+        Objects.equals(this.json, revisionResponse.json) &&
+        Objects.equals(this.created, revisionResponse.created);
   }
 
   @Override
@@ -110,7 +110,7 @@ public class RevisionCreation   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RevisionCreation {\n");
+    sb.append("class RevisionResponse {\n");
     
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    json: ").append(toIndentedString(json)).append("\n");

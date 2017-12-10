@@ -6,8 +6,8 @@
 package io.swagger.api;
 
 import io.swagger.model.ApplicationError;
-import io.swagger.model.FileDescription;
-import io.swagger.model.FileUpload;
+import io.swagger.model.FileRequest;
+import io.swagger.model.FileResponse;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
 @Api(value = "files", description = "the files API")
 public interface FilesApi {
 
-    @ApiOperation(value = "Upload a file", notes = "", response = FileDescription.class, tags={ "Files API", })
+    @ApiOperation(value = "Upload a file", notes = "", response = FileResponse.class, tags={ "Files API", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = FileDescription.class),
+        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = FileResponse.class),
         @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
         @ApiResponse(code = 200, message = "Unexpected error", response = ApplicationError.class) })
     
@@ -38,6 +38,6 @@ public interface FilesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<FileDescription> filesPost(@ApiParam(value = "The file to upload" ,required=true )  @Valid @RequestBody FileUpload file);
+    ResponseEntity<FileResponse> filesPost(@ApiParam(value = "The file to upload" ,required=true )  @Valid @RequestBody FileRequest file);
 
 }

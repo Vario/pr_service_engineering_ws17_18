@@ -10,18 +10,18 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * VersionCreation
+ * VersionResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class VersionCreation   {
+public class VersionResponse   {
   @JsonProperty("number")
   private String number = null;
 
   @JsonProperty("document")
   private UUID document = null;
 
-  public VersionCreation number(String number) {
+  public VersionResponse number(String number) {
     this.number = number;
     return this;
   }
@@ -41,7 +41,7 @@ public class VersionCreation   {
     this.number = number;
   }
 
-  public VersionCreation document(UUID document) {
+  public VersionResponse document(UUID document) {
     this.document = document;
     return this;
   }
@@ -71,9 +71,9 @@ public class VersionCreation   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    VersionCreation versionCreation = (VersionCreation) o;
-    return Objects.equals(this.number, versionCreation.number) &&
-        Objects.equals(this.document, versionCreation.document);
+    VersionResponse versionResponse = (VersionResponse) o;
+    return Objects.equals(this.number, versionResponse.number) &&
+        Objects.equals(this.document, versionResponse.document);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class VersionCreation   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class VersionCreation {\n");
+    sb.append("class VersionResponse {\n");
     
     sb.append("    number: ").append(toIndentedString(number)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");

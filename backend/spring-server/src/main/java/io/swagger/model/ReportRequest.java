@@ -14,14 +14,14 @@ import javax.validation.constraints.*;
 /**
  * ReportRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-10T17:37:35.998+01:00")
 
 public class ReportRequest   {
   @JsonProperty("type")
   private String type = null;
 
-  @JsonProperty("files")
-  private List<UUID> files = null;
+  @JsonProperty("file-ids")
+  private List<UUID> fileIds = null;
 
   public ReportRequest type(String type) {
     this.type = type;
@@ -43,33 +43,33 @@ public class ReportRequest   {
     this.type = type;
   }
 
-  public ReportRequest files(List<UUID> files) {
-    this.files = files;
+  public ReportRequest fileIds(List<UUID> fileIds) {
+    this.fileIds = fileIds;
     return this;
   }
 
-  public ReportRequest addFilesItem(UUID filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<UUID>();
+  public ReportRequest addFileIdsItem(UUID fileIdsItem) {
+    if (this.fileIds == null) {
+      this.fileIds = new ArrayList<UUID>();
     }
-    this.files.add(filesItem);
+    this.fileIds.add(fileIdsItem);
     return this;
   }
 
    /**
-   * Get files
-   * @return files
+   * Get fileIds
+   * @return fileIds
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public List<UUID> getFiles() {
-    return files;
+  public List<UUID> getFileIds() {
+    return fileIds;
   }
 
-  public void setFiles(List<UUID> files) {
-    this.files = files;
+  public void setFileIds(List<UUID> fileIds) {
+    this.fileIds = fileIds;
   }
 
 
@@ -83,12 +83,12 @@ public class ReportRequest   {
     }
     ReportRequest reportRequest = (ReportRequest) o;
     return Objects.equals(this.type, reportRequest.type) &&
-        Objects.equals(this.files, reportRequest.files);
+        Objects.equals(this.fileIds, reportRequest.fileIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, files);
+    return Objects.hash(type, fileIds);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class ReportRequest   {
     sb.append("class ReportRequest {\n");
     
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
+    sb.append("    fileIds: ").append(toIndentedString(fileIds)).append("\n");
     sb.append("}");
     return sb.toString();
   }

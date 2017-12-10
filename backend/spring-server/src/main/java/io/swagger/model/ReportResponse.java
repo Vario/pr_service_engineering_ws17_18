@@ -9,15 +9,38 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Report
+ * ReportResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class Report   {
+public class ReportResponse   {
+  @JsonProperty("type")
+  private String type = null;
+
   @JsonProperty("violations")
   private Integer violations = null;
 
-  public Report violations(Integer violations) {
+  public ReportResponse type(String type) {
+    this.type = type;
+    return this;
+  }
+
+   /**
+   * Type of Report (Validation, Comparison)
+   * @return type
+  **/
+  @ApiModelProperty(example = "Validation", value = "Type of Report (Validation, Comparison)")
+
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public ReportResponse violations(Integer violations) {
     this.violations = violations;
     return this;
   }
@@ -46,20 +69,22 @@ public class Report   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Report report = (Report) o;
-    return Objects.equals(this.violations, report.violations);
+    ReportResponse reportResponse = (ReportResponse) o;
+    return Objects.equals(this.type, reportResponse.type) &&
+        Objects.equals(this.violations, reportResponse.violations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(violations);
+    return Objects.hash(type, violations);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Report {\n");
+    sb.append("class ReportResponse {\n");
     
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    violations: ").append(toIndentedString(violations)).append("\n");
     sb.append("}");
     return sb.toString();

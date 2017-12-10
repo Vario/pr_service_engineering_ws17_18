@@ -5,11 +5,8 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.ApiRequest;
 import io.swagger.model.ApplicationError;
-import io.swagger.model.Document;
-import io.swagger.model.DocumentCreation;
-import java.util.List;
-import io.swagger.model.UpdateSuccess;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -25,32 +22,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
 @Api(value = "apis", description = "the apis API")
 public interface ApisApi {
 
-    @ApiOperation(value = "Get all available documents", notes = "", response = Document.class, responseContainer = "List", tags={ "Document API", })
+    @ApiOperation(value = "Get all available documents", notes = "", response = ApiRequest.class, responseContainer = "List", tags={ "APIs API", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Returned Documents", response = Document.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "Returned Documents", response = ApiRequest.class, responseContainer = "List"),
         @ApiResponse(code = 200, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/apis",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<Document>> apisGet();
-
-
-    @ApiOperation(value = "Creates one or more new documents", notes = "", response = UpdateSuccess.class, tags={ "Document API", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Documents successfully added", response = UpdateSuccess.class),
-        @ApiResponse(code = 200, message = "Unexpected error", response = ApplicationError.class) })
-    
-    @RequestMapping(value = "/apis",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<UpdateSuccess> apisPost(@ApiParam(value = "The documents to add" ,required=true )  @Valid @RequestBody List<DocumentCreation> apis);
+    ResponseEntity<List<ApiRequest>> apisGet();
 
 }

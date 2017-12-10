@@ -9,32 +9,32 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * DocumentCreation
+ * ModelApiResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class DocumentCreation   {
-  @JsonProperty("name")
-  private String name = null;
+public class ModelApiResponse   {
+  @JsonProperty("api-id")
+  private String apiId = null;
 
-  public DocumentCreation name(String name) {
-    this.name = name;
+  public ModelApiResponse apiId(String apiId) {
+    this.apiId = apiId;
     return this;
   }
 
    /**
    * Title of the API
-   * @return name
+   * @return apiId
   **/
   @ApiModelProperty(value = "Title of the API")
 
 
-  public String getName() {
-    return name;
+  public String getApiId() {
+    return apiId;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setApiId(String apiId) {
+    this.apiId = apiId;
   }
 
 
@@ -46,21 +46,21 @@ public class DocumentCreation   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    DocumentCreation documentCreation = (DocumentCreation) o;
-    return Objects.equals(this.name, documentCreation.name);
+    ModelApiResponse _apiResponse = (ModelApiResponse) o;
+    return Objects.equals(this.apiId, _apiResponse.apiId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return Objects.hash(apiId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class DocumentCreation {\n");
+    sb.append("class ModelApiResponse {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

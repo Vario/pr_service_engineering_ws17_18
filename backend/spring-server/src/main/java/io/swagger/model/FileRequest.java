@@ -9,27 +9,30 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * FileUpload
+ * FileRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class FileUpload   {
+public class FileRequest   {
   @JsonProperty("api-id")
   private String apiId = null;
+
+  @JsonProperty("version")
+  private String version = null;
 
   @JsonProperty("swagger")
   private Object swagger = null;
 
-  public FileUpload apiId(String apiId) {
+  public FileRequest apiId(String apiId) {
     this.apiId = apiId;
     return this;
   }
 
    /**
-   * Name of the API (optional)
+   * Get apiId
    * @return apiId
   **/
-  @ApiModelProperty(value = "Name of the API (optional)")
+  @ApiModelProperty(value = "")
 
 
   public String getApiId() {
@@ -40,7 +43,27 @@ public class FileUpload   {
     this.apiId = apiId;
   }
 
-  public FileUpload swagger(Object swagger) {
+  public FileRequest version(String version) {
+    this.version = version;
+    return this;
+  }
+
+   /**
+   * Get version
+   * @return version
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public FileRequest swagger(Object swagger) {
     this.swagger = swagger;
     return this;
   }
@@ -70,22 +93,24 @@ public class FileUpload   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FileUpload fileUpload = (FileUpload) o;
-    return Objects.equals(this.apiId, fileUpload.apiId) &&
-        Objects.equals(this.swagger, fileUpload.swagger);
+    FileRequest fileRequest = (FileRequest) o;
+    return Objects.equals(this.apiId, fileRequest.apiId) &&
+        Objects.equals(this.version, fileRequest.version) &&
+        Objects.equals(this.swagger, fileRequest.swagger);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apiId, swagger);
+    return Objects.hash(apiId, version, swagger);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FileUpload {\n");
+    sb.append("class FileRequest {\n");
     
     sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    swagger: ").append(toIndentedString(swagger)).append("\n");
     sb.append("}");
     return sb.toString();

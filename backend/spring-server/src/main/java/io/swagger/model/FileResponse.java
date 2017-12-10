@@ -11,18 +11,24 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * FileDescription
+ * FileResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
 
-public class FileDescription   {
+public class FileResponse   {
   @JsonProperty("api-id")
-  private UUID apiId = null;
+  private String apiId = null;
+
+  @JsonProperty("version")
+  private String version = null;
+
+  @JsonProperty("file-id")
+  private UUID fileId = null;
 
   @JsonProperty("timestamp")
   private DateTime timestamp = null;
 
-  public FileDescription apiId(UUID apiId) {
+  public FileResponse apiId(String apiId) {
     this.apiId = apiId;
     return this;
   }
@@ -33,17 +39,57 @@ public class FileDescription   {
   **/
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public UUID getApiId() {
+  public String getApiId() {
     return apiId;
   }
 
-  public void setApiId(UUID apiId) {
+  public void setApiId(String apiId) {
     this.apiId = apiId;
   }
 
-  public FileDescription timestamp(DateTime timestamp) {
+  public FileResponse version(String version) {
+    this.version = version;
+    return this;
+  }
+
+   /**
+   * Get version
+   * @return version
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public FileResponse fileId(UUID fileId) {
+    this.fileId = fileId;
+    return this;
+  }
+
+   /**
+   * Get fileId
+   * @return fileId
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public UUID getFileId() {
+    return fileId;
+  }
+
+  public void setFileId(UUID fileId) {
+    this.fileId = fileId;
+  }
+
+  public FileResponse timestamp(DateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -73,22 +119,26 @@ public class FileDescription   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FileDescription fileDescription = (FileDescription) o;
-    return Objects.equals(this.apiId, fileDescription.apiId) &&
-        Objects.equals(this.timestamp, fileDescription.timestamp);
+    FileResponse fileResponse = (FileResponse) o;
+    return Objects.equals(this.apiId, fileResponse.apiId) &&
+        Objects.equals(this.version, fileResponse.version) &&
+        Objects.equals(this.fileId, fileResponse.fileId) &&
+        Objects.equals(this.timestamp, fileResponse.timestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apiId, timestamp);
+    return Objects.hash(apiId, version, fileId, timestamp);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FileDescription {\n");
+    sb.append("class FileResponse {\n");
     
     sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -6,8 +6,8 @@
 package io.swagger.api;
 
 import io.swagger.model.ApplicationError;
-import io.swagger.model.FileDescription;
 import io.swagger.model.ReportRequest;
+import io.swagger.model.ReportResponse;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T17:54:08.344Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-10T17:37:35.998+01:00")
 
 @Api(value = "reports", description = "the reports API")
 public interface ReportsApi {
 
-    @ApiOperation(value = "Create a new report", notes = "", response = FileDescription.class, tags={ "Reports API", })
+    @ApiOperation(value = "Create a new report", notes = "", response = ReportResponse.class, tags={ "Reports API", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = FileDescription.class),
+        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = ReportResponse.class),
         @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
         @ApiResponse(code = 200, message = "Unexpected error", response = ApplicationError.class) })
     
@@ -38,6 +38,6 @@ public interface ReportsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<FileDescription> reportsPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ReportRequest file);
+    ResponseEntity<ReportResponse> reportsPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ReportRequest file);
 
 }
