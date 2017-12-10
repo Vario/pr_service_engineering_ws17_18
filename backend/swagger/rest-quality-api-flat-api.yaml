@@ -190,7 +190,7 @@ definitions:
       type:
         type: string
         description: Type of Report (Validation, Comparison)
-        example: Validation
+        example: validation
       violations:
         type: integer
         description: Number of Rule Violations
