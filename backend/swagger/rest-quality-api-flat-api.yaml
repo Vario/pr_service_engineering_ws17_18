@@ -106,12 +106,9 @@ definitions:
   ApiRequest:
     type: object
     properties:
-      id:
+      api-id:
         type: string
-        format: uuid
-        description: Unique Identifier of the document (server-generated)
-      name:
-        type: string
+        example: Petstore API
         description: Title of the API
       versions:
         type: array
@@ -120,16 +117,12 @@ definitions:
   ApiResponse:
     type: object
     properties:
-      name:
+      api-id:
         type: string
         description: Title of the API
   VersionRequest:
     type: object
     properties:
-      id:
-        type: string
-        format: uuid
-        description: Unique Identifier of the API version (server-generated)
       number:
         type: string
         description: API Versioning
@@ -154,19 +147,16 @@ definitions:
     properties:
       id:
         type: string
-        format: uuid
-      version:
-        type: string
-        format: uuid
-        description: ID of the version where the revision belongs to
+        format: date-time
       file:
         type: string
         format: uuid
+        example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
         description: File UUID (compare /files API)
       reports:
         type: array
         items:
-          $ref: '#/definitions/ReportRequest'
+          $ref: '#/definitions/ReportResponse'
   RevisionResponse:
     type: object
     properties:
@@ -188,15 +178,19 @@ definitions:
         type: string
         description: Type of Report (Validation, Comparison)
         example: Validation
-      files:
+      file-ids:
         type: array
         items:
           type: string
           format: uuid
-          example: "550e8400-e29b-11d4-a716-446655440000"
+          example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
   ReportResponse:
     type: object
     properties:
+      type:
+        type: string
+        description: Type of Report (Validation, Comparison)
+        example: Validation
       violations:
         type: integer
         description: Number of Rule Violations
