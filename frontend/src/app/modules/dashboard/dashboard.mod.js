@@ -36,6 +36,9 @@
                         },
                         'apiupload@main.dashboard': {
                             templateUrl: 'app/modules/files/fileupload.tpl.html'
+                        },
+                        'apiupload@main.dashboard.infoview': {
+                            templateUrl: 'app/modules/files/fileupload.tpl.html'
                         }
                     }
 

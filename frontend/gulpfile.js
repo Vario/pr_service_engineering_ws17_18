@@ -51,8 +51,8 @@ var paths = {
             'node_modules/bootstrap/dist/js/bootstrap.js',
             'node_modules/angulargrid/angulargrid.js',
             'node_modules/angular-toastr/dist/angular-toastr.tpls.js',
-            'node_modules/mdr-angular-file/dist/mdr-file.min.js',
-            'node_modules/angular-file-upload/dist/angular-file-upload.js',
+            'node_modules/ng-file-upload/dist/ng-file-upload.min.js',
+            'node_modules/ng-file-upload/dist/ng-file-upload-shim.min.js',
             'node_modules/sprintf-js/dist/sprintf.min.js'
         ],
         fileDependencies: [
@@ -149,7 +149,7 @@ gulp.task('js', function () {
     var appStream = gulp.src([].concat(paths.dev.js), {base: 'app/'})
         .pipe(ngAnnotate())
         .pipe(concat('app.min.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest(paths.build.js));
 
     return merge([appStream]);

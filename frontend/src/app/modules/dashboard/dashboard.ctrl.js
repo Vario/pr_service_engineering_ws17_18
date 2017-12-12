@@ -8,15 +8,17 @@
     ngmod.controller('DashboardController', [
         '$scope',
         '$rootScope',
+        '$http',
         'APIEvalService',
-        function ($scope, $rootScope, APIEvalService) {
+        function ($scope, $rootScope, $http, APIEvalService) {
             console.log("dashboard loaded");
 
             $scope.selectedApi = undefined;
-            $scope.selectedVersion = undefined;
             $scope.selectedFile = undefined;
             $scope.selectedReport = undefined;
             $scope.apis = undefined;
+
+            $scope.apifile = undefined;
 
             loadData();
 
@@ -29,28 +31,48 @@
             }
 
             $scope.show = function(e){
-                if(e.selected){
-                    e.selected = false;
-                    $scope.selectedApi = [];
-                    $scope.selectedVersion = [];
-                    $scope.selectedFile = [];
-                    $scope.selectedReport = [];
-                }else e.selected = true;
+                if(e.expanded){
+                    e.expanded = false;
+                }else e.expanded = true;
                 if(e.version){
-                    $scope.selectedVersion = [];
-                    $scope.selectedFile = [];
-                    $scope.selectedReport = [];
                     for(i = 0; i < e.version.length; i++){
-                        e.version[i].selected = false;
+                        e.version[i].expanded = false;
                     }
                 }
             };
+            $scope.showFile = function(e){
+                console.log("showfile");
+                if(e.expanded){
+                    e.expanded = false;
+                }else e.expanded = true;
 
-            $scope.select = function(api, version, file, report){
+            };
+
+            $scope.select = function(api, file, report){
                 if(api) $scope.selectedApi = api;
-                if(version) $scope.selectedVersion = version;
                 if(file) $scope.selectedFile = file;
                 if(report) $scope.selectedReport = report;
+            };
+
+            /*$scope.$watch('apifile', function () {
+                console.log("apifile changed");
+                $scope.upload($scope.apifile);
+            });*/
+
+            $scope.upload = function (files) {
+                var file = files[0];
+                if(file != undefined) {
+                    var reader = new FileReader();
+
+                    // Closure to capture the file information.
+                    reader.onload = (function (file) {
+                        return function (e) {
+                            console.log('e readAsText target = ', e.target);
+                            APIEvalService.postNewAPIs(e.target.result);
+                        };
+                    })(file);
+                    reader.readAsText(file);
+                }
             };
         }]);
 })(angular);

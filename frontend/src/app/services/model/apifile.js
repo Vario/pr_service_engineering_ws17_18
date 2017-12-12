@@ -11,8 +11,10 @@
             function () {
                 var self = this;
 
-                self.name = undefined;
+                self.id = undefined;
+                self.file = undefined;
                 self.reports = undefined;
+                self.expanded = undefined;
 
                 function APIFileModel(data) {
                     var self = this;
@@ -20,7 +22,7 @@
                 }
 
                 APIFileModel.prototype.getValidPropertyList = function () {
-                    return ['name','reports'];
+                    return ['id','file','reports'];
                 };
 
                 return APIFileModel;

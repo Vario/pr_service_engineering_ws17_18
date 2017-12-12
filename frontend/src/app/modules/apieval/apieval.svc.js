@@ -11,86 +11,20 @@
             function (BackendAPIService, $filter, $q) {
                 var self = this;
 
-                self.getAllAPIs = function () {
-                    return $q(function (resolve) {
-                        var result = [
-                            {
-                                "name": "api1",
-                                "selected": false,
-                                "versions": [
-                                    {
-                                        "name": "v1",
-                                        "selected": false,
-                                        "files": [
-                                            {
-                                                "name": "1.json",
-                                                "reports": []
-                                            },
-                                            {
-                                                "name": "2.json",
-                                                "reports": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "v2",
-                                        "selected": false,
-                                        "files": [
-                                            {
-                                                "name": "3.json",
-                                                "report": []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "api2",
-                                "selected": false,
-                                "versions": [
-                                    {
-                                        "name": "v3",
-                                        "selected": false,
-                                        "files": [
-                                            {
-                                                "name": "4.json",
-                                                "reports": [
-                                                    {
-                                                        "name": "report1"
-                                                    },
-                                                    {
-                                                        "name": "report2"
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name": "5.json",
-                                                "reports": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "v2",
-                                        "selected": false,
-                                        "files": [
-                                            {
-                                                "name": "2.json",
-                                                "reports": [
-                                                    {
-                                                        "name": "report6"
-                                                    },
-                                                    {
-                                                        "name": "report5"
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ];
+                self.getAllAPIs = function() {
 
-                        resolve(result);
+                    return BackendAPIService.getAPIs().then(function (data) {
+                        console.log('returned apis' + data);
+                        if (data.length <= 0) {
+                            return $q.reject();
+                        }
+                        return data;
+                    });
+                };
+
+                self.postNewAPIs = function(api) {
+                    return BackendAPIService.postAPIfile(api).then(function () {
+                        console.log('api sent -> reload');
                     });
                 };
             }

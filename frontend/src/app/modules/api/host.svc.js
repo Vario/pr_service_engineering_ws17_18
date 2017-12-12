@@ -19,7 +19,8 @@
                 if (!!this.host) {
                     return this.host;
                 }
-                return "https://api.apieval.com"; //backend api url
+
+                return "http://quality.rest.patrickbuchner.at/api"; //backend api url
             };
 
             Host.setApiHost = function (host) {
@@ -27,10 +28,8 @@
             };
 
             Host.apiURL = function (path) {
-                if (path.indexOf("http") === 0) {
-                    return path;
-                }
-                return this.apiHost() + makeUrlPathAbsolute(path);
+                var url = this.apiHost() + makeUrlPathAbsolute(path);
+                return url;
             };
 
             function makeUrlPathAbsolute(path) {

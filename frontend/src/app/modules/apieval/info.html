@@ -1,11 +1,20 @@
-<div class="infoview" ng-show = "selectedApi.length != 0 && selectedApi.selected">
+<div class="infoview" ng-show = "selectedApi.length != 0 && selectedApi.expanded">
   <div>
     <h4>{{selectedApi.name}}</h4>
     <p>
       {{selectedApi.versions.length}} Versions
     </p>
   </div>
-  <div ng-show = "selectedVersion.length != 0 && selectedVersion.selected">
+  <div>
+    <p>Eine neue API Konfiguration für diese API hochladen</p>
+    <div>
+      <ui-view name="apiupload"></ui-view>
+    </div>
+  </div>
+
+
+  <!--
+  <div ng-show = "selectedVersion.length != 0 && selectedVersion.expanded">
     <h4>Version</h4>
     <p>
       {{selectedVersion.name}}
@@ -48,4 +57,5 @@
       </div>
     </div>
   </div>
+  -->
 </div>

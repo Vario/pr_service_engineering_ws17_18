@@ -10,7 +10,6 @@
             'apieval.services',
             'apieval.dashboard',
             'apieval.loading',
-            'mdr.file',
-            'angularFileUpload'
+            'ngFileUpload'
         ]);
 })(angular);

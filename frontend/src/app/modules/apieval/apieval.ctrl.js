@@ -8,12 +8,12 @@
     ngmod.controller('APIEvalController', [
         '$scope',
         '$rootScope',
+        '$http',
         'APIEvalService',
-        function ($scope, $rootScope, APIEvalService) {
+        function ($scope, $rootScope, $http, APIEvalService) {
             $scope.apis = undefined;
 
             loadData();
-
             function loadData() {
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {

@@ -7,18 +7,18 @@
         .factory('APIModel', [
             function () {
                 var self = this;
-
+                self.id = undefined;
                 self.versions = undefined;
-                self.active = undefined;
+                self.expanded = undefined;
                 self.name = undefined;
-
+                self.description = undefined;
                 function APIModel(data) {
                     var self = this;
                     angular.merge(self, data);
                 }
 
                 APIModel.prototype.getValidPropertyList = function () {
-                    return ['version','name','active'];
+                    return ['id','version','name','expanded', 'description'];
                 };
 
                 return APIModel;

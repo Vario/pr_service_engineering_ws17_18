@@ -8,5 +8,5 @@
     ]);
 
     angular.module('apieval.api')
-        .value('APIEVAL_API_VERSION', 1);
+        .value('APIEVAL_API_VERSION', 'v1');
 })(angular);

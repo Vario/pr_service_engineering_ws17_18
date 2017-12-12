@@ -11,9 +11,9 @@
             function () {
                 var self = this;
 
-                self.name = undefined;
-                self.active = undefined;
-                self.files = undefined;
+                self.number = undefined;
+                self.expanded = undefined;
+                self.revisions = undefined;
 
                 function APIVersionModel(data) {
                     var self = this;
@@ -21,7 +21,7 @@
                 }
 
                 APIVersionModel.prototype.getValidPropertyList = function () {
-                    return ['name','active','files'];
+                    return ['number','expanded','revisions'];
                 };
 
                 return APIVersionModel;

@@ -11,20 +11,30 @@
             </a>
             <ul>
               <div ng-repeat = "version in api.versions">
-                <li ng-show = "api.selected">
-                  <a ng-click = "show(version); select(api, version)">
+                <li ng-show = "api.expanded">
+                  <a ng-click = "show(version); select(api)">
                     <img src="./icons/folder_closed.svg" class="img-fluid" alt="Responsive image">
-                    {{version.name}}
+                    {{version.number}}
                   </a>
                 </li>
                 <ul>
-                  <div ng-repeat = "file in version.files">
-                    <li ng-show = "version.selected">
-                      <a ng-click = "select(api, version, file)">
+                  <div ng-repeat = "revision in version.revisions">
+                    <li ng-show = "version.expanded">
+                      <a ng-click = "showFile(revision); select(api, revision)">
                         <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
-                        {{file.name}}
+                        {{revision.file}}
                       </a>
                     </li>
+                    <ul>
+                      <div ng-repeat = "report in revision.reports">
+                        <li ng-show = "file.expanded">
+                          <a ng-click = "select(api, revision, report)">
+                            <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
+                            {{report.name}}
+                          </a>
+                        </li>
+                      </div>
+                    </ul>
                   </div>
                 </ul>
               </div>

@@ -1,3 +1,4 @@
-<div class="fileupload">
-    <mdr-file url="upload.php" size="5" limit="5" formats="'json'" text="Swagger JSON hier hochladen"></mdr-file>
-</div>
+<div ngf-drop="upload($files)" class="drop-box"
+     ngf-drag-over-class="'dragover'" ngf-multiple="false"
+     ngf-pattern="'application/json'"ngf-accept="'application/json'">Drop swagger json file here</div>
+<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
