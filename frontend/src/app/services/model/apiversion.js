@@ -8,7 +8,8 @@
     'use strict';
     angular.module('apieval.services')
         .factory('APIVersionModel', [
-            function () {
+            'APIRevisionModel',
+            function (APIRevisionModel) {
                 var self = this;
 
                 self.number = undefined;
@@ -17,7 +18,14 @@
 
                 function APIVersionModel(data) {
                     var self = this;
-                    angular.merge(self, data);
+                    //angular.merge(self, data);
+                    self.revisions = [];
+                    self.expanded = false;
+                    self.number = data.number;
+                    angular.forEach(data.revisions, function (value) {
+                        var rev = new APIRevisionModel(value);
+                        self.revisions.push(rev);
+                    });
                 }
 
                 APIVersionModel.prototype.getValidPropertyList = function () {

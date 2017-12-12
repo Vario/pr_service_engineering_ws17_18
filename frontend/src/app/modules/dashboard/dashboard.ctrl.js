@@ -68,7 +68,9 @@
                     reader.onload = (function (file) {
                         return function (e) {
                             console.log('e readAsText target = ', e.target);
-                            APIEvalService.postNewAPIs(e.target.result);
+                            APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                                loadData();
+                            });
                         };
                     })(file);
                     reader.readAsText(file);
