@@ -11,7 +11,8 @@
             function () {
                 var self = this;
 
-                self.name = undefined;
+                self.type = undefined;
+                self.violations = undefined;
 
                 function APIReportModel(data) {
                     var self = this;
@@ -19,7 +20,7 @@
                 }
 
                 APIReportModel.prototype.getValidPropertyList = function () {
-                    return ['name'];
+                    return ['type','violations'];
                 };
 
                 return APIReportModel;

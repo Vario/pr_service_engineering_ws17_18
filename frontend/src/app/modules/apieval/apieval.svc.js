@@ -47,6 +47,17 @@
                         console.log('api sent -> reload');
                     });
                 };
+
+                self.validateAPI = function(fileids) {
+                    var validationObject =
+                        {
+                            "type": "validation",
+                            "file-ids": fileids
+                        };
+                    return BackendAPIService.postAPIreport(validationObject).then(function () {
+                        console.log('api validation sent -> reload');
+                    });
+                };
             }
 
         ]);

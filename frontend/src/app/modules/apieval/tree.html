@@ -24,13 +24,22 @@
                         <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
                         {{revision.timestamp}}
                       </a>
+                      <a ng-click="validate(revision)">
+                        <img src="/icons/validate.svg" class="img-validate" alt="validate api" />
+                      </a>
                     </li>
                     <ul>
                       <div ng-repeat = "report in revision.reports">
-                        <li ng-show = "file.expanded">
+                        <li ng-show = "revision.expanded">
                           <a ng-click = "select(api, revision, report)">
                             <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
-                            {{report.name}}
+                            <span ng-if="report.violations === 0">
+                              <img src="./icons/validationtrue.svg"/>
+                            </span>
+                            <span ng-if="report.violations !=0">
+                              <img src="./icons/validationfalse.svg"/>
+                            </span>
+                            {{report.type}} ({{report.violations}})
                           </a>
                         </li>
                       </div>

@@ -105,8 +105,8 @@
                     return self.post('/files',file);
                 };
 
-                self.postAPIreport = function (report) {
-                    return self.post('/reports',report);
+                self.postAPIreport = function (validation) {
+                    return self.post('/reports',validation);
                 };
             }]);
 })(angular);

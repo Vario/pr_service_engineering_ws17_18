@@ -48,6 +48,15 @@
 
             };
 
+            $scope.validate = function(e){
+                console.log("validate " + e.timestamp);
+
+                $scope.loading.inc();
+                APIEvalService.validateAPI([e.file]).then(function (data) {
+                    $scope.loading.dec();
+                });
+            };
+
             $scope.select = function(api, file, report){
                 if(api) $scope.selectedApi = api;
                 if(file) $scope.selectedFile = file;
