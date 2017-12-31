@@ -5,14 +5,14 @@
     <ul>
       <div ng-repeat = "api in apis">
           <li>
-            <a href="#" ng-click = "show(api); select(api)">
+            <a href="#" ng-click = "showAPI(api); select(api)">
               <img src="./icons/api2.svg" class="img-fluid" alt="Responsive image">
               {{api.name}}
             </a>
             <ul>
               <div ng-repeat = "version in api.versions">
                 <li ng-show = "api.expanded">
-                  <a ng-click = "show(version); select(api)">
+                  <a ng-click = "showVersion(version); select(api)">
                     <img src="./icons/folder_closed.svg" class="img-fluid" alt="Responsive image">
                     {{version.number}}
                   </a>
@@ -20,7 +20,7 @@
                 <ul>
                   <div ng-repeat = "revision in version.revisions">
                     <li ng-show = "version.expanded">
-                      <a ng-click = "showFile(revision); select(api, revision)">
+                      <a ng-click = "showRevision(revision); select(api, revision)">
                         <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
                         {{revision.timestamp}}
                       </a>

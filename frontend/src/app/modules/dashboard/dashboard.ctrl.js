@@ -17,7 +17,7 @@
             $scope.selectedFile = undefined;
             $scope.selectedReport = undefined;
             $scope.apis = undefined;
-
+            $scope.apiurl = undefined;
             $scope.apifile = undefined;
 
             loadData();
@@ -30,22 +30,36 @@
                 });
             }
 
-            $scope.show = function(e){
-                if(e.expanded){
-                    e.expanded = false;
-                }else e.expanded = true;
-                if(e.version){
-                    for(i = 0; i < e.version.length; i++){
-                        e.version[i].expanded = false;
+            $scope.showAPI = function(e) {
+                $scope.show(e);
+                //if expanded, close others too
+                if(!e.expanded){
+                    for(var i = 0; i < e.versions.length; i++){
+                        if(e.versions[i].expanded) {
+                            $scope.showVersion(e.versions[i]);
+                        }
                     }
                 }
             };
-            $scope.showFile = function(e){
-                console.log("showfile");
+            $scope.showVersion = function(e) {
+                $scope.show(e);
+                //if expanded, close others too
+                if(!e.expanded){
+                    for(var i = 0; i < e.revisions.length; i++){
+                        if(e.revisions[i].expanded) {
+                            $scope.showRevision(e.revisions[i]);
+                        }
+                    }
+                }
+            };
+            $scope.showRevision = function(e) {
+                $scope.show(e);
+            };
+
+            $scope.show = function(e){
                 if(e.expanded){
                     e.expanded = false;
-                }else e.expanded = true;
-
+                } else e.expanded = true;
             };
 
             $scope.validate = function(e){
@@ -57,9 +71,14 @@
                 });
             };
 
-            $scope.select = function(api, file, report){
+            $scope.select = function(api, revision, report){
                 if(api) $scope.selectedApi = api;
-                if(file) $scope.selectedFile = file;
+                if(revision) {
+                    console.log("select file");
+                    $scope.apiurl = revision.file;
+                    $scope.selectedFile = revision;
+
+                }
                 if(report) $scope.selectedReport = report;
             };
 
