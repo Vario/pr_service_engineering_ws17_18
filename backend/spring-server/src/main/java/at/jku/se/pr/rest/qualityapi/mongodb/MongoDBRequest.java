@@ -24,6 +24,15 @@ public class MongoDBRequest {
         this.collection = database.getCollection(collectionName);
     }
 
+    public List<Document> findIterableToList(FindIterable<Document> findIterable){
+        Iterator iterator = findIterable.iterator();
+        List<Document> result = new ArrayList<>();
+        while (iterator.hasNext()) {
+            result.add((Document) iterator.next());
+        }
+        return result;
+    }
+
     public void insert(Document document){
         this.collection.insertOne(document);
     }
@@ -33,13 +42,9 @@ public class MongoDBRequest {
     }
 
     public List<Document> find(Document document) {
-        FindIterable<Document> findIterable = this.collection.find(document);
-        Iterator iterator = findIterable.iterator();
-        List<Document> result = new ArrayList<>();
-        while (iterator.hasNext()) {
-            result.add((Document) iterator.next());
-        }
-        return result;
+        return this.findIterableToList(
+                this.collection.find(document)
+        );
     }
 
 

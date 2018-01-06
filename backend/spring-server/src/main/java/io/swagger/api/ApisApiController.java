@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 
+import at.jku.se.pr.rest.qualityapi.settings.SettingsApiMapper;
 import com.mongodb.client.model.Updates;
 import io.swagger.model.*;
 import io.swagger.annotations.*;
@@ -73,11 +74,11 @@ public class ApisApiController implements ApisApi {
             HashMap<String, HashMap<Revision, List<ReportResponse>>> api;
             if(apis.containsKey(apiId)){
                 /* API exists */
-                System.out.println(apiId + " exists");
+                //System.out.println(apiId + " exists");
                 api = apis.get(apiId);
             } else {
                 /* Create a new API */
-                System.out.println("creating api " + apiId);
+                //System.out.println("creating api " + apiId);
                 apis.put(apiId,new HashMap<String, HashMap<Revision, List<ReportResponse>>>());
                 api = apis.get(apiId);
             }
@@ -85,11 +86,11 @@ public class ApisApiController implements ApisApi {
             HashMap<Revision, List<ReportResponse>> version;
             if(api.containsKey(versionId)){
                 /* Version exists */
-                System.out.println(versionId + " exists");
+                //System.out.println(versionId + " exists");
                 version = (HashMap) api.get(versionId);
             } else {
                 /* Create a new Version */
-                System.out.println("creating version " + versionId);
+                //System.out.println("creating version " + versionId);
                 api.put(versionId, new HashMap<Revision, List<ReportResponse>>());
                 version = (HashMap) api.get(versionId);
             }
@@ -97,11 +98,11 @@ public class ApisApiController implements ApisApi {
             List<ReportResponse> revision;
             if(version.containsKey(new Revision(timestamp,fileId))){
                 /* Revision exists */
-                System.out.println(timestamp + " exists");
+                //System.out.println(timestamp + " exists");
                 revision = version.get(new Revision(timestamp,fileId));
             } else {
                 /* Create a new Revision */
-                System.out.println("creating revision " + timestamp);
+                //System.out.println("creating revision " + timestamp);
                 version.put(new Revision(timestamp,fileId), new ArrayList<ReportResponse>());
                 revision = version.get(new Revision(timestamp,fileId));
             }
@@ -128,20 +129,24 @@ public class ApisApiController implements ApisApi {
 
         /*            API KEY         VERSION KEY     REVISION KEY*/
         for(Map.Entry<String, HashMap<String, HashMap<Revision, List<ReportResponse>>>> api : apis.entrySet()){
-            System.out.println("Api: " + api.getKey());
+            //System.out.println("Api: " + api.getKey());
 
             tmpApiRequest = new ApiRequest();
             apiRequests.add(tmpApiRequest);
             tmpApiRequest.setApiId(api.getKey());
+
+            SettingsApiMapper settingsApiMapper = new SettingsApiMapper();
+            UUID settingsId = settingsApiMapper.getSettingsForApi(api.getKey());
+            tmpApiRequest.setSettingsId(settingsId);
             for (Map.Entry<String, HashMap<Revision, List<ReportResponse>>> version : api.getValue().entrySet()){
-                System.out.println("Version: " + version.getKey());
+                //System.out.println("Version: " + version.getKey());
 
                 tmpVersionRequest = new VersionRequest();
                 tmpApiRequest.addVersionsItem(tmpVersionRequest);
                 tmpVersionRequest.setNumber(version.getKey());
 
                 for (Map.Entry<Revision, List<ReportResponse>> revision : version.getValue().entrySet()){
-                    System.out.println("Revision: " + revision.getKey());
+                    //System.out.println("Revision: " + revision.getKey());
 
                     tmpRevisionRequest = new RevisionRequest();
                     tmpVersionRequest.addRevisionsItem(tmpRevisionRequest);
