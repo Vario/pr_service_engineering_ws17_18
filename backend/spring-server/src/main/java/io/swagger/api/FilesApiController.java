@@ -47,14 +47,20 @@ public class FilesApiController implements FilesApi {
                 file.setVersion(info.get("version"));
 
         } catch (NullPointerException n){
+            System.out.println("NullPointerException");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if(file.getApiId() == null)
+        if(file.getApiId() == null){
+            System.out.println("API ID missing");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        if(file.getVersion() == null)
+        if(file.getVersion() == null){
+            System.out.println("VERSION ID missing");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
 
 
         /* Prepare Response */

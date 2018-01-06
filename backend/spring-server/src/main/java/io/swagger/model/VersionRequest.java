@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * VersionRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
 
 public class VersionRequest   {
   @JsonProperty("number")

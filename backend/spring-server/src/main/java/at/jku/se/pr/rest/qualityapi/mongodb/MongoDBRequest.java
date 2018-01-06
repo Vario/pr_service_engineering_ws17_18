@@ -43,9 +43,13 @@ public class MongoDBRequest {
     }
 
 
-    public void update(Bson id, Bson update){
+    public long update(Bson id, Bson update){
         UpdateResult res = this.collection.updateOne(id, update);
-        System.out.println("matched: " + res.getMatchedCount());
-        System.out.println("modified: " + res.getModifiedCount());
+        return res.getModifiedCount();
+    }
+
+    public long updateMany(Bson id, Bson update){
+        UpdateResult res = this.collection.updateMany(id, update);
+        return res.getModifiedCount();
     }
 }

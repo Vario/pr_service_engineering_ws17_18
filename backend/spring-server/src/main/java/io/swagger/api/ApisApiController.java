@@ -1,7 +1,10 @@
 package io.swagger.api;
 
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
+
+import com.mongodb.client.model.Updates;
 import io.swagger.model.*;
+import io.swagger.annotations.*;
 
 import java.util.*;
 
@@ -10,16 +13,45 @@ import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.print.Doc;
+import javax.validation.Valid;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.not;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T18:40:11.066Z")
 
 @Controller
 public class ApisApiController implements ApisApi {
 
+    public ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") String id,
+                                                        @ApiParam(value = "The settings to use" ,required=true )  @Valid @RequestBody SettingsId file) {
 
+        MongoDBRequest collection = new MongoDBRequest("settings");
+        List<Document> results = collection.find(new Document().append("id", file.getId()));
+        if (results.size() == 0) {
+            System.out.println(String.format("Settings ID %s not found".format(String.valueOf(file.getId()))));
+            return new ResponseEntity<SettingsId>(HttpStatus.NOT_FOUND);
+        }
+
+        long updateCountRemoveFromArray = collection.updateMany(
+                //elemMatch("used-in", eq(id)),
+                not(eq("id", file.getId())),
+                Updates.pull("used-in", id)
+        );
+
+        long updateCountAddToArray = collection.update(
+                eq("id", file.getId()),
+                Updates.addToSet("used-in", id)
+        );
+        if(updateCountRemoveFromArray == 0 && updateCountAddToArray == 0)
+            return new ResponseEntity<SettingsId>(file, HttpStatus.OK);
+        else
+            return new ResponseEntity<SettingsId>(file, HttpStatus.CREATED);
+    }
 
     public ResponseEntity<List<ApiRequest>> apisGet() {
         /* Database */

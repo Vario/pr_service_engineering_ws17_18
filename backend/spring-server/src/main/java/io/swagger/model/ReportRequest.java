@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * ReportRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-10T17:37:35.998+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
 
 public class ReportRequest   {
   @JsonProperty("type")
@@ -29,10 +29,10 @@ public class ReportRequest   {
   }
 
    /**
-   * Type of Report (Validation, Comparison)
+   * Type of Report (validation, comparison)
    * @return type
   **/
-  @ApiModelProperty(example = "Validation", value = "Type of Report (Validation, Comparison)")
+  @ApiModelProperty(example = "validation", value = "Type of Report (validation, comparison)")
 
 
   public String getType() {
