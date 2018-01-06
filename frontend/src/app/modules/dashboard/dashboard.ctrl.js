@@ -8,12 +8,14 @@
     ngmod.controller('DashboardController', [
         '$scope',
         '$rootScope',
+        'ngDialog',
         '$http',
         'APIEvalService',
-        function ($scope, $rootScope, $http, APIEvalService) {
+        function ($scope, $rootScope,ngDialog, $http, APIEvalService) {
             console.log("dashboard loaded");
 
             $scope.selectedApi = undefined;
+            $scope.selectedVersion = undefined;
             $scope.selectedFile = undefined;
             $scope.selectedReport = undefined;
             $scope.apis = undefined;
@@ -71,10 +73,25 @@
                 });
             };
 
-            $scope.select = function(api, revision, report){
+            $scope.showReport = function() {
+                console.log("show API");
+                ngDialog.openConfirm({
+                    template: 'app/modules/reports/reportdefault.tpl.html',
+                    showClose: true,
+                    className:"ngdialog-theme-default",
+                    scope: $scope
+                }).then(closedReportDialog()).catch(function (error) {
+                        console.error(error);});
+            };
+            function closedReportDialog() {
+                console.log("closed dialog");
+            }
+
+            $scope.select = function(api, version, revision, report){
                 if(api) $scope.selectedApi = api;
+                if(version) $scope.selectedVersion = version;
                 if(revision) {
-                    console.log("select file");
+                    console.log("select file:" + revision.file);
                     $scope.apiurl = revision.file;
                     $scope.selectedFile = revision;
 

@@ -4,7 +4,9 @@
 (function (angular) {
     'use strict';
     var ngmod = angular.module('apieval.dashboard', [
-        'ui.router'
+        'ui.router',
+        'ngSanitize',
+        'swaggerUi'
     ]);
 
     ngmod.config([
@@ -34,14 +36,13 @@
                         'infoview@main.dashboard': {
                             templateUrl: 'app/modules/apieval/info.html'
                         },
-                        'apiupload@main.dashboard': {
-                            templateUrl: 'app/modules/files/fileupload.tpl.html'
-                        },
                         'apiupload@main.dashboard.infoview': {
-                            templateUrl: 'app/modules/files/fileupload.tpl.html'
+                            templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
+                        },
+                        'swaggerinfo@main.dashboard': {
+                            templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
                         }
                     }
-
                 };
             }
         }]);

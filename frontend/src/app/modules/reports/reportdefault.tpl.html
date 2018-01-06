@@ -1,0 +1,17 @@
+<div class="reportContainer">
+    <h1>{{selectedReport.type}} Report for API </h1>
+    <div>
+        <b>API:</b> {{selectedApi.name}}</br>
+        <b>Version:</b> {{selectedVersion.number}}</br>
+        <b>Revision:</b> {{selectedFile.timestamp}}</br>
+    </div>
+    </br>
+    <h2>Violations:</h2>
+    <ul>
+        <div ng-repeat = "violation in $scope.selectedReport.violations">
+            <li>
+                {{violation}}
+            </li>
+        </div>
+    </ul>
+</div>
