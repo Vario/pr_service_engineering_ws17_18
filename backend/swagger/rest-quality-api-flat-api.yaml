@@ -279,8 +279,72 @@ definitions:
         description: Type of Report (calidation, comparison)
         example: validation
       violations:
+        $ref: '#/definitions/LintingResponse'
+  LintingResponse:
+    type: object
+    description: Linting Response
+    required:
+      - violations
+    properties:
+      violations:
+        type: array
+        items:
+          $ref: '#/definitions/Violation'
+      message:
+        type: string
+      violations_count:
+        $ref: '#/definitions/ViolationsCount'
+  Violation:
+    type: object
+    description: Violation Object
+    required:
+      - title
+      - description
+      - violation_type
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      violation_type:
+        type: string
+        x-extensible-enum:
+        - MUST
+        - SHOULD
+        - MAY
+        - HINT
+      rule_link:
+        type: string
+      paths:
+        type: array
+        items:
+          type: string
+
+  ViolationsCount:
+    type: object
+    description: Violation Count
+    required:
+      - must
+      - should
+      - may
+      - could
+      - hint
+    properties:
+      must:
         type: integer
-        description: Number of Rule Violations
+        format: int32
+      should:
+        type: integer
+        format: int32
+      may:
+        type: integer
+        format: int32
+      could:
+        type: integer
+        format: int32
+      hint:
+        type: integer
+        format: int32
   SettingsCreationRequest:
     type: object
     properties:

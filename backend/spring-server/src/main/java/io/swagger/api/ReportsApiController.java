@@ -1,32 +1,28 @@
 package io.swagger.api;
 
+import at.jku.se.pr.rest.qualityapi.Exceptions.MultipleResultsException;
+import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
+import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-import io.swagger.model.ApplicationError;
+import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
+import io.swagger.model.LintingResponse;
 import io.swagger.model.ReportRequest;
 import io.swagger.model.ReportResponse;
 
 import io.swagger.annotations.*;
 
 import org.bson.Document;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.DatastoreImpl;
+import org.mongodb.morphia.Morphia;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 import static com.mongodb.client.model.Filters.and;
@@ -36,39 +32,29 @@ import static com.mongodb.client.model.Filters.and;
 @Controller
 public class ReportsApiController implements ReportsApi {
 
-    private ResponseEntity<ReportResponse> handleValidation(ReportRequest file){
+    private ResponseEntity<ReportResponse> handleValidation(ReportRequest file, UUID settingsId){
+        /* Inputs */
         UUID fileId = file.getFileIds().get(0);
-        ReportResponse reportResponse = new ReportResponse();
-        reportResponse.setType(file.getType());
-        reportResponse.setViolations(0);
 
-        Document docToInsert = new Document()
-                .append("type",reportResponse.getType())
-                .append("violations", reportResponse.getViolations());
-
-        MongoDBRequest mongo = new MongoDBRequest("files");
-
-        FindIterable<Document> results = mongo.find(
-                and(
-                        Filters.eq("file-id", fileId),
-                        Filters.exists("reports")
-                )
+        /* Request Violations from ZallyIntegration */
+        ZallyIntegration zally = new ZallyIntegration();
+        Object violations = zally.getViolations(
+                FileHelpers.getSwaggerDocForFileId(fileId),
+                SettingsHelpers.getSettingForSettingsId(settingsId)
         );
 
-        Iterator iterator = results.iterator();
-        if(iterator.hasNext() == false){
-            ArrayList<Document> reports = new ArrayList<>();
-            reports.add(docToInsert);
-            mongo.update(
-                    Filters.eq("file-id", fileId),
-                    Updates.set("reports", reports)
-            );
-        } else {
-            mongo.update(
-                    Filters.eq("file-id", fileId),
-                    Updates.addToSet("reports", docToInsert)
-            );
-        }
+        /* Prepare Response */
+        ReportResponse reportResponse = new ReportResponse();
+        reportResponse.setType(file.getType());
+        reportResponse.setViolations(violations);
+
+
+        /* Create Report in MongoDB */
+        Document docToInsert = new Document()
+                .append("type",reportResponse.getType())
+                .append("violations", violations);
+        MongoDBRequest mongo = new MongoDBRequest("files");
+        mongo.createAndAddToSet("file-id", fileId, "reports", docToInsert);
 
         return new ResponseEntity<ReportResponse>(reportResponse,HttpStatus.OK);
     }
@@ -95,13 +81,22 @@ public class ReportsApiController implements ReportsApi {
             }
         }
 
+        UUID settingsId;
+        try {
+            String apiId = FileHelpers.getApiIdForFileIds(fileIds);
+            settingsId = SettingsHelpers.getSettingsForApi(apiId);
+        } catch (MultipleResultsException e) {
+            System.out.println("Given apis to compare must have the same settings");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         if("validation".compareTo(reportType) == 0){
             if(fileIds.size() != 1){
                 System.out.println("Report Type: " + reportType +
                         " needs exactly one file as input (" + fileIds.size() + " given)");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                return handleValidation(file);
+                return handleValidation(file, settingsId);
             }
         } else if("comparison".compareTo(reportType) == 0){
             if(fileIds.size() != 2){

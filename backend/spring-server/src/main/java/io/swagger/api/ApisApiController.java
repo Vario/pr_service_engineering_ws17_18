@@ -2,7 +2,7 @@ package io.swagger.api;
 
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 
-import at.jku.se.pr.rest.qualityapi.settings.SettingsApiMapper;
+import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
 import com.mongodb.client.model.Updates;
 import io.swagger.model.*;
 import io.swagger.annotations.*;
@@ -113,7 +113,7 @@ public class ApisApiController implements ApisApi {
                 for(Document d : reports){
                     tmpReportResponse = new ReportResponse();
                     tmpReportResponse.setType((String) d.get("type"));
-                    tmpReportResponse.setViolations((Integer) d.get("violations"));
+                    tmpReportResponse.setViolations(d.get("violations"));
                     reportResponses.add(tmpReportResponse);
                 }
                 revision.addAll(reportResponses);
@@ -135,8 +135,8 @@ public class ApisApiController implements ApisApi {
             apiRequests.add(tmpApiRequest);
             tmpApiRequest.setApiId(api.getKey());
 
-            SettingsApiMapper settingsApiMapper = new SettingsApiMapper();
-            UUID settingsId = settingsApiMapper.getSettingsForApi(api.getKey());
+            SettingsHelpers settingsHelpers = new SettingsHelpers();
+            UUID settingsId = settingsHelpers.getSettingsForApi(api.getKey());
             tmpApiRequest.setSettingsId(settingsId);
             for (Map.Entry<String, HashMap<Revision, List<ReportResponse>>> version : api.getValue().entrySet()){
                 //System.out.println("Version: " + version.getKey());
