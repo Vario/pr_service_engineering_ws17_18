@@ -40,6 +40,7 @@ var paths = {
         js: ['src/app/**/*.mod.js', 'src/app/**/*!(.mod).js'],
         images: 'src/img/**',
         icons: 'src/icons/**',
+        samples: 'src/samples/**',
         favico: 'src/*.ico',
         manifest: 'src/manifest.json',
         jsDependencies: [
@@ -53,7 +54,13 @@ var paths = {
             'node_modules/angular-toastr/dist/angular-toastr.tpls.js',
             'node_modules/ng-file-upload/dist/ng-file-upload.min.js',
             'node_modules/ng-file-upload/dist/ng-file-upload-shim.min.js',
-            'node_modules/sprintf-js/dist/sprintf.min.js'
+            'node_modules/sprintf-js/dist/sprintf.min.js',
+            'node_modules/angular-swagger-ui/dist/scripts/swagger-ui.min.js',
+            'node_modules/angular-swagger-ui/dist/scripts/modules/swagger1-converter.min.js',
+            'node_modules/angular-swagger-ui/dist/scripts/modules/swagger-external-references.min.js',
+            'node_modules/angular-swagger-ui/dist/scripts/modules/openapi3-converter.min.js',
+            'node_modules/angular-swagger-ui/dist/scripts/modules/swagger-yaml-parser.min.js',
+            'node_modules/angular-sanitize/angular-sanitize.min.js'
         ],
         fileDependencies: [
             {
@@ -69,6 +76,7 @@ var paths = {
         main: 'dist/',
         css: 'dist/css',
         js: 'dist/js',
+        samples: 'dist/samples',
         images: 'dist/img',
         icons: 'dist/icons',
         index: 'dist/index.html'
@@ -134,6 +142,11 @@ gulp.task('icons', function () {
         .pipe(gulp.dest(paths.build.icons));
 });
 
+gulp.task('samples', function () {
+    return gulp.src(paths.dev.samples)
+        .pipe(gulp.dest(paths.build.samples));
+});
+
 gulp.task('favico', function () {
     return gulp.src(paths.dev.favico)
         .pipe(gulp.dest(paths.build.main));
@@ -190,13 +203,15 @@ gulp.task('clean', function () {
     return del([paths.build.all]);
 });
 
-gulp.task('watch', ['styles', 'js', 'html'], function () {
+gulp.task('watch', ['styles', 'js', 'html', 'samples'], function () {
     gulp.watch([paths.dev.sass, paths.dev.css], ['styles']);
 
     var jsWatchPaths = paths.dev.js;
     gulp.watch(jsWatchPaths, ['js']);
 
+    gulp.watch(paths.dev.css, ['scss']);
     gulp.watch(paths.dev.html, ['html']);
+    gulp.watch(paths.dev.samples, ['samples']);
     gulp.watch(paths.dev.images, ['images']);
     gulp.watch(paths.dev.icons, ['icons']);
 });
@@ -207,7 +222,7 @@ gulp.task('cacheBuster', function () {
         .pipe(gulp.dest(paths.build.main));
 });
 
-gulp.task('build', sequence('clean', ['jsDependencies', 'manifest', 'images', 'icons', 'favico', 'styles', 'js', 'html', 'fileDependencies'], 'lint', 'cacheBuster'));
+gulp.task('build', sequence('clean', ['jsDependencies', 'manifest', 'images', 'icons', 'favico','samples', 'styles', 'js', 'html', 'fileDependencies'], 'lint', 'cacheBuster'));
 gulp.task('run', sequence('build', 'webserver', 'watch'));
 gulp.task('default', ['run']);
 

@@ -5,11 +5,6 @@
                 <h1>Dashboard</h1>
             </div>
             <h2>Lade eine neue API hier hoch</h2>
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <ui-view name="apiupload"></ui-view>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -19,6 +14,11 @@
         </div>
         <div class="col-md-6 col-lg-6">
             <ui-view name="infoview"></ui-view>
+        </div>
+    </div>
+    <div class="row" ng-show = "apiurl">
+        <div class="col-lg-12 col-md-12">
+            <ui-view name="swaggerinfo"></ui-view>
         </div>
     </div>
 </div>

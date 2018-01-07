@@ -1,4 +1,4 @@
-<div class="infoview" ng-show = "selectedApi.length != 0 && selectedApi.expanded">
+<div class="infoview" ng-show = "selectedApi.expanded">
   <div>
     <h4>{{selectedApi.name}}</h4>
     <p>
@@ -6,56 +6,14 @@
     </p>
   </div>
   <div>
-    <p>Eine neue API Konfiguration für diese API hochladen</p>
+    <p>Lade eine neue Version dieser API hoch</p>
     <div>
       <ui-view name="apiupload"></ui-view>
     </div>
   </div>
-
-
-  <!--
-  <div ng-show = "selectedVersion.length != 0 && selectedVersion.expanded">
-    <h4>Version</h4>
-    <p>
-      {{selectedVersion.name}}
-    </p>
-  </div>
-  <div ng-show = "selectedFile.length != 0 && selectedFile">
-    <h4>File</h4>
-    <p>
-      {{selectedFile.name}}
-    </p>
-    <h5>Reports ({{selectedFile.reports.length}})</h5>
-    <div ng-if = "selectedFile.reports.length == 0">
-      <a class="list-group-item">
-        <div class = "row">
-          <div class = "col">
-            <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
-            no Reports ...
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="list-group">
-      <div ng-repeat = "report in selectedFile.reports">
-        <a href="#" class="list-group-item list-group-item-action" ng-class="{'active': selectedReport == report}" ng-click = "select(api, version, file, report)">
-          <div class = "row">
-            <div class = "col">
-              <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
-              {{report.name}}
-            </div>
-            <div class = "col-auto">
-              <button type="button" class="btn btn-light">
-                <img src="./icons/open.svg" class="img-fluid" alt="Responsive image">
-              </button>
-              <button type="button" class="btn btn-light">
-                <img src="./icons/delete.svg" class="img-fluid" alt="Responsive image">
-              </button>
-            </div>
-          </div>
-        </a>
-      </div>
+  <div ng-show="selectedReport">
+    <div ng-click="showReport()" class="button">
+      Show Report
     </div>
   </div>
-  -->
 </div>

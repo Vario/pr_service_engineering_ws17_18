@@ -12,7 +12,7 @@
             <ul>
               <div ng-repeat = "version in api.versions">
                 <li ng-show = "api.expanded">
-                  <a ng-click = "showVersion(version); select(api)">
+                  <a ng-click = "showVersion(version); select(api,version)">
                     <img src="./icons/folder_closed.svg" class="img-fluid" alt="Responsive image">
                     {{version.number}}
                   </a>
@@ -20,7 +20,7 @@
                 <ul>
                   <div ng-repeat = "revision in version.revisions">
                     <li ng-show = "version.expanded">
-                      <a ng-click = "showRevision(revision); select(api, revision)">
+                      <a ng-click = "showRevision(revision); select(api,version, revision)">
                         <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
                         {{revision.timestamp}}
                       </a>
@@ -31,7 +31,7 @@
                     <ul>
                       <div ng-repeat = "report in revision.reports">
                         <li ng-show = "revision.expanded">
-                          <a ng-click = "select(api, revision, report)">
+                          <a ng-click = "select(api,version, revision, report)">
                             <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
                             <span ng-if="report.violations === 0">
                               <img src="./icons/validationtrue.svg"/>

@@ -10,6 +10,7 @@
             'apieval.services',
             'apieval.dashboard',
             'apieval.loading',
-            'ngFileUpload'
+            'ngFileUpload',
+            'ngDialog'
         ]);
 })(angular);

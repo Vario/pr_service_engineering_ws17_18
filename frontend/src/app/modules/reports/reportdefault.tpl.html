@@ -1,0 +1,22 @@
+<div class="reportContainer">
+    <h1>{{selectedReport.type}} Report</h1>
+    <div>
+        <b>API:</b> {{selectedApi.name}}</br>
+        <b>Version:</b> {{selectedVersion.number}}</br>
+        <b>Revision:</b> {{selectedFile.timestamp}}</br>
+    </div>
+    </br>
+    <h2>Violations:</h2>
+    <div ng-show="selectedReport.violations.length > 0">
+        <ul>
+            <div ng-repeat = "violation in selectedReport.violations">
+                <li>
+                    {{violation}}
+                </li>
+            </div>
+        </ul>
+    </div>
+    <div ng-hide="selectedReport.violations.length">
+        Keine Verletzungen in dieser API
+    </div>
+</div>
