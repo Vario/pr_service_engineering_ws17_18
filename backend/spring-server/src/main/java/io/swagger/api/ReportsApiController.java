@@ -12,9 +12,6 @@ import io.swagger.model.ReportResponse;
 import io.swagger.annotations.*;
 
 import org.bson.Document;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.DatastoreImpl;
-import org.mongodb.morphia.Morphia;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
