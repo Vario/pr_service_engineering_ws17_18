@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZallyIntegration {
-    private String uri = "http://localhost:8000";
+    private String uri = "http://localhost:7243";
     private List<Rule> enabledRules;
 
     /*
