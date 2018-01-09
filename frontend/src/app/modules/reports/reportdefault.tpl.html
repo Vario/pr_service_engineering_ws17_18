@@ -1,17 +1,43 @@
-<div class="reportContainer">
+<br class="reportContainer">
     <h1>{{selectedReport.type}} Report</h1>
     <div>
         <b>API:</b> {{selectedApi.name}}</br>
         <b>Version:</b> {{selectedVersion.number}}</br>
         <b>Revision:</b> {{selectedFile.timestamp}}</br>
     </div>
+
+    <p ng-show="selectedReport.violations.message">Message: {{selectedReport.violations.message}}</p>
+    </br>
+    <h2>Violation Summary:</h2>
+    <div>
+        <h3 class="mustViolation">Must:{{selectedReport.violations.violations_count.must}}</h3>
+        <h3 class="shouldViolation">Should:{{selectedReport.violations.violations_count.should}}</h3>
+        <h3 class="mayViolation">May:{{selectedReport.violations.violations_count.may}}</h3>
+        <h3 class="hintViolation">Hints:{{selectedReport.violations.violations_count.hint}}</h3>
+    </div>
     </br>
     <h2>Violations:</h2>
-    <div ng-show="selectedReport.violations.length > 0">
+    <div ng-show="selectedReport.violations.violations.length > 0">
         <ul>
-            <div ng-repeat = "violation in selectedReport.violations">
+            <div ng-repeat = "violation in selectedReport.violations.violations">
                 <li>
-                    {{violation}}
+                    <div>
+                        <b>{{violation.title}} ({{violation.violation_type}})</b></br>
+                        {{violation.description}}</br></br>
+                        More information here:</br>
+                        <a href="{{violation.rule_link}}" target="_blank" class="infoLink">{{violation.rule_link}}</a></br>
+                        <div ng-show="violation.paths.length > 0">
+                            Paths:</br>
+                            <ul>
+                                <div ng-repeat = "path in violation.paths">
+                                    <li>
+                                        {{path}}
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                        <br>
+                    </div>
                 </li>
             </div>
         </ul>

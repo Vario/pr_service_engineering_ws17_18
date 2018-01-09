@@ -74,16 +74,22 @@
             };
 
             $scope.showReport = function() {
-                console.log("show API");
+                console.log("show API Report");
+                /*$scope.groupedViolations = $scope.selectedReport.violations.violations.reduce(function(arr, item){
+                    arr[item['violation_type']] = arr[item['violation_type']] || { type: item['violation_type'], violations: []};
+                    arr[item['violation_type']].violations.push(item);
+                    return arr;
+                }, []);*/
                 ngDialog.openConfirm({
                     template: 'app/modules/reports/reportdefault.tpl.html',
                     showClose: true,
                     className:"ngdialog-theme-default",
-                    scope: $scope
+                    scope:$scope
                 }).then(closedReportDialog()).catch(function (error) {
                         console.error(error);});
             };
             function closedReportDialog() {
+                $scope.grouped_violations = undefined;
                 console.log("closed dialog");
             }
 

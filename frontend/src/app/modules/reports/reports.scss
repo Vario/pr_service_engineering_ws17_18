@@ -5,3 +5,32 @@
 .reportContainer {
   padding: 30px;
 }
+
+.infoLink {
+  text-decoration: underline !important;
+  color:blue !important;
+}
+.mustViolation {
+  border: 2px solid red;
+  border-radius: 5px;
+  background-color:red;
+  color:white;
+}
+.shouldViolation {
+  border: 2px solid orange;
+  border-radius: 5px;
+  background-color:orange;
+  color:black;
+}
+.mayViolation {
+  border: 2px solid yellow;
+  border-radius: 5px;
+  background-color:yellow;
+  color:black;
+}
+.hintViolation {
+  border: 2px solid white;
+  border-radius: 5px;
+  background-color:white;
+  color:black;
+}

@@ -17,6 +17,8 @@
                 function APIReportModel(data) {
                     var self = this;
                     angular.merge(self, data);
+                    /*self.type = data.type;
+                    self.violations = new APIViolationsModel(data.violations);*/
                 }
 
                 APIReportModel.prototype.getValidPropertyList = function () {
