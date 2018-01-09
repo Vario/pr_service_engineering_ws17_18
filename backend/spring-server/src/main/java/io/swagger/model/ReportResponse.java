@@ -11,14 +11,14 @@ import javax.validation.constraints.*;
 /**
  * ReportResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-07T12:21:13.731Z")
 
 public class ReportResponse   {
   @JsonProperty("type")
   private String type = null;
 
   @JsonProperty("violations")
-  private Integer violations = null;
+  private Object violations = null;
 
   public ReportResponse type(String type) {
     this.type = type;
@@ -26,10 +26,10 @@ public class ReportResponse   {
   }
 
    /**
-   * Type of Report (Validation, Comparison)
+   * Type of Report (calidation, comparison)
    * @return type
   **/
-  @ApiModelProperty(example = "Validation", value = "Type of Report (Validation, Comparison)")
+  @ApiModelProperty(example = "validation", value = "Type of Report (calidation, comparison)")
 
 
   public String getType() {
@@ -40,29 +40,30 @@ public class ReportResponse   {
     this.type = type;
   }
 
-  public ReportResponse violations(Integer violations) {
+  public ReportResponse violations(Object violations) {
     this.violations = violations;
     return this;
   }
 
    /**
-   * Number of Rule Violations
+   * Get violations
    * @return violations
   **/
-  @ApiModelProperty(value = "Number of Rule Violations")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public Integer getViolations() {
+  public Object getViolations() {
     return violations;
   }
 
-  public void setViolations(Integer violations) {
+  public void setViolations(Object violations) {
     this.violations = violations;
   }
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -94,7 +95,7 @@ public class ReportResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

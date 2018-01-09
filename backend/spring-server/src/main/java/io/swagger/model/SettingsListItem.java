@@ -5,59 +5,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ApplicationError
+ * SettingsListItem
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
 
-public class ApplicationError   {
-  @JsonProperty("code")
-  private Integer code = null;
+public class SettingsListItem   {
+  @JsonProperty("id")
+  private UUID id = null;
 
-  @JsonProperty("message")
-  private String message = null;
+  @JsonProperty("name")
+  private String name = null;
 
-  public ApplicationError code(Integer code) {
-    this.code = code;
+  public SettingsListItem id(UUID id) {
+    this.id = id;
     return this;
   }
 
    /**
-   * Get code
-   * @return code
+   * Get id
+   * @return id
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "3efc7632-e833-40cd-b002-abdfaf426e6c", value = "")
 
+  @Valid
 
-  public Integer getCode() {
-    return code;
+  public UUID getId() {
+    return id;
   }
 
-  public void setCode(Integer code) {
-    this.code = code;
+  public void setId(UUID id) {
+    this.id = id;
   }
 
-  public ApplicationError message(String message) {
-    this.message = message;
+  public SettingsListItem name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get message
-   * @return message
+   * Get name
+   * @return name
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "JKU Students API Guidelines", value = "")
 
 
-  public String getMessage() {
-    return message;
+  public String getName() {
+    return name;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public void setName(String name) {
+    this.name = name;
   }
 
 
@@ -69,23 +71,23 @@ public class ApplicationError   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ApplicationError applicationError = (ApplicationError) o;
-    return Objects.equals(this.code, applicationError.code) &&
-        Objects.equals(this.message, applicationError.message);
+    SettingsListItem settingsListItem = (SettingsListItem) o;
+    return Objects.equals(this.id, settingsListItem.id) &&
+        Objects.equals(this.name, settingsListItem.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message);
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ApplicationError {\n");
+    sb.append("class SettingsListItem {\n");
     
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }
