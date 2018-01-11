@@ -13,26 +13,34 @@ import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-08T13:49:07.180+01:00")
+import java.util.UUID;
+
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T16:25:58.568Z")
 
 @Api(value = "files", description = "the files API")
 public interface FilesApi {
+
+    @ApiOperation(value = "Get the raw swagger json as uploaded", notes = "", response = Object.class, tags={ "Files API", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = Object.class),
+        @ApiResponse(code = 404, message = "Given File ID not found", response = ApplicationError.class),
+        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
+    
+    @RequestMapping(value = "/files/{id}",
+        produces = { "application/json" },
+        method = RequestMethod.GET)
+    ResponseEntity<Object> filesIdGet(@ApiParam(value = "",required=true ) @PathVariable("id") UUID id);
+
 
     @ApiOperation(value = "Upload a file", notes = "", response = FileResponse.class, tags={ "Files API", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Documents successfully uploaded", response = FileResponse.class),
         @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
-        @ApiResponse(code = 200, message = "Unexpected error", response = ApplicationError.class) })
+        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/files",
         produces = { "application/json" }, 

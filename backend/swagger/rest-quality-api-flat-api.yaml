@@ -37,6 +37,29 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/ApplicationError'
+  /files/{id}:
+    get:
+      summary: Get the raw swagger json as uploaded
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+      tags:
+        - Files API
+      responses:
+        200:
+          description: Documents successfully uploaded
+          schema:
+            $ref: '#/definitions/Swagger'
+        404:
+          description: Given File ID not found
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
   /apis:
     get:
       summary: Get all available documents
@@ -78,6 +101,22 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/ApplicationError'
+  /rules:
+    get:
+      summary: Get all available rules
+      tags:
+        - Rules API
+      responses:
+        200:
+          description: Available Rules
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Rule'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
   /settings:
     post:
       summary: Create a new Settings Set
@@ -104,7 +143,7 @@ paths:
           schema:
             $ref: '#/definitions/ApplicationError'
     get:
-      summary: Create all setting sets
+      summary: Get all available setting sets
       tags:
         - Settings API
       responses:
@@ -186,8 +225,9 @@ definitions:
     type: object
     required: [swagger]
     properties:
-      api-id:
+      title:
         type: string
+        example: 'Petstore API'
       version:
         type: string
       swagger:
@@ -203,6 +243,11 @@ definitions:
     properties:
       api-id:
         type: string
+        format: uuid
+        example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
+      title:
+        type: string
+        example: 'Petstore API'
       version:
         type: string
       file-id:
@@ -221,8 +266,8 @@ definitions:
     properties:
       api-id:
         type: string
-        example: Petstore API
-        description: Title of the API
+        format: uuid
+        example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
       settings-id:
         type: string
         format: uuid
@@ -242,8 +287,8 @@ definitions:
       revisions:
         type: array
         items:
-          $ref: '#/definitions/RevisionRequest'
-  RevisionRequest:
+          $ref: '#/definitions/Revision'
+  Revision:
     type: object
     properties:
       id:
@@ -254,6 +299,10 @@ definitions:
         format: uuid
         example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
         description: File UUID (compare /files API)
+      url:
+        type: string
+        format: url
+        example: 'http://quality.rest.patrickbuchner.at/api/v1/files/3efc7632-e833-40cd-b002-abdfaf426e6c'
       reports:
         type: array
         items:
@@ -319,7 +368,6 @@ definitions:
         type: array
         items:
           type: string
-
   ViolationsCount:
     type: object
     description: Violation Count
@@ -345,6 +393,27 @@ definitions:
       hint:
         type: integer
         format: int32
+  Rule:
+    type: object
+    description: Rule
+    required:
+      - title
+      - code
+      - type
+      - url
+    properties:
+      title:
+        type: string
+        example: 'Do Not Use URI Versioning'
+      code:
+        type: string
+        example: '115'
+      type:
+        type: string
+        example: 'MUST'
+      url:
+        type: string
+        example: 'https://zalando.github.io/restful-api-guidelines/compatibility/Compatibility.html#must-do-not-use-uri-versioning'
   SettingsCreationRequest:
     type: object
     properties:
@@ -381,6 +450,9 @@ definitions:
         items:
           type: string
           example: "123"
+  Swagger:
+    type: object
+    example: {"swagger":"2.0","info":{"version":"1.0.0","title":"Swagger Petstore","description":"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification","termsOfService":"http://swagger.io/terms/","contact":{"name":"Swagger API Team"},"license":{"name":"MIT"}},"host":"petstore.swagger.io","basePath":"/api","schemes":["http"],"consumes":["application/json"],"produces":["application/json"],"paths":{"/pets":{"get":{"description":"Returns all pets from the system that the user has access to","produces":["application/json"],"responses":{"200":{"description":"A list of pets.","schema":{"type":"array","items":{}}}}}}},"definitions":{"Pet":{"type":"object","required":["id","name"],"properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string"},"tag":{"type":"string"}}}}}
   ApplicationError:
     type: object
     properties:
