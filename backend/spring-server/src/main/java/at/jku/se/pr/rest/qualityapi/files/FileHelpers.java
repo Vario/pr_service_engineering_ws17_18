@@ -1,6 +1,6 @@
 package at.jku.se.pr.rest.qualityapi.files;
 
-import at.jku.se.pr.rest.qualityapi.Exceptions.MultipleResultsException;
+import at.jku.se.pr.rest.qualityapi.exceptions.MultipleResultsException;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import org.bson.Document;
 

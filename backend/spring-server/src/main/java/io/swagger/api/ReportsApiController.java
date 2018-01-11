@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import at.jku.se.pr.rest.qualityapi.Exceptions.MultipleResultsException;
+import at.jku.se.pr.rest.qualityapi.exceptions.MultipleResultsException;
 import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
 import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
@@ -34,7 +34,7 @@ public class ReportsApiController implements ReportsApi {
         UUID fileId = file.getFileIds().get(0);
 
         /* Request Violations from ZallyIntegration */
-        ZallyIntegration zally = new ZallyIntegration();
+        ZallyIntegration zally = ZallyIntegration.getInstance();
         Object violations = zally.getViolations(
                 FileHelpers.getSwaggerDocForFileId(fileId),
                 SettingsHelpers.getSettingForSettingsId(settingsId)
