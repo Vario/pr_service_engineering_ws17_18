@@ -13,13 +13,16 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ApiRequest
+ * Api
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T20:20:53.474Z")
 
-public class ApiRequest   {
+public class Api   {
+  @JsonProperty("title")
+  private String title = null;
+
   @JsonProperty("api-id")
-  private String apiId = null;
+  private UUID apiId = null;
 
   @JsonProperty("settings-id")
   private UUID settingsId = null;
@@ -27,27 +30,48 @@ public class ApiRequest   {
   @JsonProperty("versions")
   private List<VersionRequest> versions = null;
 
-  public ApiRequest apiId(String apiId) {
+  public Api title(String title) {
+    this.title = title;
+    return this;
+  }
+
+   /**
+   * Get title
+   * @return title
+  **/
+  @ApiModelProperty(example = "Petstore API", value = "")
+
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public Api apiId(UUID apiId) {
     this.apiId = apiId;
     return this;
   }
 
    /**
-   * Title of the API
+   * Get apiId
    * @return apiId
   **/
-  @ApiModelProperty(example = "Petstore API", value = "Title of the API")
+  @ApiModelProperty(example = "3efc7632-e833-40cd-b002-abdfaf426e6c", value = "")
 
+  @Valid
 
-  public String getApiId() {
+  public UUID getApiId() {
     return apiId;
   }
 
-  public void setApiId(String apiId) {
+  public void setApiId(UUID apiId) {
     this.apiId = apiId;
   }
 
-  public ApiRequest settingsId(UUID settingsId) {
+  public Api settingsId(UUID settingsId) {
     this.settingsId = settingsId;
     return this;
   }
@@ -68,12 +92,12 @@ public class ApiRequest   {
     this.settingsId = settingsId;
   }
 
-  public ApiRequest versions(List<VersionRequest> versions) {
+  public Api versions(List<VersionRequest> versions) {
     this.versions = versions;
     return this;
   }
 
-  public ApiRequest addVersionsItem(VersionRequest versionsItem) {
+  public Api addVersionsItem(VersionRequest versionsItem) {
     if (this.versions == null) {
       this.versions = new ArrayList<VersionRequest>();
     }
@@ -106,22 +130,24 @@ public class ApiRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ApiRequest apiRequest = (ApiRequest) o;
-    return Objects.equals(this.apiId, apiRequest.apiId) &&
-        Objects.equals(this.settingsId, apiRequest.settingsId) &&
-        Objects.equals(this.versions, apiRequest.versions);
+    Api api = (Api) o;
+    return Objects.equals(this.title, api.title) &&
+        Objects.equals(this.apiId, api.apiId) &&
+        Objects.equals(this.settingsId, api.settingsId) &&
+        Objects.equals(this.versions, api.versions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apiId, settingsId, versions);
+    return Objects.hash(title, apiId, settingsId, versions);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ApiRequest {\n");
+    sb.append("class Api {\n");
     
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
     sb.append("    settingsId: ").append(toIndentedString(settingsId)).append("\n");
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");

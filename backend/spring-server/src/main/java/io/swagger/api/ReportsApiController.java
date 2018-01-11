@@ -80,7 +80,7 @@ public class ReportsApiController implements ReportsApi {
 
         UUID settingsId;
         try {
-            String apiId = FileHelpers.getApiIdForFileIds(fileIds);
+            UUID apiId = FileHelpers.getApiIdForFileIds(fileIds);
             settingsId = SettingsHelpers.getSettingsForApi(apiId);
         } catch (MultipleResultsException e) {
             System.out.println("Given apis to compare must have the same settings");

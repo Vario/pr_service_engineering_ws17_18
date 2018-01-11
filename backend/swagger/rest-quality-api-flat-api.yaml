@@ -71,7 +71,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ApiRequest'
+              $ref: '#/definitions/Api'
         500:
           description: Unexpected error
           schema:
@@ -261,7 +261,7 @@ definitions:
         format: uuid
         description: UUID of a setting
         example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
-  ApiRequest:
+  Api:
     type: object
     properties:
       api-id:

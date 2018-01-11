@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class FileHelpers {
-    public static String getApiIdForFileId(UUID fileId){
+    public static UUID getApiIdForFileId(UUID fileId){
         MongoDBRequest collection = new MongoDBRequest("files");
         List<Document> results = collection.find(
                 new Document().append("file-id", fileId)
@@ -17,12 +17,12 @@ public class FileHelpers {
         if(results.size() == 0){
             return null;
         } else {
-            return (String) results.get(0).get("api-id");
+            return (UUID) results.get(0).get("api-id");
         }
     }
 
-    public static String getApiIdForFileIds(List<UUID> fileIds) throws MultipleResultsException {
-        String ret = null;
+    public static UUID getApiIdForFileIds(List<UUID> fileIds) throws MultipleResultsException {
+        UUID ret = null;
         for (UUID fileId : fileIds){
             if(ret == null){
                 ret = getApiIdForFileId(fileId);

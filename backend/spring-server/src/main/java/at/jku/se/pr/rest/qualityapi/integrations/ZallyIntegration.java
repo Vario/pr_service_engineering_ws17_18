@@ -65,6 +65,9 @@ public class ZallyIntegration {
 
     /* Produces a list of rules to ignore for the zally api for a given Setting */
     public List<String> getRuleIgnoreList(Setting setting){
+        if(setting.getName().equals("default"))
+            return new ArrayList<>();
+
         updateEnabledRules();
         ArrayList<String> ignoreList = new ArrayList<>();
         List<String> settingRules = setting.getRules();

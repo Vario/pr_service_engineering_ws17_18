@@ -5,9 +5,8 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.ApiRequest;
+//import io.swagger.model.Api;
 import io.swagger.model.ApplicationError;
-import io.swagger.model.SettingsId;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -23,33 +22,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T20:14:39.866Z")
 
 @Api(value = "apis", description = "the apis API")
 public interface ApisApi {
 
-    @ApiOperation(value = "Get all available documents", notes = "", response = ApiRequest.class, responseContainer = "List", tags={ "APIs API", })
+    @ApiOperation(value = "Get all available documents", notes = "", response = io.swagger.model.Api.class, responseContainer = "List", tags={ "APIs API", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Returned Documents", response = ApiRequest.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "Returned Documents", response = io.swagger.model.Api.class, responseContainer = "List"),
         @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/apis",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ApiRequest>> apisGet();
-
-
-    @ApiOperation(value = "Update the the settings of an API", notes = "", response = SettingsId.class, tags={ "APIs API", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Returned Documents", response = SettingsId.class),
-        @ApiResponse(code = 404, message = "API ID or Settings ID does not exist", response = ApplicationError.class),
-        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
-    
-    @RequestMapping(value = "/apis/{id}/settings",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.PUT)
-    ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") String id,@ApiParam(value = "The settings to use" ,required=true )  @Valid @RequestBody SettingsId file);
+    ResponseEntity<List<io.swagger.model.Api>> apisGet();
 
 }
