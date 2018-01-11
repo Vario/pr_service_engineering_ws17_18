@@ -5,17 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * FileRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T16:25:58.568Z")
 
 public class FileRequest   {
-  @JsonProperty("api-id")
-  private String apiId = null;
+  @JsonProperty("title")
+  private String title = null;
 
   @JsonProperty("version")
   private String version = null;
@@ -23,24 +24,27 @@ public class FileRequest   {
   @JsonProperty("swagger")
   private Object swagger = null;
 
-  public FileRequest apiId(String apiId) {
-    this.apiId = apiId;
+  @JsonProperty("settings-id")
+  private UUID settingsId = null;
+
+  public FileRequest title(String title) {
+    this.title = title;
     return this;
   }
 
    /**
-   * Get apiId
-   * @return apiId
+   * Get title
+   * @return title
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "Petstore API", value = "")
 
 
-  public String getApiId() {
-    return apiId;
+  public String getTitle() {
+    return title;
   }
 
-  public void setApiId(String apiId) {
-    this.apiId = apiId;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public FileRequest version(String version) {
@@ -84,6 +88,27 @@ public class FileRequest   {
     this.swagger = swagger;
   }
 
+  public FileRequest settingsId(UUID settingsId) {
+    this.settingsId = settingsId;
+    return this;
+  }
+
+   /**
+   * UUID of a setting
+   * @return settingsId
+  **/
+  @ApiModelProperty(example = "3efc7632-e833-40cd-b002-abdfaf426e6c", value = "UUID of a setting")
+
+  @Valid
+
+  public UUID getSettingsId() {
+    return settingsId;
+  }
+
+  public void setSettingsId(UUID settingsId) {
+    this.settingsId = settingsId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -94,14 +119,15 @@ public class FileRequest   {
       return false;
     }
     FileRequest fileRequest = (FileRequest) o;
-    return Objects.equals(this.apiId, fileRequest.apiId) &&
+    return Objects.equals(this.title, fileRequest.title) &&
         Objects.equals(this.version, fileRequest.version) &&
-        Objects.equals(this.swagger, fileRequest.swagger);
+        Objects.equals(this.swagger, fileRequest.swagger) &&
+        Objects.equals(this.settingsId, fileRequest.settingsId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apiId, version, swagger);
+    return Objects.hash(title, version, swagger, settingsId);
   }
 
   @Override
@@ -109,9 +135,10 @@ public class FileRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class FileRequest {\n");
     
-    sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    swagger: ").append(toIndentedString(swagger)).append("\n");
+    sb.append("    settingsId: ").append(toIndentedString(settingsId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

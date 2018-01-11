@@ -30,8 +30,8 @@ public class FilesApiController implements FilesApi {
 
         /* Input Validation */
         try {
-            if(file.getApiId() == null)
-                file.setApiId(info.get("title"));
+            if(file.getTitle() == null)
+                file.setTitle(info.get("title"));
 
             if(file.getVersion() == null)
                 file.setVersion(info.get("version"));
@@ -41,8 +41,8 @@ public class FilesApiController implements FilesApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if(file.getApiId() == null){
-            System.out.println("API ID missing");
+        if(file.getTitle() == null){
+            System.out.println("title missing");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -55,7 +55,8 @@ public class FilesApiController implements FilesApi {
 
         /* Prepare Response */
         FileResponse response = new FileResponse();
-        response.setApiId(file.getApiId());
+        response.setTitle(file.getTitle());
+        response.setApiId(UUID.randomUUID());
         response.setFileId(UUID.randomUUID());
         response.setTimestamp(DateTime.now());
         response.setVersion(file.getVersion());
@@ -63,6 +64,7 @@ public class FilesApiController implements FilesApi {
         /* Database */
         MongoDBRequest request = new MongoDBRequest("files");
         request.insert(new Document()
+                .append("title", response.getTitle())
                 .append("api-id", response.getApiId())
                 .append("file-id", response.getFileId())
                 .append("timestamp", response.getTimestamp().toDate())
