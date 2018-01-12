@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 
 import java.util.*;
 
+import io.swagger.model.Api;
 import org.bson.Document;
 import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,17 @@ import static com.mongodb.client.model.Filters.not;
 @Controller
 public class ApisApiController implements ApisApi {
 
-    public ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") String id,
+    public ResponseEntity<ApiTitle> apisIdTitlePut(@ApiParam(value = "",required=true ) @PathVariable("id") UUID id,
+                                                   @ApiParam(value = ""  )  @Valid @RequestBody ApiTitle title) {
+        MongoDBRequest collection = new MongoDBRequest("files");
+        collection.updateMany(
+                eq("api-id", id),
+                Updates.set("title", title.getTitle())
+        );
+        return new ResponseEntity<ApiTitle>(title, HttpStatus.OK);
+    }
+
+    public ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") UUID id,
                                                         @ApiParam(value = "The settings to use" ,required=true )  @Valid @RequestBody SettingsId file) {
 
         MongoDBRequest collection = new MongoDBRequest("settings");
@@ -54,18 +65,23 @@ public class ApisApiController implements ApisApi {
             return new ResponseEntity<SettingsId>(file, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<ApiRequest>> apisGet() {
+    public ResponseEntity<List<Api>> apisGet() {
         /* Database */
         MongoDBRequest request = new MongoDBRequest("files");
         List<Document> results = request.find(new Document());
 
+        /* API ID / TITLE Mapping */
+        Map<UUID, String> apiIdTitleMap = new HashMap<>();
+
         /* APIS / VERSIONS / REVISIONS / REPORTS */
-        HashMap<String, /* APIs */
+        HashMap<UUID, /* APIs */
                 HashMap<String, /* Versions */
                         HashMap<Revision, /* Revisions */
                                 List<ReportResponse>>>> apis = new HashMap<>();
-        for (Document r: results) {
-            String apiId = (String) r.get("api-id");
+        for (Document r : results) {
+            String title = (String) r.get("title");
+            UUID apiId = (UUID) r.get("api-id");
+            apiIdTitleMap.put(apiId, title);
             UUID fileId = (UUID) r.get("file-id");
             Date timestamp = (Date) r.get("timestamp");
             String versionId = (String) r.get("version");
@@ -74,11 +90,9 @@ public class ApisApiController implements ApisApi {
             HashMap<String, HashMap<Revision, List<ReportResponse>>> api;
             if(apis.containsKey(apiId)){
                 /* API exists */
-                //System.out.println(apiId + " exists");
                 api = apis.get(apiId);
             } else {
                 /* Create a new API */
-                //System.out.println("creating api " + apiId);
                 apis.put(apiId,new HashMap<String, HashMap<Revision, List<ReportResponse>>>());
                 api = apis.get(apiId);
             }
@@ -86,11 +100,9 @@ public class ApisApiController implements ApisApi {
             HashMap<Revision, List<ReportResponse>> version;
             if(api.containsKey(versionId)){
                 /* Version exists */
-                //System.out.println(versionId + " exists");
                 version = (HashMap) api.get(versionId);
             } else {
                 /* Create a new Version */
-                //System.out.println("creating version " + versionId);
                 api.put(versionId, new HashMap<Revision, List<ReportResponse>>());
                 version = (HashMap) api.get(versionId);
             }
@@ -98,11 +110,9 @@ public class ApisApiController implements ApisApi {
             List<ReportResponse> revision;
             if(version.containsKey(new Revision(timestamp,fileId))){
                 /* Revision exists */
-                //System.out.println(timestamp + " exists");
                 revision = version.get(new Revision(timestamp,fileId));
             } else {
                 /* Create a new Revision */
-                //System.out.println("creating revision " + timestamp);
                 version.put(new Revision(timestamp,fileId), new ArrayList<ReportResponse>());
                 revision = version.get(new Revision(timestamp,fileId));
             }
@@ -121,33 +131,29 @@ public class ApisApiController implements ApisApi {
         }
 
         /* Prepare Response */
-        List<ApiRequest> apiRequests = new ArrayList<>();
-        ApiRequest tmpApiRequest;
+        List<Api> Apis = new ArrayList<>();
+        Api tmpApi;
         VersionRequest tmpVersionRequest;
         RevisionRequest tmpRevisionRequest;
         ReportResponse tmpReportResponse;
 
-        /*            API KEY         VERSION KEY     REVISION KEY*/
-        for(Map.Entry<String, HashMap<String, HashMap<Revision, List<ReportResponse>>>> api : apis.entrySet()){
-            //System.out.println("Api: " + api.getKey());
-
-            tmpApiRequest = new ApiRequest();
-            apiRequests.add(tmpApiRequest);
-            tmpApiRequest.setApiId(api.getKey());
+        /*            API KEY       VERSION KEY     REVISION KEY*/
+        for(Map.Entry<UUID, HashMap<String, HashMap<Revision, List<ReportResponse>>>> api : apis.entrySet()){
+            tmpApi = new Api();
+            Apis.add(tmpApi);
+            tmpApi.setApiId(api.getKey());
 
             SettingsHelpers settingsHelpers = new SettingsHelpers();
             UUID settingsId = settingsHelpers.getSettingsForApi(api.getKey());
-            tmpApiRequest.setSettingsId(settingsId);
-            for (Map.Entry<String, HashMap<Revision, List<ReportResponse>>> version : api.getValue().entrySet()){
-                //System.out.println("Version: " + version.getKey());
+            tmpApi.setSettingsId(settingsId);
+            tmpApi.setTitle(apiIdTitleMap.get(api.getKey()));
 
+            for (Map.Entry<String, HashMap<Revision, List<ReportResponse>>> version : api.getValue().entrySet()){
                 tmpVersionRequest = new VersionRequest();
-                tmpApiRequest.addVersionsItem(tmpVersionRequest);
+                tmpApi.addVersionsItem(tmpVersionRequest);
                 tmpVersionRequest.setNumber(version.getKey());
 
                 for (Map.Entry<Revision, List<ReportResponse>> revision : version.getValue().entrySet()){
-                    //System.out.println("Revision: " + revision.getKey());
-
                     tmpRevisionRequest = new RevisionRequest();
                     tmpVersionRequest.addRevisionsItem(tmpRevisionRequest);
                     tmpRevisionRequest.setId(new DateTime(revision.getKey().getRevisionId()));
@@ -165,12 +171,12 @@ public class ApisApiController implements ApisApi {
                 }
             } /* End Versions */
 
-            if(tmpApiRequest.getVersions() == null){
-                tmpApiRequest.setVersions(new ArrayList<VersionRequest>());
+            if(tmpApi.getVersions() == null){
+                tmpApi.setVersions(new ArrayList<VersionRequest>());
             }
         }
 
-        return new ResponseEntity<List<ApiRequest>>(apiRequests, HttpStatus.OK);
+        return new ResponseEntity<List<Api>>(Apis, HttpStatus.OK);
     }
 
 }

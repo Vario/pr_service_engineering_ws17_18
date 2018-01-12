@@ -18,22 +18,22 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-05T20:37:30.578Z")
 
 public class SupportedRulesResponse   {
-    @JsonProperty("supported_rules")
-    private List<Rule> supportedRules = new ArrayList<Rule>();
+    @JsonProperty("rules")
+    private List<Rule> rules = new ArrayList<Rule>();
 
-    public SupportedRulesResponse supportedRules(List<Rule> supportedRules) {
-        this.supportedRules = supportedRules;
+    public SupportedRulesResponse rules(List<Rule> rules) {
+        this.rules = rules;
         return this;
     }
 
-    public SupportedRulesResponse addSupportedRulesItem(Rule supportedRulesItem) {
-        this.supportedRules.add(supportedRulesItem);
+    public SupportedRulesResponse addSupportedRulesItem(Rule rulesItem) {
+        this.rules.add(rulesItem);
         return this;
     }
 
     /**
-     * Get supportedRules
-     * @return supportedRules
+     * Get rules
+     * @return rules
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
@@ -41,11 +41,11 @@ public class SupportedRulesResponse   {
     @Valid
 
     public List<Rule> getSupportedRules() {
-        return supportedRules;
+        return rules;
     }
 
-    public void setSupportedRules(List<Rule> supportedRules) {
-        this.supportedRules = supportedRules;
+    public void setSupportedRules(List<Rule> rules) {
+        this.rules = rules;
     }
 
 
@@ -57,13 +57,13 @@ public class SupportedRulesResponse   {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SupportedRulesResponse supportedRulesResponse = (SupportedRulesResponse) o;
-        return Objects.equals(this.supportedRules, supportedRulesResponse.supportedRules);
+        SupportedRulesResponse rulesResponse = (SupportedRulesResponse) o;
+        return Objects.equals(this.rules, rulesResponse.rules);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(supportedRules);
+        return Objects.hash(rules);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SupportedRulesResponse   {
         StringBuilder sb = new StringBuilder();
         sb.append("class SupportedRulesResponse {\n");
 
-        sb.append("    supportedRules: ").append(toIndentedString(supportedRules)).append("\n");
+        sb.append("    rules: ").append(toIndentedString(rules)).append("\n");
         sb.append("}");
         return sb.toString();
     }

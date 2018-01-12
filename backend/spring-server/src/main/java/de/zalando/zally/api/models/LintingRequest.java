@@ -23,7 +23,7 @@ public class LintingRequest   {
   @JsonProperty("api_definition_url")
   private String apiDefinitionUrl = null;
 
-  @JsonProperty("ignoreRules")
+  @JsonProperty("ignore_rules")
   private List<String> ignoreRules = null;
 
   public LintingRequest apiDefinition(Object apiDefinition) {

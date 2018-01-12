@@ -13,11 +13,14 @@ import javax.validation.constraints.*;
 /**
  * FileResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T16:25:58.568Z")
 
 public class FileResponse   {
   @JsonProperty("api-id")
-  private String apiId = null;
+  private UUID apiId = null;
+
+  @JsonProperty("title")
+  private String title = null;
 
   @JsonProperty("version")
   private String version = null;
@@ -28,7 +31,10 @@ public class FileResponse   {
   @JsonProperty("timestamp")
   private DateTime timestamp = null;
 
-  public FileResponse apiId(String apiId) {
+  @JsonProperty("settings-id")
+  private UUID settingsId = null;
+
+  public FileResponse apiId(UUID apiId) {
     this.apiId = apiId;
     return this;
   }
@@ -37,15 +43,36 @@ public class FileResponse   {
    * Get apiId
    * @return apiId
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "3efc7632-e833-40cd-b002-abdfaf426e6c", value = "")
 
+  @Valid
 
-  public String getApiId() {
+  public UUID getApiId() {
     return apiId;
   }
 
-  public void setApiId(String apiId) {
+  public void setApiId(UUID apiId) {
     this.apiId = apiId;
+  }
+
+  public FileResponse title(String title) {
+    this.title = title;
+    return this;
+  }
+
+   /**
+   * Get title
+   * @return title
+  **/
+  @ApiModelProperty(example = "Petstore API", value = "")
+
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public FileResponse version(String version) {
@@ -110,6 +137,27 @@ public class FileResponse   {
     this.timestamp = timestamp;
   }
 
+  public FileResponse settingsId(UUID settingsId) {
+    this.settingsId = settingsId;
+    return this;
+  }
+
+   /**
+   * UUID of a setting
+   * @return settingsId
+  **/
+  @ApiModelProperty(example = "3efc7632-e833-40cd-b002-abdfaf426e6c", value = "UUID of a setting")
+
+  @Valid
+
+  public UUID getSettingsId() {
+    return settingsId;
+  }
+
+  public void setSettingsId(UUID settingsId) {
+    this.settingsId = settingsId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -121,14 +169,16 @@ public class FileResponse   {
     }
     FileResponse fileResponse = (FileResponse) o;
     return Objects.equals(this.apiId, fileResponse.apiId) &&
+        Objects.equals(this.title, fileResponse.title) &&
         Objects.equals(this.version, fileResponse.version) &&
         Objects.equals(this.fileId, fileResponse.fileId) &&
-        Objects.equals(this.timestamp, fileResponse.timestamp);
+        Objects.equals(this.timestamp, fileResponse.timestamp) &&
+        Objects.equals(this.settingsId, fileResponse.settingsId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apiId, version, fileId, timestamp);
+    return Objects.hash(apiId, title, version, fileId, timestamp, settingsId);
   }
 
   @Override
@@ -137,9 +187,11 @@ public class FileResponse   {
     sb.append("class FileResponse {\n");
     
     sb.append("    apiId: ").append(toIndentedString(apiId)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
+    sb.append("    settingsId: ").append(toIndentedString(settingsId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

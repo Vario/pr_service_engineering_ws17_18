@@ -18,7 +18,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.not;
 
 public class SettingsHelpers {
-    public static UUID getSettingsForApi(String apiId){
+    public static UUID getSettingsForApi(UUID apiId){
         MongoDBRequest collection = new MongoDBRequest("settings");
         List<Document> results = collection.find(
                 new Document().append("used-in", apiId)

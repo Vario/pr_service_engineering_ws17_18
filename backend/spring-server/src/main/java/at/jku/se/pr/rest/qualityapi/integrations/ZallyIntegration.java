@@ -16,28 +16,35 @@ import java.util.List;
 public class ZallyIntegration {
     private String uri = "http://localhost:7243";
     private List<Rule> enabledRules;
-
+    private static ZallyIntegration instance;
     /*
-        Constructors
+        Singleton
     */
-    public ZallyIntegration(){
+    private ZallyIntegration(){
 
     }
 
-    public ZallyIntegration(String uri){
-        this.uri = uri;
+    public static synchronized ZallyIntegration getInstance () {
+        if (ZallyIntegration.instance == null) {
+            ZallyIntegration.instance = new ZallyIntegration ();
+        }
+        return ZallyIntegration.instance;
     }
+
 
     /*
         Private Helper Methods
     */
     private void updateEnabledRules(){
+        if (enabledRules != null){
+            return;
+        }
         enabledRules = new ArrayList<>();
 
         RestTemplate restTemplate = new RestTemplate();
         List<Rule> supportedZallyRules =
                 restTemplate.getForObject(
-                        String.format("%s/supported-rules", this.uri),
+                        String.format("%s/supported-rules", uri),
                         SupportedRulesResponse.class
                 ).getSupportedRules();
 
@@ -51,9 +58,17 @@ public class ZallyIntegration {
     /*
         Public Methods
     */
+    public List<Rule> getEnabledRules(){
+        updateEnabledRules();
+        return enabledRules;
+    }
+
     /* Produces a list of rules to ignore for the zally api for a given Setting */
     public List<String> getRuleIgnoreList(Setting setting){
-        this.updateEnabledRules();
+        if(setting.getName().equals("default"))
+            return new ArrayList<>();
+
+        updateEnabledRules();
         ArrayList<String> ignoreList = new ArrayList<>();
         List<String> settingRules = setting.getRules();
 
@@ -73,7 +88,7 @@ public class ZallyIntegration {
         RestTemplate restTemplate = new RestTemplate();
         LintingResponse violation =
                 restTemplate.postForObject(
-                        String.format("%s/api-violations", this.uri),
+                        String.format("%s/api-violations", uri),
                         request,
                         LintingResponse.class
                 );
@@ -87,7 +102,7 @@ public class ZallyIntegration {
         RestTemplate restTemplate = new RestTemplate();
         Object violation =
                 restTemplate.postForObject(
-                        String.format("%s/api-violations", this.uri),
+                        String.format("%s/api-violations", uri),
                         request,
                         Object.class
                 );
