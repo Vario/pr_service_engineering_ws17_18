@@ -121,14 +121,14 @@
                                     }
                                     newRules.push(rule);
                                 });
-                                $scope.showValidationDialog(newRules);
+                                $scope.showValidationDialog(e.file,newRules);
                             } else {
                                 console.log("no settings found");
                                 //if no settings, activate all rules
                                 angular.forEach(rules, function (rule) {
                                     rule.checked = true;
                                 });
-                                $scope.showValidationDialog(rules);
+                                $scope.showValidationDialog(e.file,rules);
                             }
                         });
                     } else {
@@ -149,7 +149,7 @@
                 });
             };
 
-            $scope.showValidationDialog = function(evalRules) {
+            $scope.showValidationDialog = function(file, evalRules) {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/settings.apieval.tpl.html',
                     showClose: true,
@@ -188,10 +188,15 @@
                     }
                 }).then(function (){
                     console.log("validate");
-                    /*$scope.loading.inc();
-                     APIEvalService.validateAPI([e.file]).then(function (data) {
-                     $scope.loading.dec();
-                     });*/
+                    $scope.loading.inc();
+                    APIEvalService.validateAPI([file]).then(function (data) {
+                        console.log(data);
+                        $scope.loading.dec();
+                        loadData();
+                        $scope.selectedApi.expanded = true;
+                        $scope.selectedVersion.expanded = true;
+                        $scope.selectedFile.expanded = true;
+                     });
                 });
             };
 
@@ -201,15 +206,16 @@
                     arr[item['violation_type']].violations.push(item);
                     return arr;
                 }, []);*/
-                ngDialog.openConfirm({
+                var dialog = ngDialog.open({
                     template: 'app/modules/reports/reportdefault.tpl.html',
                     showClose: true,
                     className:"ngdialog-theme-default",
                     scope:$scope
-                }).then(closedReportDialog()).catch(function (error) {
-                        console.error(error);
                 });
 
+                dialog.closePromise.then(function () {
+
+                })
             };
 
             $scope.select = function(api, version, revision, report){
