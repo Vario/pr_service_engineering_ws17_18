@@ -98,7 +98,15 @@
                 };
                 */
                 self.getAPIs = function () {
-                    return self.get('/apis/');
+                    return self.get('/apis');
+                };
+
+                self.updateAPITitle = function (apiid, title) {
+                    return self.put('/apis/' + apiid + "/title",title);
+                };
+
+                self.updateAPISetting = function (apiid, setting) {
+                    return self.put('/apis/' + apiid + "/settings",setting);
                 };
 
                 self.postAPIfile = function (file) {
@@ -108,5 +116,28 @@
                 self.postAPIreport = function (validation) {
                     return self.post('/reports',validation);
                 };
+
+                self.getRules = function() {
+                    return self.get('/rules');
+                };
+
+                self.getSettings = function() {
+                    return self.get('/settings');
+                };
+
+                self.getSetting = function(id) {
+                    return self.get('/settings/' + id);
+                };
+
+                self.postSetting = function (settings) {
+                    console.log("create settings: " + settings);
+                    return self.post('/settings',settings);
+                };
+
+                self.putSetting = function (id, settings) {
+                    console.log("update settings: " + settings);
+                    return self.put('/settings/' + id,settings);
+                };
+
             }]);
 })(angular);

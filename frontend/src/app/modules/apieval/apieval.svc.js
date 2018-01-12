@@ -14,12 +14,34 @@
 
                 self.getAllAPIs = function() {
                     return BackendAPIService.getAPIs().then(function (data) {
-                        console.log('returned apis' + data);
                         if (data.length <= 0) {
-                            return $q.reject();
+                            //return $q.reject();
                         }
                         var apis = self.getApiModelsMapped(data);
                         return apis;
+                    });
+                };
+
+                self.updateApiTitle = function(api, title) {
+                    var model =
+                        {
+                            "title": title
+                        };
+                    return BackendAPIService.updateAPITitle(api.id, angular.toJson(model)).then(function (data) {
+                        return;
+                    });
+                };
+
+                self.updateApiSetting = function(apiid, settingsid) {
+                    var model =
+                        {
+                            "id": settingsid
+                        };
+                    console.log("update api "+ apiid + " with settingsid:" + settingsid + " and model:" + angular.toJson(model));
+
+                    return BackendAPIService.updateAPISetting(apiid, angular.toJson(model)).then(function (data) {
+                        console.log("api updated");
+                        return;
                     });
                 };
 

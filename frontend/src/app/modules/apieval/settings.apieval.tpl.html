@@ -1,0 +1,17 @@
+<h1>API Validation Settings</h1>
+<h3 class="ruleInformation">Each rule which is selected, will be checked for your API</h3>
+<h2>Rules</h2>
+<ul class="ruleList">
+    <div ng-repeat = "rule in ngDialogData">
+        <label>
+            <li>
+                <input type="checkbox" ng-checked="rule.checked" ng-model="rule.checked">
+                <b>{{rule.title}} - {{rule.type}}</b>(<a href="{{rule.url}}" target="_blank">more</a>)
+            </li>
+        </label>
+    </div>
+</ul>
+</br>
+<button type="button" class="btn btn-primary" ng-click="closeDialog()">
+    Evaluate now
+</button>

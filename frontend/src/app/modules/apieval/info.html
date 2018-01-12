@@ -1,19 +1,25 @@
 <div class="infoview" ng-show = "selectedApi.expanded">
   <div>
     <h4>{{selectedApi.name}}</h4>
-    <p>
-      {{selectedApi.versions.length}} Versions
-    </p>
-  </div>
-  <div>
-    <p>Lade eine neue Version dieser API hoch</p>
-    <div>
-      <ui-view name="apiupload"></ui-view>
+    <h3 ng-show="selectedVersion">Version: {{selectedVersion.number}}</h3>
+    <h3 ng-show="selectedFile">Revision: {{selectedFile.timestamp}}</h3>
+    <h3 ng-show="selectedReport">Report: {{selectedReport.type}} Violations:{{selectedReport.violations.violations.length}}</h3>
+    <div ng-hide="selectedReport">
+      <button type = "button" class="btn btn-primary" ng-click="showSwaggerUI=!showSwaggerUI" ng-show="apifileurl">
+        <div ng-show="!showSwaggerUI">
+          Show Swagger-UI
+        </div>
+        <div ng-show="showSwaggerUI">
+          Hide Swagger-UI
+        </div>
+      </button>
+      </br>
+      <div ng-if="showSwaggerUI">
+        <div swagger-ui input="apifileurl" input-type="url" api-explorer="true" ng-show="apifileurl"></div>
+      </div>
     </div>
   </div>
-  <div ng-show="selectedReport">
-    <div ng-click="showReport()" class="button">
-      Show Report
-    </div>
-  </div>
+  <button type = "button" class="btn btn-primary" ng-click="showReport()" ng-show="selectedReport">
+    Show Report
+  </button>
 </div>

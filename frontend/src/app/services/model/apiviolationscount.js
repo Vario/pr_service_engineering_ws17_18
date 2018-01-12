@@ -12,20 +12,20 @@
                 self.hint = undefined;
                 self.should = undefined;
                 self.must = undefined;
-
+                self.could = undefined;
                 function APIViolationsCountModel(data) {
-                    console.log(data);
                     var self = this;
                     self.may = data.may;
                     self.hint = data.hint;
                     self.should = data.should;
+                    self.could = data.could;
                     self.must = data.must;
 
- // angular.merge(self, data);
+                    // angular.merge(self, data);
                 }
 
                 APIViolationsCountModel.prototype.getValidPropertyList = function () {
-                    return ['may','hint','should','must'];
+                    return ['may','hint','should','must','could'];
                 };
 
                 return APIViolationsCountModel;

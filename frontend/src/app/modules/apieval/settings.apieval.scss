@@ -1,42 +1,44 @@
-.ngdialog.ngdialog-theme-default {
-  z-index: 198;
-}
-
-.reportContainer {
-  padding: 30px;
-}
-
-.infoLink {
-  text-decoration: underline !important;
-  color:blue !important;
-}
-.mustViolation {
+.mustRule {
   border: 2px solid #FF6347;
   //border-radius: 5px;
   background-color:#FF6347;
   color:black;
 }
-.shouldViolation {
+.shouldRule {
   border: 2px solid #FF7F50;
   //border-radius: 5px;
   background-color:#FF7F50;
   color:black;
 }
-.mayViolation {
+.mayRule {
   border: 2px solid #FFB6C1;
   //border-radius: 5px;
   background-color:#FFB6C1;
   color:black;
 }
-.couldViolation {
+.couldRule {
   border: 2px solid #FFF0F5;
   //border-radius: 5px;
   background-color:#FFF0F5;
   color:black;
 }
-.hintViolation {
+.hintRule {
   border: 2px solid #FFFAFA;
   //border-radius: 5px;
   background-color:#FFFAFA;
   color:black;
+}
+
+.ruleInformation {
+  color:#FF6347;
+}
+
+.ruleList {
+  list-style:none;
+}
+.ruleList li {
+  text-decoration: none;
+}
+.ruleList li a{
+  color: blue;
 }

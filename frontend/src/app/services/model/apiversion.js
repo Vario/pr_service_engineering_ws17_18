@@ -10,17 +10,20 @@
         .factory('APIVersionModel', [
             'APIRevisionModel',
             function (APIRevisionModel) {
+
                 var self = this;
 
                 self.number = undefined;
                 self.expanded = undefined;
                 self.revisions = undefined;
+                self.checked = undefined;
 
                 function APIVersionModel(data) {
                     var self = this;
                     //angular.merge(self, data);
                     self.revisions = [];
                     self.expanded = false;
+                    self.checked = false;
                     self.number = data.number;
                     angular.forEach(data.revisions, function (value) {
                         var rev = new APIRevisionModel(value);
@@ -29,7 +32,7 @@
                 }
 
                 APIVersionModel.prototype.getValidPropertyList = function () {
-                    return ['number','expanded','revisions'];
+                    return ['number','expanded','revisions', 'checked'];
                 };
 
                 return APIVersionModel;

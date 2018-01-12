@@ -36,9 +36,6 @@
                         'infoview@main.dashboard': {
                             templateUrl: 'app/modules/apieval/info.html'
                         },
-                        'apiupload@main.dashboard.infoview': {
-                            templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
-                        },
                         'swaggerinfo@main.dashboard': {
                             templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
                         }
