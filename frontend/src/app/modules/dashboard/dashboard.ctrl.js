@@ -215,7 +215,7 @@
 
                 dialog.closePromise.then(function () {
 
-                })
+                });
             };
 
             $scope.select = function(api, version, revision, report){
