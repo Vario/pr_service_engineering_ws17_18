@@ -37,8 +37,7 @@ public interface SettingsApi {
         @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/settings",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<SettingsListItem>> settingsGet();
 
@@ -49,8 +48,7 @@ public interface SettingsApi {
         @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/settings/{id}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<Setting> settingsIdGet(@ApiParam(value = "Settings ID",required=true ) @PathVariable("id") UUID id);
 

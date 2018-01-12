@@ -33,8 +33,7 @@ public interface RulesApi {
         @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
     
     @RequestMapping(value = "/rules",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<Rule>> rulesGet();
 

@@ -29,7 +29,17 @@ import static com.mongodb.client.model.Filters.not;
 @Controller
 public class ApisApiController implements ApisApi {
 
-    public ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") String id,
+    public ResponseEntity<ApiTitle> apisIdTitlePut(@ApiParam(value = "",required=true ) @PathVariable("id") UUID id,
+                                                   @ApiParam(value = ""  )  @Valid @RequestBody ApiTitle title) {
+        MongoDBRequest collection = new MongoDBRequest("files");
+        collection.updateMany(
+                eq("api-id", id),
+                Updates.set("title", title.getTitle())
+        );
+        return new ResponseEntity<ApiTitle>(title, HttpStatus.OK);
+    }
+
+    public ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "API ID",required=true ) @PathVariable("id") UUID id,
                                                         @ApiParam(value = "The settings to use" ,required=true )  @Valid @RequestBody SettingsId file) {
 
         MongoDBRequest collection = new MongoDBRequest("settings");

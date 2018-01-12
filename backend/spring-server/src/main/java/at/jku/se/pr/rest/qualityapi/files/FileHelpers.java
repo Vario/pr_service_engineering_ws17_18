@@ -8,6 +8,19 @@ import java.util.List;
 import java.util.UUID;
 
 public class FileHelpers {
+    public static UUID getApiIdForApiTitle(String title){
+        MongoDBRequest collection = new MongoDBRequest("files");
+        List<Document> results = collection.find(
+                new Document().append("title", title)
+        );
+
+        if(results.size() == 0){
+            return null;
+        } else {
+            return (UUID) results.get(0).get("api-id");
+        }
+    }
+
     public static UUID getApiIdForFileId(UUID fileId){
         MongoDBRequest collection = new MongoDBRequest("files");
         List<Document> results = collection.find(

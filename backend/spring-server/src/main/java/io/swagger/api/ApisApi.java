@@ -5,8 +5,9 @@
  */
 package io.swagger.api;
 
-//import io.swagger.model.Api;
+import io.swagger.model.ApiTitle;
 import io.swagger.model.ApplicationError;
+import io.swagger.model.SettingsId;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-11T20:14:39.866Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-12T09:44:02.684Z")
 
 @Api(value = "apis", description = "the apis API")
 public interface ApisApi {
@@ -37,4 +39,28 @@ public interface ApisApi {
         method = RequestMethod.GET)
     ResponseEntity<List<io.swagger.model.Api>> apisGet();
 
+
+    @ApiOperation(value = "Update the Settings Set of an existing API", notes = "", response = SettingsId.class, responseContainer = "List", tags={ "APIs API", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Returned Documents", response = SettingsId.class, responseContainer = "List"),
+        @ApiResponse(code = 404, message = "API ID or Settings ID not found", response = ApplicationError.class),
+        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
+    
+    @RequestMapping(value = "/apis/{id}/settings",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.PUT)
+    ResponseEntity<SettingsId> apisIdSettingsPut(@ApiParam(value = "", required = true) @PathVariable("id") UUID id, @ApiParam(value = "") @Valid @RequestBody SettingsId settingsId);
+
+    @ApiOperation(value = "Change the title of an API", notes = "", response = ApiTitle.class, tags={ "APIs API", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "New API title", response = ApiTitle.class),
+            @ApiResponse(code = 404, message = "Given API ID not found", response = ApplicationError.class),
+            @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
+
+    @RequestMapping(value = "/apis/{id}/title",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<ApiTitle> apisIdTitlePut(@ApiParam(value = "",required=true ) @PathVariable("id") UUID id, @ApiParam(value = ""  )  @Valid @RequestBody ApiTitle title);
 }

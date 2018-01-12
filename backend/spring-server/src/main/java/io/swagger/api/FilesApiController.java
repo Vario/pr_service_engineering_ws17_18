@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import io.swagger.model.FileRequest;
 import io.swagger.model.FileResponse;
@@ -51,15 +52,20 @@ public class FilesApiController implements FilesApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        /* Decide if adding this file to an existing API or creating a new API */
+        UUID apiId = FileHelpers.getApiIdForApiTitle(file.getTitle());
+        if(apiId == null)
+            apiId = UUID.randomUUID();
 
 
         /* Prepare Response */
         FileResponse response = new FileResponse();
         response.setTitle(file.getTitle());
-        response.setApiId(UUID.randomUUID());
+        response.setApiId(apiId);
         response.setFileId(UUID.randomUUID());
         response.setTimestamp(DateTime.now());
         response.setVersion(file.getVersion());
+        response.setSettingsId(file.getSettingsId());
 
         /* Database */
         MongoDBRequest request = new MongoDBRequest("files");

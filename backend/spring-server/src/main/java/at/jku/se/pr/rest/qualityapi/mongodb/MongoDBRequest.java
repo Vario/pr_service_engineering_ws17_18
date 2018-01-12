@@ -58,6 +58,8 @@ public class MongoDBRequest {
 
     public long updateMany(Bson id, Bson update){
         UpdateResult res = this.collection.updateMany(id, update);
+        System.out.println("matched: " + res.getMatchedCount());
+        System.out.println("modified: " + res.getModifiedCount());
         return res.getModifiedCount();
     }
 
