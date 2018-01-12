@@ -5,23 +5,42 @@
     <ul>
       <div ng-repeat = "api in apis">
           <li>
-            <a href="#" ng-click = "showAPI(api); select(api)">
-              <img src="./icons/api2.svg" alt="Responsive image">
-              <div ng-if="!api.edit">
-                {{api.name}} <img src="./icons/edit.svg" ng-click="api.edit=!api.edit" class="img-fluid">
+            <div class = "row">
+              <div class = "col">
+                <a href="#" ng-click = "showAPI(api); select(api)">
+                  <div ng-if="!api.edit">
+                    <img src="./icons/api2.svg" alt="Responsive image">
+                    {{api.name}} <img src="./icons/edit.svg" ng-click="api.edit=!api.edit" class="img-fluid">
+                  </div>
+                  <div ng-if="api.edit">
+
+                    <!--<div class = "col-lg-8 offset-1"><input type="text" class="form-control" ng-model= "api.name"></div>
+                    <img src="./icons/save.svg" ng-click="saveNewAPIName(api)" class="img-fluid">-->
+                    <div class="input-group mb-3">
+                      <div class="input-group-append">
+                        <img src="./icons/api2.svg" alt="Responsive image">
+                      </div>
+                      <input type="text" class="form-control" ng-model= "api.name">
+                      <div class="input-group-append">
+                        <img src="./icons/save.svg" ng-click="saveNewAPIName(api)" class="img-fluid">
+                      </div>
+                    </div>
+                  </div>
+                </a>
               </div>
-              <div ng-if="api.edit">
-                <input type="text" class="form-control" ng-model= "api.name"><img src="./icons/save.svg" ng-click="saveNewAPIName(api)" class="img-fluid">
+            </div>
+            <div class = "row" ng-if="!api.edit">
+              <div class = "col">
+                <div ngf-drop="uploadToExistingApi($files,api)" class="drop-box-small" ng-show="api.expanded"
+                     ngf-drag-over-class="'dragover'" ngf-multiple="false"
+                     ngf-pattern="'application/json'"ngf-accept="'application/json'">
+                  <div style="vertical-align: middle;
+    ">New Swagger file for {{api.name}}</div></div>
+                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
               </div>
-            </a>
-              <div ngf-drop="uploadToExistingApi($files,api)" class="drop-box-small" ng-show="api.expanded"
-                   ngf-drag-over-class="'dragover'" ngf-multiple="false"
-                   ngf-pattern="'application/json'"ngf-accept="'application/json'">
-                <div style="vertical-align: middle;
-  ">New Swagger file for {{api.name}}</div></div>
-              <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+            </div>
             <ul>
-              <div ng-repeat = "version in api.versions">
+              <div ng-repeat = "version in api.versions" ng-if="!api.edit">
                 <li ng-show = "api.expanded">
                   <label>
                     <input type="checkbox" ng-checked="version.checked" ng-disabled="canCompare()">
