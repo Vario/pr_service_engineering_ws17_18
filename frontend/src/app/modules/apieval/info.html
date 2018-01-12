@@ -4,9 +4,9 @@
     <h3 ng-show="selectedVersion">Version: {{selectedVersion.number}}</h3>
     <h3 ng-show="selectedFile">Revision: {{selectedFile.timestamp}}</h3>
     <h3 ng-show="selectedReport">Report: {{selectedReport.type}} Violations:{{selectedReport.violations.violations.length}}</h3>
-    <div ng-hide="selectedReport">
-      <button type = "button" class="btn btn-primary" ng-click="showSwaggerUI=!showSwaggerUI" ng-show="apifileurl">
-        <div ng-show="!showSwaggerUI">
+    <div>
+      <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showSwaggerUI=!showSwaggerUI" ng-show="apifileurl">
+        <div  ng-show="!showSwaggerUI">
           Show Swagger-UI
         </div>
         <div ng-show="showSwaggerUI">
@@ -19,7 +19,9 @@
       </div>
     </div>
   </div>
-  <button type = "button" class="btn btn-primary" ng-click="showReport()" ng-show="selectedReport">
-    Show Report
-  </button>
+  <div>
+    <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showReport()" ng-show="selectedReport">
+      Show Report
+    </button>
+  </div>
 </div>
