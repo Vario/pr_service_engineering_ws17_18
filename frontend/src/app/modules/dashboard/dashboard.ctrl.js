@@ -219,10 +219,20 @@
             };
 
             $scope.select = function(api, version, revision, report){
-                if(api) $scope.selectedApi = api;
-                if(version) $scope.selectedVersion = version;
+                if(api) {
+                    $scope.selectedApi = api;
+                    $scope.selectedVersion = undefined;
+                    $scope.selectedFile = undefined;
+                    $scope.selectedReport = undefined;
+                }
+                if(version){
+                    $scope.selectedVersion = version;
+                    $scope.selectedFile = undefined;
+                    $scope.selectedReport = undefined;
+                }
                 if(revision) {
                     $scope.selectedFile = revision;
+                    $scope.selectedReport = undefined;
                 }
                 setcurrentFileUrl();
                 if(report) $scope.selectedReport = report;
