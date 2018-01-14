@@ -12,8 +12,8 @@
                     <img src="./icons/api2.svg" alt="Responsive image">
                     {{api.name}} <img src="./icons/edit.svg" ng-click="api.edit=!api.edit" class="img-fluid">
                   </div>
+                </a>
                   <div ng-if="api.edit">
-
                     <!--<div class = "col-lg-8 offset-1"><input type="text" class="form-control" ng-model= "api.name"></div>
                     <img src="./icons/save.svg" ng-click="saveNewAPIName(api)" class="img-fluid">-->
                     <div class="input-group mb-3">
@@ -26,7 +26,7 @@
                       </div>
                     </div>
                   </div>
-                </a>
+
               </div>
             </div>
             <div class = "row" ng-if="!api.edit">
