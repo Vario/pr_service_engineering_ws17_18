@@ -41,7 +41,7 @@
                 console.log($scope.selectedComparison);
             };
 
-            $scope.canCompare = function(e) {
+            /*$scope.canCompare = function(e) {
                 var ct = 0;
                 if($scope.selectedApi) {
                     for(var i = 0; i < $scope.selectedApi.versions.length; i++){
@@ -65,7 +65,7 @@
                     return true;
                 }
                 return false;
-            };
+            };*/
 
             loadData();
 
