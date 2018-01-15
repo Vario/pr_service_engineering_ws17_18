@@ -2,7 +2,7 @@
     <i class="fa fa-print"></i> <img src="/icons/printer.svg" />
 </button>
 </br>
-<div class="reportContainer" id="printThisElement">
+<div class="reportContainer" id="printThisElement" ng-show="selectedReport.type == 'validation'">
     <h1>{{selectedReport.type}} Report</h1>
     <div>
         <b>API:</b> {{selectedApi.name}}</br>
@@ -12,7 +12,7 @@
 
     <p ng-show="selectedReport.violations.message">Message: {{selectedReport.violations.message}}</p>
     </br>
-    <h2>Violation Summary:</h2>
+    <h2>Violation Log:</h2>
     <div>
         <h3 class="mustViolation">Must:{{selectedReport.violations.violations_count.must}}</h3>
         <h3 class="shouldViolation">Should:{{selectedReport.violations.violations_count.should}}</h3>
@@ -48,6 +48,53 @@
         </ul>
     </div>
     <div ng-hide="selectedReport.violations.violations.length">
-        Keine Verletzungen in dieser API
+        No Violations
     </div>
+</div>
+<div class="reportContainer" id="printThisElement" ng-show="selectedReport.type == 'comparison'">
+    <h1>{{selectedReport.type}} Report</h1>
+
+    <span class="border border-primary"></span>
+    <div>
+        <b>API:</b> API</br>
+        <b>Version:</b> Version</br>
+        <b>Revision:</b> Revision</br>
+    </div>
+    <b><p class="p-3 mb-2 bg-primary text-white text-center">COMPARED TO</p></b>
+    <div>
+        <b>API:</b> API</br>
+        <b>Version:</b> Version</br>
+        <b>Revision:</b> Revision</br>
+    </div>
+    </br>
+    <h2>Change Log:</h2>
+    <div>
+        <h3 class="newEndpoints">New Endpoints:{{selectedReport.violations.violations_count.must}}</h3>
+        <h3 class="removedEndpoints">Removed Endpoints:{{selectedReport.violations.violations_count.should}}</h3>
+        <h3 class="changedEndpoints">Changed Endpoints:{{selectedReport.violations.violations_count.may}}</h3>
+    </div>
+    </br>
+    <h2>Changes:</h2>
+    <h3><b>What's new</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+    </ul>
+
+    <h3><b>What's removed</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+    </ul>
+
+    <h3><b>What's changed</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+        <ul>
+            Parameter
+            <li>p1</li>
+            <li>...</li>
+            Return Type
+            <li>rt1</li>
+            <li>...</li>
+        </ul>
+    </ul>
 </div>
