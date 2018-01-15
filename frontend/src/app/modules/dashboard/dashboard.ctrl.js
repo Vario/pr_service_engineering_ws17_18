@@ -24,14 +24,32 @@
             $scope.apifileurl = undefined;
             $scope.apifile = undefined;
             $scope.showSwaggerUI = undefined;
+            $scope.selectedComparison = [];
+
+            $scope.selectComparison = function(r){
+                if($scope.selectedComparison.length < 2 && !r.checked){
+                    r.checked = true;
+                    $scope.selectedComparison.push(r);
+                }else{
+                    for(var g = 0; g < $scope.selectedComparison.length; g++){
+                        if($scope.selectedComparison[g] == r){
+                            r.checked = false;
+                            $scope.selectedComparison.splice(g);
+                        }
+                    }
+                }
+                console.log($scope.selectedComparison);
+            };
 
             $scope.canCompare = function(e) {
                 var ct = 0;
                 if($scope.selectedApi) {
                     for(var i = 0; i < $scope.selectedApi.versions.length; i++){
                         var version =  $scope.selectedApi.versions[i];
+                        //console.log("Checked"+""+version.checked);
                         if(version.checked) {
                             ct+=1;
+                            //console.log(version.checked)
                         }
 
                         for(var j = 0; j < version.revisions.length; j++){

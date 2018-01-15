@@ -43,7 +43,7 @@
               <div ng-repeat = "version in api.versions" ng-if="!api.edit">
                 <li ng-show = "api.expanded">
                   <label>
-                    <input type="checkbox" ng-checked="version.checked" ng-disabled="canCompare()">
+                    <!--<input type="checkbox" ng-checked="version.checked" ng-disabled="canCompare()">-->
                     <a ng-click = "showVersion(version); select(api,version)">
                       <img src="./icons/folder_closed.svg" class="img-fluid" alt="Responsive image">
                       {{version.number}}
@@ -54,13 +54,17 @@
                   <div ng-repeat = "revision in version.revisions">
                     <li ng-show = "version.expanded">
                       <label>
-                        <input type="checkbox" ng-checked="revision.checked" ng-disabled="canCompare()">
+                        <input type="checkbox" ng-checked="revision.checked" ng-disabled="selectedComparison.length >= 2 && !revision.checked"
+                               ng-click="selectComparison(revision)">
                         <a ng-click = "showRevision(revision); select(api,version, revision)">
                            <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
                             {{revision.timestamp}}
                         </a>
                         <a ng-click="validate(revision)">
                           <img src="/icons/validate.svg" class="img-validate" alt="validate api" />
+                        </a>
+                        <a ng-show="selectedComparison.length >= 2 && revision.checked">
+                          <img src="/icons/compare.svg" class="img-validate" alt="validate api" />
                         </a>
                         <a target="_blank" href="{{revision.apifileurl}}" download="swagger-api.pdf">
                           <img src="/icons/download.svg" class="img-validate" alt="validate api" />
