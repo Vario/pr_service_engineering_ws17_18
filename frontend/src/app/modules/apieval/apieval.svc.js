@@ -14,12 +14,34 @@
 
                 self.getAllAPIs = function() {
                     return BackendAPIService.getAPIs().then(function (data) {
-                        console.log('returned apis' + data);
                         if (data.length <= 0) {
-                            return $q.reject();
+                            //return $q.reject();
                         }
                         var apis = self.getApiModelsMapped(data);
                         return apis;
+                    });
+                };
+
+                self.updateApiTitle = function(api, title) {
+                    var model =
+                        {
+                            "title": title
+                        };
+                    return BackendAPIService.updateAPITitle(api.id, angular.toJson(model)).then(function (data) {
+                        return;
+                    });
+                };
+
+                self.updateApiSetting = function(apiid, settingsid) {
+                    var model =
+                        {
+                            "id": settingsid
+                        };
+                    console.log("update api "+ apiid + " with settingsid:" + settingsid + " and model:" + angular.toJson(model));
+
+                    return BackendAPIService.updateAPISetting(apiid, angular.toJson(model)).then(function (data) {
+                        console.log("api updated");
+                        return;
                     });
                 };
 
@@ -43,7 +65,18 @@
                 };
 
                 self.postNewAPIs = function(api) {
-                    return BackendAPIService.postAPIfile(api).then(function () {
+                    //remove all \n
+                    var newapi = api.replace(/(\r\n|\n|\r)/gm,"");
+                    var model =
+                        {
+                            "title": "",
+                            "version": "",
+                            "swagger": newapi,
+                            "settings-id": ""
+                        };
+
+                    console.log(angular.toJson(model));
+                    return BackendAPIService.postAPIfile(angular.toJson(model)).then(function () {
                         console.log('api sent -> reload');
                     });
                 };

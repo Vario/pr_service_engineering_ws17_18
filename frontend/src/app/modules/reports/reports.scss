@@ -11,26 +11,52 @@
   color:blue !important;
 }
 .mustViolation {
-  border: 2px solid red;
-  border-radius: 5px;
-  background-color:red;
-  color:white;
+  border: 2px solid #FF6347;
+  //border-radius: 5px;
+  background-color:#FF6347;
+  color:black;
 }
 .shouldViolation {
-  border: 2px solid orange;
-  border-radius: 5px;
-  background-color:orange;
+  border: 2px solid #FF7F50;
+  //border-radius: 5px;
+  background-color:#FF7F50;
   color:black;
 }
 .mayViolation {
-  border: 2px solid yellow;
-  border-radius: 5px;
-  background-color:yellow;
+  border: 2px solid #FFB6C1;
+  //border-radius: 5px;
+  background-color:#FFB6C1;
+  color:black;
+}
+.couldViolation {
+  border: 2px solid #FFF0F5;
+  //border-radius: 5px;
+  background-color:#FFF0F5;
   color:black;
 }
 .hintViolation {
-  border: 2px solid white;
-  border-radius: 5px;
-  background-color:white;
+  border: 2px solid #FFFAFA;
+  //border-radius: 5px;
+  background-color:#FFFAFA;
   color:black;
 }
+
+.newEndpoints {
+  border: 2px solid #D0F0C0;
+  background-color:#D0F0C0;
+  color:black;
+
+}
+
+.removedEndpoints {
+  border: 2px solid #FF91A4;
+  background-color:#FF91A4;
+  color:black;
+}
+
+.changedEndpoints {
+  border: 2px solid #FFA500;
+  background-color:#FFA500;
+  color:black;
+}
+

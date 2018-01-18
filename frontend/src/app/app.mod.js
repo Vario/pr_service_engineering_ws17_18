@@ -10,7 +10,10 @@
             'apieval.services',
             'apieval.dashboard',
             'apieval.loading',
+            'apieval.directives',
+            'apieval.sanitize',
             'ngFileUpload',
-            'ngDialog'
+            'ngDialog',
+            'ngSanitize'
         ]);
 })(angular);
