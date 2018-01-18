@@ -132,23 +132,48 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/ApplicationError'
-  /reports:
+  /reports/violation:
     post:
-      summary: Create a new report
+      summary: Create a new violation report
       parameters:
         - name: file
           in: body
           description: Report Creation
           required: true
           schema:
-            $ref: '#/definitions/ReportRequest'
+            $ref: '#/definitions/ViolationReportRequest'
       tags:
         - Reports API
       responses:
         200:
           description: Documents successfully uploaded
           schema:
-            $ref: '#/definitions/ReportResponse'
+            $ref: '#/definitions/ViolationReportResponse'
+        400:
+          description: Bad Request (e.g. not a json, required fields not available (title, version))
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+  /reports/comparison:
+    post:
+      summary: Create a new comparison report
+      parameters:
+        - name: file
+          in: body
+          description: Report Creation
+          required: true
+          schema:
+            $ref: '#/definitions/ComparisonReportRequest'
+      tags:
+        - Reports API
+      responses:
+        200:
+          description: Documents successfully uploaded
+          schema:
+            $ref: '#/definitions/ComparisonReportResponse'
         400:
           description: Bad Request (e.g. not a json, required fields not available (title, version))
           schema:
@@ -369,32 +394,22 @@ definitions:
         format: url
         example: 'http://quality.rest.patrickbuchner.at/api/v1/files/3efc7632-e833-40cd-b002-abdfaf426e6c'
       reports:
-        type: array
-        items:
-          $ref: '#/definitions/ReportResponse'
-  ReportRequest:
+        type: object
+        properties:
+          violation:
+            $ref: '#/definitions/ViolationReportResponse'
+          comparison:
+            type: array
+            items:
+              $ref: '#/definitions/ComparisonReportResponse'
+  ViolationReportRequest:
     type: object
     properties:
-      type:
+      file-id:
         type: string
-        description: Type of Report (validation, comparison)
-        example: validation
-      file-ids:
-        type: array
-        items:
-          type: string
-          format: uuid
-          example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
-  ReportResponse:
-    type: object
-    properties:
-      type:
-        type: string
-        description: Type of Report (calidation, comparison)
-        example: validation
-      violations:
-        $ref: '#/definitions/LintingResponse'
-  LintingResponse:
+        format: uuid
+        example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
+  ViolationReportResponse:
     type: object
     description: Linting Response
     required:
@@ -479,6 +494,66 @@ definitions:
       url:
         type: string
         example: 'https://zalando.github.io/restful-api-guidelines/compatibility/Compatibility.html#must-do-not-use-uri-versioning'
+  ComparisonReportRequest:
+    type: object
+    properties:
+      file-ids:
+        type: array
+        items:
+          type: string
+          format: uuid
+          example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
+  ComparisonReportResponse:
+    type: object
+    properties:
+      file-ids:
+        type: array
+        items:
+          type: string
+          format: uuid
+          example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
+      paths:
+        type: object
+        properties:
+          new:
+            type: array
+            items:
+              $ref: '#/definitions/Change'
+          removed:
+            type: array
+            items:
+              $ref: '#/definitions/Change'
+          changed:
+            type: array
+            items:
+              $ref: '#/definitions/Change'
+  Change:
+    type: object
+    properties:
+      endpoint:
+        type: string
+        example: "GET /pet"
+      description:
+        type: string
+        example: "Find pets"
+      parameter:
+        type: array
+        items:
+          $ref: '#/definitions/ChangeItem'
+      returntype:
+        type: array
+        items:
+          $ref: '#/definitions/ChangeItem'
+  ChangeItem:
+    type: object
+    required: [change]
+    properties:
+      change:
+        type: string
+        example: "ADDED body.newpet"
+      description:
+        type: string
+        example: "A field for new pets"
   SettingsCreationRequest:
     type: object
     properties:
