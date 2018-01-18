@@ -9,15 +9,27 @@ import com.deepoove.swagger.diff.model.Endpoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.swagger.models.HttpMethod;
+import io.swagger.models.parameters.Parameter;
+import io.swagger.models.properties.Property;
 
 public class RenderChanges {
-    List<EndpointChanges> newEndpoints;
-    List<EndpointChanges> missingEndpoints;
-    List<EndpointChanges> changedEndpoints;
+    private List<EndpointChanges> newEndpoints;
+    private List<EndpointChanges> missingEndpoints;
+    private List<EndpointChanges> changedEndpoints;
 
-    public RenderChanges() {}
+    private String swagger1;
+    private String swagger2;
 
-    public Object render(SwaggerDiff diff) {
+    public RenderChanges(String swagger1, String swagger2) {
+        this.swagger1 = swagger1;
+        this.swagger2 = swagger2;
+    }
+
+    public Object render() {
+        SwaggerDiff diff = SwaggerDiff.compareV2(this.swagger1, this.swagger2);
 
         this.newEndpoints = new ArrayList<EndpointChanges>();
         this.getNewEndpoints(diff.getNewEndpoints());
@@ -28,10 +40,6 @@ public class RenderChanges {
         this.changedEndpoints = new ArrayList<EndpointChanges>();
         this.getChangedEndpoints(diff.getChangedEndpoints());
 
-        return this.render();
-    }
-
-    private Object render() {
         List<List<EndpointChanges>> render = new ArrayList();
         render.add(newEndpoints);
         render.add(missingEndpoints);
@@ -71,7 +79,7 @@ public class RenderChanges {
             String pathUrl = changedEndpoint.getPathUrl();
             Map<HttpMethod, ChangedOperation> changedOperations = changedEndpoint
                     .getChangedOperations();
-            for (Entry<HttpMethod, ChangedOperation> entry : changedOperations.entrySet()) {
+            for (Map.Entry<HttpMethod, ChangedOperation> entry : changedOperations.entrySet()) {
 
                 ChangedOperation changedOperation = entry.getValue();
 

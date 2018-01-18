@@ -2,9 +2,11 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+import io.swagger.model.Violation;
+import io.swagger.model.ViolationsCount;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -14,11 +16,11 @@ import javax.validation.constraints.*;
  * Linting Response
  */
 @ApiModel(description = "Linting Response")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-07T11:37:20.557Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T11:43:31.507Z")
 
-public class LintingResponse   {
+public class ViolationReportResponse   {
   @JsonProperty("violations")
-  private List<Violation> violations = new ArrayList<Violation>();
+  private Object violations = new Object();
 
   @JsonProperty("message")
   private String message = null;
@@ -26,13 +28,8 @@ public class LintingResponse   {
   @JsonProperty("violations_count")
   private ViolationsCount violationsCount = null;
 
-  public LintingResponse violations(List<Violation> violations) {
+  public ViolationReportResponse violations(Object violations) {
     this.violations = violations;
-    return this;
-  }
-
-  public LintingResponse addViolationsItem(Violation violationsItem) {
-    this.violations.add(violationsItem);
     return this;
   }
 
@@ -45,15 +42,15 @@ public class LintingResponse   {
 
   @Valid
 
-  public List<Violation> getViolations() {
+  public Object getViolations() {
     return violations;
   }
 
-  public void setViolations(List<Violation> violations) {
+  public void setViolations(Object violations) {
     this.violations = violations;
   }
 
-  public LintingResponse message(String message) {
+  public ViolationReportResponse message(String message) {
     this.message = message;
     return this;
   }
@@ -73,7 +70,7 @@ public class LintingResponse   {
     this.message = message;
   }
 
-  public LintingResponse violationsCount(ViolationsCount violationsCount) {
+  public ViolationReportResponse violationsCount(ViolationsCount violationsCount) {
     this.violationsCount = violationsCount;
     return this;
   }
@@ -96,17 +93,17 @@ public class LintingResponse   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LintingResponse lintingResponse = (LintingResponse) o;
-    return Objects.equals(this.violations, lintingResponse.violations) &&
-        Objects.equals(this.message, lintingResponse.message) &&
-        Objects.equals(this.violationsCount, lintingResponse.violationsCount);
+    ViolationReportResponse violationReportResponse = (ViolationReportResponse) o;
+    return Objects.equals(this.violations, violationReportResponse.violations) &&
+        Objects.equals(this.message, violationReportResponse.message) &&
+        Objects.equals(this.violationsCount, violationReportResponse.violationsCount);
   }
 
   @Override
@@ -117,7 +114,7 @@ public class LintingResponse   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LintingResponse {\n");
+    sb.append("class ViolationReportResponse {\n");
     
     sb.append("    violations: ").append(toIndentedString(violations)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
@@ -130,7 +127,7 @@ public class LintingResponse   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

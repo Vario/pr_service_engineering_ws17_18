@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.ComparisonReportResponsePaths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,43 +13,23 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ReportRequest
+ * ComparisonReportResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T11:43:31.507Z")
 
-public class ReportRequest   {
-  @JsonProperty("type")
-  private String type = null;
-
+public class ComparisonReportResponse   {
   @JsonProperty("file-ids")
   private List<UUID> fileIds = null;
 
-  public ReportRequest type(String type) {
-    this.type = type;
-    return this;
-  }
+  @JsonProperty("paths")
+  private ComparisonReportResponsePaths paths = null;
 
-   /**
-   * Type of Report (validation, comparison)
-   * @return type
-  **/
-  @ApiModelProperty(example = "validation", value = "Type of Report (validation, comparison)")
-
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public ReportRequest fileIds(List<UUID> fileIds) {
+  public ComparisonReportResponse fileIds(List<UUID> fileIds) {
     this.fileIds = fileIds;
     return this;
   }
 
-  public ReportRequest addFileIdsItem(UUID fileIdsItem) {
+  public ComparisonReportResponse addFileIdsItem(UUID fileIdsItem) {
     if (this.fileIds == null) {
       this.fileIds = new ArrayList<UUID>();
     }
@@ -72,6 +53,27 @@ public class ReportRequest   {
     this.fileIds = fileIds;
   }
 
+  public ComparisonReportResponse paths(ComparisonReportResponsePaths paths) {
+    this.paths = paths;
+    return this;
+  }
+
+   /**
+   * Get paths
+   * @return paths
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public ComparisonReportResponsePaths getPaths() {
+    return paths;
+  }
+
+  public void setPaths(ComparisonReportResponsePaths paths) {
+    this.paths = paths;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -81,23 +83,23 @@ public class ReportRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ReportRequest reportRequest = (ReportRequest) o;
-    return Objects.equals(this.type, reportRequest.type) &&
-        Objects.equals(this.fileIds, reportRequest.fileIds);
+    ComparisonReportResponse comparisonReportResponse = (ComparisonReportResponse) o;
+    return Objects.equals(this.fileIds, comparisonReportResponse.fileIds) &&
+        Objects.equals(this.paths, comparisonReportResponse.paths);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, fileIds);
+    return Objects.hash(fileIds, paths);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ReportRequest {\n");
+    sb.append("class ComparisonReportResponse {\n");
     
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    fileIds: ").append(toIndentedString(fileIds)).append("\n");
+    sb.append("    paths: ").append(toIndentedString(paths)).append("\n");
     sb.append("}");
     return sb.toString();
   }
