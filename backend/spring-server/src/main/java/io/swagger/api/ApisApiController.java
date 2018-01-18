@@ -7,6 +7,7 @@ import com.mongodb.client.model.Updates;
 import io.swagger.model.*;
 import io.swagger.annotations.*;
 
+import java.net.URI;
 import java.util.*;
 
 import io.swagger.model.Api;
@@ -17,12 +18,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.not;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-07T18:40:11.066Z")
 
@@ -158,6 +161,9 @@ public class ApisApiController implements ApisApi {
                     tmpVersionRequest.addRevisionsItem(tmpRevisionRequest);
                     tmpRevisionRequest.setId(new DateTime(revision.getKey().getRevisionId()));
                     tmpRevisionRequest.setFile(revision.getKey().getFileId());
+                    ControllerLinkBuilder linkBuilder = ControllerLinkBuilder.linkTo(
+                                    methodOn(FilesApiController.class).filesIdGet(tmpRevisionRequest.getFile()));
+                    tmpRevisionRequest.setUrl(linkBuilder.toUri().toString());
 
                     tmpRevisionRequest.setReports(revision.getValue());
 

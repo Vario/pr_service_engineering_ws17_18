@@ -74,5 +74,11 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.6.0</version>
         </dependency>
+        <!-- Spring HATEOAS -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>0.23.0.RELEASE</version>
+        </dependency>
     </dependencies>
 </project>
