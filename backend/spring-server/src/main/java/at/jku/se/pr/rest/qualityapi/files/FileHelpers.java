@@ -39,7 +39,7 @@ public class FileHelpers {
         for (UUID fileId : fileIds){
             if(ret == null){
                 ret = getApiIdForFileId(fileId);
-            } else if(!ret.equals(fileId)){
+            } else if(!ret.equals(getApiIdForFileId(fileId))){
                 throw new MultipleResultsException();
             }
         }
