@@ -14,9 +14,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * RevisionRequest
+ * Revision
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-13T08:43:26.708Z")
 
 public class RevisionRequest   {
   @JsonProperty("id")
@@ -24,6 +24,9 @@ public class RevisionRequest   {
 
   @JsonProperty("file")
   private UUID file = null;
+
+  @JsonProperty("url")
+  private String url = null;
 
   @JsonProperty("reports")
   private List<ReportResponse> reports = null;
@@ -70,6 +73,26 @@ public class RevisionRequest   {
     this.file = file;
   }
 
+  public RevisionRequest url(String url) {
+    this.url = url;
+    return this;
+  }
+
+   /**
+   * Get url
+   * @return url
+  **/
+  @ApiModelProperty(example = "http://quality.rest.patrickbuchner.at/api/v1/files/3efc7632-e833-40cd-b002-abdfaf426e6c", value = "")
+
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
   public RevisionRequest reports(List<ReportResponse> reports) {
     this.reports = reports;
     return this;
@@ -101,31 +124,33 @@ public class RevisionRequest   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RevisionRequest revisionRequest = (RevisionRequest) o;
-    return Objects.equals(this.id, revisionRequest.id) &&
-        Objects.equals(this.file, revisionRequest.file) &&
-        Objects.equals(this.reports, revisionRequest.reports);
+    RevisionRequest revision = (RevisionRequest) o;
+    return Objects.equals(this.id, revision.id) &&
+        Objects.equals(this.file, revision.file) &&
+        Objects.equals(this.url, revision.url) &&
+        Objects.equals(this.reports, revision.reports);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, file, reports);
+    return Objects.hash(id, file, url, reports);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RevisionRequest {\n");
+    sb.append("class Revision {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    reports: ").append(toIndentedString(reports)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -135,7 +160,7 @@ public class RevisionRequest   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
