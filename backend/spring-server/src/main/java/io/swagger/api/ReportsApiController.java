@@ -8,6 +8,7 @@ import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
 import com.deepoove.swagger.diff.SwaggerDiff;
 import com.google.gson.Gson;
+import com.mongodb.client.model.Updates;
 import io.swagger.model.ComparisonReportRequest;
 import io.swagger.model.ComparisonReportResponse;
 
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-10T17:37:35.998+01:00")
 
@@ -90,11 +93,19 @@ public class ReportsApiController implements ReportsApi {
 
 
         /* Create Report in MongoDB */
-        Document docToInsert = new Document()
+        /*Document docToInsert = new Document()
                 .append("type", "violation")
                 .append("violations", violations);
         MongoDBRequest mongo = new MongoDBRequest("files");
-        mongo.createAndAddToSet("file-id", fileId, "reports", docToInsert);
+        mongo.createAndAddToSet("file-id", fileId, "violation-reports", docToInsert);*/
+        Document docToInsert = new Document()
+                .append("violations", violations);
+        MongoDBRequest mongo = new MongoDBRequest("files");
+        mongo.update(
+                eq("file-id", fileId),
+                Updates.set("violation-report", violations)
+        );
+
 
         return new ResponseEntity<ViolationReportResponse>(reportResponse,HttpStatus.OK);
     }

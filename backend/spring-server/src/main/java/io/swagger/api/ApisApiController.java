@@ -7,18 +7,17 @@ import com.mongodb.client.model.Updates;
 import io.swagger.model.*;
 import io.swagger.annotations.*;
 
-import java.net.URI;
 import java.util.*;
 
 import io.swagger.model.Api;
 import org.bson.Document;
 import org.joda.time.DateTime;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -69,120 +68,190 @@ public class ApisApiController implements ApisApi {
     }
 
     public ResponseEntity<List<Api>> apisGet() {
+        ArrayList<Api> apis = new ArrayList<>();
+
         /* Database */
         MongoDBRequest request = new MongoDBRequest("files");
         List<Document> results = request.find(new Document());
 
-        /* API ID / TITLE Mapping */
-        Map<UUID, String> apiIdTitleMap = new HashMap<>();
-
-        /* APIS / VERSIONS / REVISIONS / REPORTS */
-        HashMap<UUID, /* APIs */
-                HashMap<String, /* Versions */
-                        HashMap<Revision, /* Revisions */
-                                List<ReportResponse>>>> apis = new HashMap<>();
         for (Document r : results) {
+            /* API */
             String title = (String) r.get("title");
             UUID apiId = (UUID) r.get("api-id");
-            apiIdTitleMap.put(apiId, title);
-            UUID fileId = (UUID) r.get("file-id");
-            Date timestamp = (Date) r.get("timestamp");
-            String versionId = (String) r.get("version");
-            List<Document> reports = (List<Document>) r.get("reports");
-
-            HashMap<String, HashMap<Revision, List<ReportResponse>>> api;
-            if(apis.containsKey(apiId)){
-                /* API exists */
-                api = apis.get(apiId);
-            } else {
-                /* Create a new API */
-                apis.put(apiId,new HashMap<String, HashMap<Revision, List<ReportResponse>>>());
-                api = apis.get(apiId);
-            }
-
-            HashMap<Revision, List<ReportResponse>> version;
-            if(api.containsKey(versionId)){
-                /* Version exists */
-                version = (HashMap) api.get(versionId);
-            } else {
-                /* Create a new Version */
-                api.put(versionId, new HashMap<Revision, List<ReportResponse>>());
-                version = (HashMap) api.get(versionId);
-            }
-
-            List<ReportResponse> revision;
-            if(version.containsKey(new Revision(timestamp,fileId))){
-                /* Revision exists */
-                revision = version.get(new Revision(timestamp,fileId));
-            } else {
-                /* Create a new Revision */
-                version.put(new Revision(timestamp,fileId), new ArrayList<ReportResponse>());
-                revision = version.get(new Revision(timestamp,fileId));
-            }
-
-            ReportResponse tmpReportResponse;
-            if(reports != null){
-                ArrayList<ReportResponse> reportResponses = new ArrayList<>();
-                for(Document d : reports){
-                    tmpReportResponse = new ReportResponse();
-                    tmpReportResponse.setType((String) d.get("type"));
-                    tmpReportResponse.setViolations(d.get("violations"));
-                    reportResponses.add(tmpReportResponse);
-                }
-                revision.addAll(reportResponses);
-            }
-        }
-
-        /* Prepare Response */
-        List<Api> Apis = new ArrayList<>();
-        Api tmpApi;
-        VersionRequest tmpVersionRequest;
-        RevisionRequest tmpRevisionRequest;
-        ReportResponse tmpReportResponse;
-
-        /*            API KEY       VERSION KEY     REVISION KEY*/
-        for(Map.Entry<UUID, HashMap<String, HashMap<Revision, List<ReportResponse>>>> api : apis.entrySet()){
-            tmpApi = new Api();
-            Apis.add(tmpApi);
-            tmpApi.setApiId(api.getKey());
-
             SettingsHelpers settingsHelpers = new SettingsHelpers();
-            UUID settingsId = settingsHelpers.getSettingsForApi(api.getKey());
-            tmpApi.setSettingsId(settingsId);
-            tmpApi.setTitle(apiIdTitleMap.get(api.getKey()));
+            UUID settingsId = settingsHelpers.getSettingsForApi(apiId);
 
-            for (Map.Entry<String, HashMap<Revision, List<ReportResponse>>> version : api.getValue().entrySet()){
-                tmpVersionRequest = new VersionRequest();
-                tmpApi.addVersionsItem(tmpVersionRequest);
-                tmpVersionRequest.setNumber(version.getKey());
+            Api api = new Api();
+            api.setTitle(title);
+            api.setApiId(apiId);
+            api.setSettingsId(settingsId);
 
-                for (Map.Entry<Revision, List<ReportResponse>> revision : version.getValue().entrySet()){
-                    tmpRevisionRequest = new RevisionRequest();
-                    tmpVersionRequest.addRevisionsItem(tmpRevisionRequest);
-                    tmpRevisionRequest.setId(new DateTime(revision.getKey().getRevisionId()));
-                    tmpRevisionRequest.setFile(revision.getKey().getFileId());
-                    ControllerLinkBuilder linkBuilder = ControllerLinkBuilder.linkTo(
-                                    methodOn(FilesApiController.class).filesIdGet(tmpRevisionRequest.getFile()));
-                    tmpRevisionRequest.setUrl(linkBuilder.toUri().toString());
+            if(apis.contains(api)){
+                api = apis.get(apis.indexOf(api));
+            } else {
+                api.setVersions(new ArrayList<Version>());
+                apis.add(api);
+            }
 
-                    tmpRevisionRequest.setReports(revision.getValue());
+            /* Version */
+            String versionId = (String) r.get("version");
 
-                    if(tmpRevisionRequest.getReports() == null){
-                        tmpRevisionRequest.setReports(new ArrayList<ReportResponse>());
-                    }
-                } /* End Revisions */
+            List<Version> versions = api.getVersions();
+            Version version = new Version();
+            version.setId(versionId);
 
-                if(tmpVersionRequest.getRevisions() == null){
-                    tmpVersionRequest.setRevisions(new ArrayList<RevisionRequest>());
-                }
-            } /* End Versions */
+            if(versions.contains(version)){
+                version = versions.get(versions.indexOf(version));
+            } else {
+                version.setRevisions(new ArrayList<Revision>());
+                versions.add(version);
+            }
 
-            if(tmpApi.getVersions() == null){
-                tmpApi.setVersions(new ArrayList<VersionRequest>());
+            /* Revision */
+            UUID fileId = (UUID) r.get("file-id");
+            Date revisionId = (Date) r.get("timestamp");
+            Object violationReport = r.get("violation-report");
+            List<Object> comparisonReports = (List<Object>) r.get("comparison-reports");
+
+            List<Revision> revisions = version.getRevisions();
+            Revision revision = new Revision();
+            revision.setId(new DateTime(revisionId));
+            revision.setFile(fileId);
+            ControllerLinkBuilder linkBuilder = ControllerLinkBuilder.linkTo(
+                methodOn(FilesApiController.class).filesIdGet(revision.getFile())
+            );
+            revision.setUrl(linkBuilder.toUri().toString());
+
+            if(revisions.contains(revision)){
+                revision = revisions.get(revisions.indexOf(revision));
+            } else {
+                RevisionReports revisionReports = new RevisionReports();
+                revisionReports.setViolation(violationReport);
+                revisionReports.setComparison(comparisonReports);
+                revision.setReports(revisionReports);
+                revisions.add(revision);
             }
         }
 
-        return new ResponseEntity<List<Api>>(Apis, HttpStatus.OK);
+
+        return new ResponseEntity<List<Api>>(apis, HttpStatus.OK);
     }
+
+    //public ResponseEntity<List<Api>> apisGet() {
+    //    /* Database */
+    //    MongoDBRequest request = new MongoDBRequest("files");
+    //    List<Document> results = request.find(new Document());
+    //
+    //    /* API ID / TITLE Mapping */
+    //    Map<UUID, String> apiIdTitleMap = new HashMap<>();
+    //
+    //    /* APIS / VERSIONS / REVISIONS / REPORTS */
+    //    HashMap<UUID, /* APIs */
+    //            HashMap<String, /* Versions */
+    //                    HashMap<RevisionKey, /* Revisions */
+    //                            List<ReportResponse>>>> apis = new HashMap<>();
+    //    for (Document r : results) {
+    //        String title = (String) r.get("title");
+    //        UUID apiId = (UUID) r.get("api-id");
+    //        apiIdTitleMap.put(apiId, title);
+    //        UUID fileId = (UUID) r.get("file-id");
+    //        Date timestamp = (Date) r.get("timestamp");
+    //        String versionId = (String) r.get("version");
+    //        List<Document> reports = (List<Document>) r.get("reports");
+    //
+    //        HashMap<String, HashMap<RevisionKey, List<ReportResponse>>> api;
+    //        if(apis.containsKey(apiId)){
+    //            /* API exists */
+    //            api = apis.get(apiId);
+    //        } else {
+    //            /* Create a new API */
+    //            apis.put(apiId,new HashMap<String, HashMap<RevisionKey, List<ReportResponse>>>());
+    //            api = apis.get(apiId);
+    //        }
+    //
+    //        HashMap<RevisionKey, List<ReportResponse>> version;
+    //        if(api.containsKey(versionId)){
+    //            /* Version exists */
+    //            version = (HashMap) api.get(versionId);
+    //        } else {
+    //            /* Create a new Version */
+    //            api.put(versionId, new HashMap<RevisionKey, List<ReportResponse>>());
+    //            version = (HashMap) api.get(versionId);
+    //        }
+    //
+    //        List<ReportResponse> revision;
+    //        if(version.containsKey(new RevisionKey(timestamp,fileId))){
+    //            /* RevisionKey exists */
+    //            revision = version.get(new RevisionKey(timestamp,fileId));
+    //        } else {
+    //            /* Create a new RevisionKey */
+    //            version.put(new RevisionKey(timestamp,fileId), new ArrayList<ReportResponse>());
+    //            revision = version.get(new RevisionKey(timestamp,fileId));
+    //        }
+    //
+    //        ReportResponse tmpReportResponse;
+    //        if(reports != null){
+    //            ArrayList<ReportResponse> reportResponses = new ArrayList<>();
+    //            for(Document d : reports){
+    //                tmpReportResponse = new ReportResponse();
+    //                tmpReportResponse.setType((String) d.get("type"));
+    //                tmpReportResponse.setViolations(d.get("violations"));
+    //                reportResponses.add(tmpReportResponse);
+    //            }
+    //            revision.addAll(reportResponses);
+    //        }
+    //    }
+    //
+    //    /* Prepare Response */
+    //    List<Api> Apis = new ArrayList<>();
+    //    Api tmpApi;
+    //    Version tmpVersionRequest;
+    //    Revision tmpRevision;
+    //    RevisionReports tmpRevisionReports;
+    //
+    //    /*            API KEY       VERSION KEY     REVISION KEY*/
+    //    for(Map.Entry<UUID, HashMap<String, HashMap<RevisionKey, List<ReportResponse>>>> api : apis.entrySet()){
+    //        tmpApi = new Api();
+    //        Apis.add(tmpApi);
+    //        tmpApi.setApiId(api.getKey());
+    //
+    //        SettingsHelpers settingsHelpers = new SettingsHelpers();
+    //        UUID settingsId = settingsHelpers.getSettingsForApi(api.getKey());
+    //        tmpApi.setSettingsId(settingsId);
+    //        tmpApi.setTitle(apiIdTitleMap.get(api.getKey()));
+    //
+    //        for (Map.Entry<String, HashMap<RevisionKey, List<ReportResponse>>> version : api.getValue().entrySet()){
+    //            tmpVersionRequest = new Version();
+    //            tmpApi.addVersionsItem(tmpVersionRequest);
+    //            tmpVersionRequest.setNumber(version.getKey());
+    //
+    //            for (Map.Entry<RevisionKey, List<ReportResponse>> revision : version.getValue().entrySet()){
+    //                tmpRevision = new RevisionRequest();
+    //                tmpVersionRequest.addRevisionsItem(tmpRevision);
+    //                tmpRevision.setId(new DateTime(revision.getKey().getRevisionId()));
+    //                tmpRevision.setFile(revision.getKey().getFileId());
+    //                ControllerLinkBuilder linkBuilder = ControllerLinkBuilder.linkTo(
+    //                                methodOn(FilesApiController.class).filesIdGet(tmpRevision.getFile()));
+    //                tmpRevision.setUrl(linkBuilder.toUri().toString());
+    //
+    //                tmpRevision.setReports(revision.getValue());
+    //
+    //                if(tmpRevision.getReports() == null){
+    //                    tmpRevision.setReports(new ArrayList<ReportResponse>());
+    //                }
+    //            } /* End Revisions */
+    //
+    //            if(tmpVersionRequest.getRevisions() == null){
+    //                tmpVersionRequest.setRevisions(new ArrayList<RevisionRequest>());
+    //            }
+    //        } /* End Versions */
+    //
+    //        if(tmpApi.getVersions() == null){
+    //            tmpApi.setVersions(new ArrayList<Version>());
+    //        }
+    //    }
+    //
+    //    return new ResponseEntity<List<Api>>(Apis, HttpStatus.OK);
+    //}
 
 }

@@ -25,34 +25,34 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T11:43:31.507Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T19:22:35.965Z")
 
 @Api(value = "reports", description = "the reports API")
 public interface ReportsApi {
 
     @ApiOperation(value = "Create a new comparison report", notes = "", response = ComparisonReportResponse.class, tags={ "Reports API", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = ComparisonReportResponse.class),
-        @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
-        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
-    
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Documents successfully uploaded", response = ComparisonReportResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
+            @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
+
     @RequestMapping(value = "/reports/comparison",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
     ResponseEntity<ComparisonReportResponse> reportsComparisonPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ComparisonReportRequest file);
 
 
     @ApiOperation(value = "Create a new violation report", notes = "", response = ViolationReportResponse.class, tags={ "Reports API", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Documents successfully uploaded", response = ViolationReportResponse.class),
-        @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
-        @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
-    
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Documents successfully uploaded", response = ViolationReportResponse.class),
+            @ApiResponse(code = 400, message = "Bad Request (e.g. not a json, required fields not available (title, version))", response = ApplicationError.class),
+            @ApiResponse(code = 500, message = "Unexpected error", response = ApplicationError.class) })
+
     @RequestMapping(value = "/reports/violation",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
     ResponseEntity<ViolationReportResponse> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file);
 
 }

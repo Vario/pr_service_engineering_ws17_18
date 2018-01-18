@@ -1,13 +1,9 @@
 package at.jku.se.pr.rest.qualityapi.integrations;
 
 import de.zalando.zally.api.models.LintingRequest;
-import io.swagger.model.LintingResponse;
 import de.zalando.zally.api.models.Rule;
 import de.zalando.zally.api.models.SupportedRulesResponse;
 import io.swagger.model.Setting;
-import io.swagger.model.Violation;
-import io.swagger.model.ViolationsCount;
-import org.bson.Document;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;

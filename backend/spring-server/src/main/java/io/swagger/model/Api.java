@@ -2,15 +2,12 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.VersionRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Api
@@ -28,7 +25,7 @@ public class Api   {
   private UUID settingsId = null;
 
   @JsonProperty("versions")
-  private List<VersionRequest> versions = null;
+  private List<Version> versions = null;
 
   public Api title(String title) {
     this.title = title;
@@ -92,14 +89,14 @@ public class Api   {
     this.settingsId = settingsId;
   }
 
-  public Api versions(List<VersionRequest> versions) {
+  public Api versions(List<Version> versions) {
     this.versions = versions;
     return this;
   }
 
-  public Api addVersionsItem(VersionRequest versionsItem) {
+  public Api addVersionsItem(Version versionsItem) {
     if (this.versions == null) {
-      this.versions = new ArrayList<VersionRequest>();
+      this.versions = new ArrayList<Version>();
     }
     this.versions.add(versionsItem);
     return this;
@@ -113,11 +110,11 @@ public class Api   {
 
   @Valid
 
-  public List<VersionRequest> getVersions() {
+  public List<Version> getVersions() {
     return versions;
   }
 
-  public void setVersions(List<VersionRequest> versions) {
+  public void setVersions(List<Version> versions) {
     this.versions = versions;
   }
 
@@ -131,15 +128,12 @@ public class Api   {
       return false;
     }
     Api api = (Api) o;
-    return Objects.equals(this.title, api.title) &&
-        Objects.equals(this.apiId, api.apiId) &&
-        Objects.equals(this.settingsId, api.settingsId) &&
-        Objects.equals(this.versions, api.versions);
+    return Objects.equals(this.title, api.title);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, apiId, settingsId, versions);
+    return Objects.hash(title);
   }
 
   @Override

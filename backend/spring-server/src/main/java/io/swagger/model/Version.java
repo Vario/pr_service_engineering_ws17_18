@@ -2,55 +2,52 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.RevisionRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
- * VersionRequest
+ * Version
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-06T16:52:57.027Z")
 
-public class VersionRequest   {
-  @JsonProperty("number")
-  private String number = null;
+public class Version {
+  @JsonProperty("id")
+  private String id = null;
 
   @JsonProperty("revisions")
-  private List<RevisionRequest> revisions = null;
+  private List<Revision> revisions = null;
 
-  public VersionRequest number(String number) {
-    this.number = number;
+  public Version id(String id) {
+    this.id = id;
     return this;
   }
 
    /**
    * API Versioning
-   * @return number
+   * @return id
   **/
   @ApiModelProperty(example = "v1", value = "API Versioning")
 
 
-  public String getNumber() {
-    return number;
+  public String getId() {
+    return id;
   }
 
-  public void setNumber(String number) {
-    this.number = number;
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public VersionRequest revisions(List<RevisionRequest> revisions) {
+  public Version revisions(List<Revision> revisions) {
     this.revisions = revisions;
     return this;
   }
 
-  public VersionRequest addRevisionsItem(RevisionRequest revisionsItem) {
+  public Version addRevisionsItem(Revision revisionsItem) {
     if (this.revisions == null) {
-      this.revisions = new ArrayList<RevisionRequest>();
+      this.revisions = new ArrayList<Revision>();
     }
     this.revisions.add(revisionsItem);
     return this;
@@ -64,11 +61,11 @@ public class VersionRequest   {
 
   @Valid
 
-  public List<RevisionRequest> getRevisions() {
+  public List<Revision> getRevisions() {
     return revisions;
   }
 
-  public void setRevisions(List<RevisionRequest> revisions) {
+  public void setRevisions(List<Revision> revisions) {
     this.revisions = revisions;
   }
 
@@ -81,22 +78,21 @@ public class VersionRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    VersionRequest versionRequest = (VersionRequest) o;
-    return Objects.equals(this.number, versionRequest.number) &&
-        Objects.equals(this.revisions, versionRequest.revisions);
+    Version version = (Version) o;
+    return Objects.equals(this.id, version.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(number, revisions);
+    return Objects.hash(id);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class VersionRequest {\n");
+    sb.append("class Version {\n");
     
-    sb.append("    number: ").append(toIndentedString(number)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    revisions: ").append(toIndentedString(revisions)).append("\n");
     sb.append("}");
     return sb.toString();

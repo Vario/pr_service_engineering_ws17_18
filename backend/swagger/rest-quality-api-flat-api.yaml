@@ -360,17 +360,17 @@ definitions:
       versions:
         type: array
         items:
-          $ref: '#/definitions/VersionRequest'
+          $ref: '#/definitions/Version'
   ApiTitle:
     type: object
     properties:
       title:
         type: string
         example: Petstore API
-  VersionRequest:
+  Version:
     type: object
     properties:
-      number:
+      id:
         type: string
         description: API Versioning
         example: "v1"
