@@ -34,7 +34,8 @@
                     for(var g = 0; g < $scope.selectedComparison.length; g++){
                         if($scope.selectedComparison[g] == r){
                             r.checked = false;
-                            $scope.selectedComparison.splice(g);
+                            if($scope.selectedComparison.length == 1) $scope.selectedComparison = [];
+                            $scope.selectedComparison.splice(g,g);
                         }
                     }
                 }
