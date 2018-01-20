@@ -24,7 +24,7 @@
                     self.revisions = [];
                     self.expanded = false;
                     self.checked = false;
-                    self.number = data.number;
+                    self.number = data.id;
                     angular.forEach(data.revisions, function (value) {
                         var rev = new APIRevisionModel(value);
                         self.revisions.push(rev);

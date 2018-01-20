@@ -20,6 +20,7 @@
                     return this.host;
                 }
 
+                //return "http://localhost:8500/api";
                 return "http://quality.rest.patrickbuchner.at/api"; //backend api url
             };
 

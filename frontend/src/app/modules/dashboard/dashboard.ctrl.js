@@ -26,13 +26,26 @@
             $scope.showSwaggerUI = undefined;
             $scope.selectedComparison = [];
 
-            $scope.selectComparison = function(r){
+            $scope.switchComparison = function(data){
+                var o = $scope.selectedComparison[0];
+                $scope.selectedComparison[0] = $scope.selectedComparison[1];
+                $scope.selectedComparison[1] = o;
+                data[0] = $scope.selectedComparison[0];
+                data[1] = $scope.selectedComparison[1];
+            };
+
+            $scope.selectComparison = function(a, v, r){
                 if($scope.selectedComparison.length < 2 && !r.checked){
+                    var o = {
+                        api : a,
+                        version : v,
+                        revision : r
+                    };
                     r.checked = true;
-                    $scope.selectedComparison.push(r);
+                    $scope.selectedComparison.push(o);
                 }else{
                     for(var g = 0; g < $scope.selectedComparison.length; g++){
-                        if($scope.selectedComparison[g] == r){
+                        if($scope.selectedComparison[g].revision == r){
                             r.checked = false;
                             if($scope.selectedComparison.length == 1) $scope.selectedComparison = [];
                             $scope.selectedComparison.splice(g,g);
@@ -48,6 +61,7 @@
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {
                     $scope.apis = apis;
+                    console.log(apis);
                 }).catch(function (error) {
                     console.error(error);
                 }).finally(function () {
@@ -146,11 +160,12 @@
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/compare.tpl.html',
                     showClose: true,
-                    className:"ngdialog-theme-default",
-                    data:$scope.selectedComparison,
-                    controller: ['$scope', function($scope) {
+                    className: "ngdialog-theme-default",
+                    data: $scope.selectedComparison,
+                    scope: $scope,
+                    controller: ['$scope', function ($scope) {
                         // controller logic
-                        $scope.closeDialog = function() {
+                        $scope.closeDialog = function () {
                             //Pass apis to close handler
                             dialog.close($scope.ngDialogData);
                         };
@@ -246,6 +261,15 @@
 
                 dialog.closePromise.then(function () {
 
+                });
+            };
+
+            $scope.showSwagger = function(){
+                var dialog = ngDialog.open({
+                    template: 'app/modules/swaggerui/swaggerinfo.tpl.html',
+                    showClose: true,
+                    className:"ngdialog-theme-default",
+                    scope:$scope
                 });
             };
 
