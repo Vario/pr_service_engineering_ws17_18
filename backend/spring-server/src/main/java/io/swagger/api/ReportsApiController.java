@@ -1,20 +1,16 @@
 package io.swagger.api;
 
-import at.jku.se.pr.rest.qualityapi.comparison.RenderChanges;
+import at.jku.se.pr.rest.qualityapi.integrations.SwaggerDiffIntegration;
 import at.jku.se.pr.rest.qualityapi.exceptions.MultipleResultsException;
 import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
 import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
-import com.deepoove.swagger.diff.SwaggerDiff;
 import com.mongodb.client.model.Updates;
-import io.swagger.model.ComparisonReportRequest;
-import io.swagger.model.ComparisonReportResponse;
+import io.swagger.model.*;
 
 import io.swagger.annotations.*;
 
-import io.swagger.model.ViolationReportRequest;
-import io.swagger.model.ViolationReportResponse;
 import org.bson.Document;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -22,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,8 +64,17 @@ public class ReportsApiController implements ReportsApi {
         ).toUri().toString();
 
 
-        RenderChanges renderChanges = new RenderChanges("http://petstore.swagger.io/v2/swagger.json","http://petstore.swagger.io/v2/swagger.json");
-        Object o = renderChanges.render();
+        SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration("http://petstore.swagger.io/v2/swagger.json","http://petstore.swagger.io/v2/swagger.json");
+        HashMap<String,List<Change>> changes = swaggerDiffIntegration.render();
+        ComparisonReportResponse response = new ComparisonReportResponse();
+
+        ComparisonReportResponsePaths paths = new ComparisonReportResponsePaths();
+        paths.setChanged(changes.get("changed"));
+        paths.setNew(changes.get("new"));
+        paths.setRemoved(changes.get("removed"));
+
+        response.setFileIds(file.getFileIds());
+        response.setPaths(paths);
 
         return new ResponseEntity<ComparisonReportResponse>(HttpStatus.OK);
     }

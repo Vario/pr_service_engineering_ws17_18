@@ -1,4 +1,4 @@
-package at.jku.se.pr.rest.qualityapi.comparison;
+package at.jku.se.pr.rest.qualityapi.integrations;
 
 import com.deepoove.swagger.diff.SwaggerDiff;
 import com.deepoove.swagger.diff.model.ChangedEndpoint;
@@ -8,74 +8,56 @@ import com.deepoove.swagger.diff.model.ElProperty;
 import com.deepoove.swagger.diff.model.Endpoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.swagger.model.Change;
+import io.swagger.model.ChangeItem;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.Property;
 
-public class RenderChanges {
-    private List<EndpointChanges> newEndpoints;
-    private List<EndpointChanges> missingEndpoints;
-    private List<EndpointChanges> changedEndpoints;
+public class SwaggerDiffIntegration {
+    private SwaggerDiff diff;
 
     private String swagger1;
     private String swagger2;
 
-    public RenderChanges(String swagger1, String swagger2) {
+    public SwaggerDiffIntegration(String swagger1, String swagger2) {
         this.swagger1 = swagger1;
         this.swagger2 = swagger2;
     }
 
-    public Object render() {
-        SwaggerDiff diff = SwaggerDiff.compareV2(this.swagger1, this.swagger2);
+    public HashMap<String,List<Change>> render() {
+        this.diff = SwaggerDiff.compareV2(this.swagger1, this.swagger2);
 
-        this.newEndpoints = new ArrayList<EndpointChanges>();
-        this.getNewEndpoints(diff.getNewEndpoints());
+        HashMap<String,List<Change>> changes = new HashMap<>();
 
-        this.missingEndpoints = new ArrayList<EndpointChanges>();
-        this.getMissingEndpoints(diff.getMissingEndpoints());
+        changes.put("new", renderNewRemovedEndpoints(diff.getNewEndpoints()));
+        changes.put("removed", renderNewRemovedEndpoints(diff.getMissingEndpoints()));
+        changes.put("changed", getChangedEndpoints(diff.getChangedEndpoints()));
 
-        this.changedEndpoints = new ArrayList<EndpointChanges>();
-        this.getChangedEndpoints(diff.getChangedEndpoints());
-
-        List<List<EndpointChanges>> render = new ArrayList();
-        render.add(newEndpoints);
-        render.add(missingEndpoints);
-        render.add(changedEndpoints);
-        Object o = render;
-		/*String json1 =  "\"new\":" + new Gson().toJson(newEndpoints);
-		String json2 =  "\"removed\":" + new Gson().toJson(missingEndpoints);
-		String json3 =  "\"changed\":" + new Gson().toJson(changedEndpoints);
-		String json = "{" + json1 + "," + json2 + "," + json3 + "}";*/
-
-        //System.out.println(json);
-        return o;
+        return changes;
     }
 
-    private void getNewEndpoints(List<Endpoint> endpoints) {
+    private List<Change> renderNewRemovedEndpoints(List<Endpoint> endpoints) {
+        List<Change> ret = new ArrayList<>();
+
         for (Endpoint endpoint : endpoints) {
-            String change = endpoint.getMethod() + " " + endpoint.getPathUrl();
-            String description = endpoint.getSummary();
-            EndpointChanges e = new EndpointChanges(change, description);
-			/*e.addParameter(null);
-			e.addReturnType(null);*/
-            this.newEndpoints.add(e);
+            Change change = new Change();
+            change.setDescription(endpoint.getSummary());
+            change.setEndpoint(endpoint.getMethod() + " " + endpoint.getPathUrl());
+            ret.add(change);
         }
+
+        return ret;
     }
 
-    private void getMissingEndpoints(List<Endpoint> endpoints) {
-        for (Endpoint endpoint : endpoints) {
-            String change = endpoint.getMethod() + " " + endpoint.getPathUrl();
-            String description = endpoint.getSummary();
-            EndpointChanges e = new EndpointChanges(change, description);
-            this.missingEndpoints.add(e);
-        }
-    }
+    private List<Change> getChangedEndpoints(List<ChangedEndpoint> endpoints) {
+        List<Change> changedEndpoints = new ArrayList<>();
 
-    private void getChangedEndpoints(List<ChangedEndpoint> changedEndpoints) {
-        for (ChangedEndpoint changedEndpoint : changedEndpoints) {
+        for (ChangedEndpoint changedEndpoint : endpoints) {
             String pathUrl = changedEndpoint.getPathUrl();
             Map<HttpMethod, ChangedOperation> changedOperations = changedEndpoint
                     .getChangedOperations();
@@ -83,40 +65,49 @@ public class RenderChanges {
 
                 ChangedOperation changedOperation = entry.getValue();
 
-                String change = entry.getKey().toString() + " " + changedEndpoint.getPathUrl();
-                String description = changedOperation.getSummary();
-                EndpointChanges e = new EndpointChanges(change, description);
+                Change e = new Change();
+                e.setEndpoint(entry.getKey().toString() + " " + changedEndpoint.getPathUrl());
+                e.setDescription(changedOperation.getSummary());
 
                 if (changedOperation.isDiffParam()) {
-                    this.getParameters(changedOperation, e);
+                    e = getParameters(changedOperation, e);
                 }
                 if (changedOperation.isDiffProp()) {
-                    this.getReturnTypes(changedOperation, e);
+                    e = getReturnTypes(changedOperation, e);
                 }
-                this.changedEndpoints.add(e);
+                changedEndpoints.add(e);
             }
         }
+
+        return changedEndpoints;
     }
 
-    private void getParameters(ChangedOperation changedOperation, EndpointChanges e) {
+    private Change getParameters(ChangedOperation changedOperation, Change e) {
         List<Parameter> addParameters = changedOperation.getAddParameters();
         List<Parameter> delParameters = changedOperation.getMissingParameters();
-        List<ChangedParameter> changedParameters = changedOperation.getChangedParameter();;
+        List<ChangedParameter> changedParameters = changedOperation.getChangedParameter();
 
         for (Parameter param : addParameters) {
             String change = param.getName();
             String description = param.getDescription();
-            Change c = new Change("ADDED "+ change, description);
-            e.addParameter(c);
+
+            ChangeItem c = new ChangeItem();
+            c.setChange("ADDED "+ change);
+            c.setDescription(description);
+            e.addParameterItem(c);
         }
         for (ChangedParameter param : changedParameters) {
             List<ElProperty> increased = param.getIncreased();
             for (ElProperty prop : increased) {
                 Property property = prop.getProperty();
+
                 String change = prop.getEl();
                 String description = property.getDescription();
-                Change c = new Change("ADDED " + change, description);
-                e.addParameter(c);
+
+                ChangeItem c = new ChangeItem();
+                c.setChange("ADDED " + change);
+                c.setDescription(description);
+                e.addParameterItem(c);
             }
         }
         for (ChangedParameter param : changedParameters) {
@@ -134,8 +125,10 @@ public class RenderChanges {
                 if (changeDescription) {
                     description = "'" + leftParam.getDescription() + "' CHANGED TO '" + rightParam.getDescription() + "'";
                 }
-                Change c = new Change(change, description);
-                e.addParameter(c);
+                ChangeItem c = new ChangeItem();
+                c.setChange(change);
+                c.setDescription(description);
+                e.addParameterItem(c);
             }
         }
         for (ChangedParameter param : changedParameters) {
@@ -144,34 +137,50 @@ public class RenderChanges {
                 Property property = prop.getProperty();
                 String change = prop.getEl();
                 String description = property.getDescription();
-                Change c = new Change("REMOVED " + change, description);
-                e.addParameter(c);
+
+                ChangeItem c = new ChangeItem();
+                c.setChange("REMOVED " + change);
+                c.setDescription(description);
+                e.addParameterItem(c);
             }
         }
         for (Parameter param : delParameters) {
             String change = param.getName();
             String description = param.getDescription();
-            Change c = new Change("REMOVED " + change, description);
-            e.addParameter(c);
+
+            ChangeItem c = new ChangeItem();
+            c.setChange("REMOVED " + change);
+            c.setDescription(description);
+            e.addParameterItem(c);
         }
+
+        return e;
     }
 
-    private void getReturnTypes(ChangedOperation changedOperation, EndpointChanges e) {
+    private Change getReturnTypes(ChangedOperation changedOperation, Change e) {
         List<ElProperty> addProps = changedOperation.getAddProps();
         List<ElProperty> delProps = changedOperation.getMissingProps();
         for (ElProperty prop : addProps) {
             Property property = prop.getProperty();
             String change = prop.getEl();
             String description = property.getDescription();
-            Change c = new Change("ADDED " + change, description);
-            e.addReturnType(c);
+
+            ChangeItem c = new ChangeItem();
+            c.setChange("ADDED " + change);
+            c.setDescription(description);
+            e.addReturntypeItem(c);
         }
         for (ElProperty prop : delProps) {
             Property property = prop.getProperty();
             String change = prop.getEl();
             String description = property.getDescription();
-            Change c = new Change("REMOVED " + change, description);
-            e.addReturnType(c);
+
+            ChangeItem c = new ChangeItem();
+            c.setChange("REMOVED " + change);
+            c.setDescription(description);
+            e.addReturntypeItem(c);
         }
+
+        return e;
     }
 }
