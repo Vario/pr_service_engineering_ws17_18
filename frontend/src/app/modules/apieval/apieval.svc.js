@@ -65,8 +65,7 @@
                 };
 
                 self.postNewAPIs = function(api) {
-                    var apiString = JSON.stringify(eval("(" + api + ")"));
-                    var newApi = JSON.parse(apiString);
+                    var newApi = JSON.parse(api);
                     var model =
                         {
                             "title": newApi.info.title,
