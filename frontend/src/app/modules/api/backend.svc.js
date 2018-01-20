@@ -109,12 +109,18 @@
                     return self.put('/apis/' + apiid + "/settings",setting);
                 };
 
+
+
                 self.postAPIfile = function (file) {
                     return self.post('/files',file);
                 };
 
-                self.postAPIreport = function (validation) {
-                    return self.post('/reports',validation);
+                self.validteAPIreport = function (validation) {
+                    return self.post('/reports/validation',validation);
+                };
+
+                self.compareAPIReport = function (apiids) {
+                    return self.post('/reports/comparison',[apiids]);
                 };
 
                 self.getRules = function() {

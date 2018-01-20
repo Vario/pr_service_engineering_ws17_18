@@ -65,30 +65,37 @@
                 };
 
                 self.postNewAPIs = function(api) {
-                    //remove all \n
-                    var newapi = api.replace(/(\r\n|\n|\r)/gm,"");
+                    var apiString = JSON.stringify(eval("(" + api + ")"));
+                    var newApi = JSON.parse(apiString);
                     var model =
                         {
-                            "title": "",
-                            "version": "",
-                            "swagger": newapi,
+                            "title": newApi.info.title,
+                            "version": newApi.info.version,
+                            "swagger": newApi,
                             "settings-id": ""
                         };
-
-                    console.log(angular.toJson(model));
-                    return BackendAPIService.postAPIfile(angular.toJson(model)).then(function () {
+                    return BackendAPIService.postAPIfile(model).then(function () {
                         console.log('api sent -> reload');
                     });
                 };
 
-                self.validateAPI = function(fileids) {
+                self.validateAPI = function(fileid) {
                     var validationObject =
                         {
-                            "type": "validation",
+                            "file-id": fileid
+                        };
+                    return BackendAPIService.validteAPIreport(validationObject).then(function () {
+                        console.log('api validation sent -> reload');
+                    });
+                };
+
+                self.compareAPIS = function(fileids) {
+                    var comparisonObject =
+                        {
                             "file-ids": fileids
                         };
-                    return BackendAPIService.postAPIreport(validationObject).then(function () {
-                        console.log('api validation sent -> reload');
+                    return BackendAPIService.compareAPIReport(comparisonObject).then(function () {
+                        console.log('api compare sent');
                     });
                 };
             }
