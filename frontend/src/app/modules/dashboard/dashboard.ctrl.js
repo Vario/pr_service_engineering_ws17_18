@@ -316,16 +316,20 @@
                 var file = files[0];
                 if(file != undefined) {
                     var reader = new FileReader();
+                    $scope.loading.inc();
 
                     // Closure to capture the file information.
                     reader.onload = (function (file) {
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
                             APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                                $scope.loading.dec();
                                 loadData();
                             }).catch(function (error) {
                                 console.log("Error uploading new api");
                                 console.error(error);
+                                $scope.loading.dec();
+
                             });
                         };
                     })(file);

@@ -67,16 +67,13 @@
                 self.postNewAPIs = function(api) {
                     var apiString = JSON.stringify(eval("(" + api + ")"));
                     var newApi = JSON.parse(apiString);
-                    console.log(newApi);
                     var model =
                         {
-                            "title": "",
-                            "version": "",
+                            "title": newApi.info.title,
+                            "version": newApi.info.version,
                             "swagger": newApi,
                             "settings-id": ""
                         };
-                    console.log(model);
-                    //console.log(angular.toJson(model));
                     return BackendAPIService.postAPIfile(model).then(function () {
                         console.log('api sent -> reload');
                     });
