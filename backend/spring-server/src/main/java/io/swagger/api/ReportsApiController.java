@@ -7,7 +7,6 @@ import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
 import com.deepoove.swagger.diff.SwaggerDiff;
-import com.google.gson.Gson;
 import com.mongodb.client.model.Updates;
 import io.swagger.model.ComparisonReportRequest;
 import io.swagger.model.ComparisonReportResponse;
@@ -17,6 +16,7 @@ import io.swagger.annotations.*;
 import io.swagger.model.ViolationReportRequest;
 import io.swagger.model.ViolationReportResponse;
 import org.bson.Document;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import static com.mongodb.client.model.Filters.eq;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-10T17:37:35.998+01:00")
 
@@ -57,13 +58,16 @@ public class ReportsApiController implements ReportsApi {
         Object s = fileHelpers.getSwaggerDocForFileId(fileIds.get(0));
         System.out.println(s);
 
-        Object doc1 = FileHelpers.getSwaggerDocForFileId(fileIds.get(0));
-        Object doc2 = FileHelpers.getSwaggerDocForFileId(fileIds.get(1));
+        String url1 = ControllerLinkBuilder.linkTo(
+                methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
+        ).toUri().toString();
 
-        String json1 = new Gson().toJson(doc1);
-        String json2 = new Gson().toJson(doc2);
+        String url2 = ControllerLinkBuilder.linkTo(
+                methodOn(FilesApiController.class).filesIdGet(fileIds.get(1))
+        ).toUri().toString();
 
-        RenderChanges renderChanges = new RenderChanges(json1, json2);
+
+        RenderChanges renderChanges = new RenderChanges("http://petstore.swagger.io/v2/swagger.json","http://petstore.swagger.io/v2/swagger.json");
         Object o = renderChanges.render();
 
         return new ResponseEntity<ComparisonReportResponse>(HttpStatus.OK);
