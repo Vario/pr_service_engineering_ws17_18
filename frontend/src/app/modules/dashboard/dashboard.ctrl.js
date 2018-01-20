@@ -19,7 +19,8 @@
             $scope.selectedApi = undefined;
             $scope.selectedVersion = undefined;
             $scope.selectedFile = undefined;
-            $scope.selectedReport = undefined;
+            $scope.selectedViolationReport = undefined;
+            $scope.selectedComparisonReport = undefined;
             $scope.apis = undefined;
             $scope.apifileurl = undefined;
             $scope.apifile = undefined;
@@ -246,14 +247,22 @@
                 });
             };
 
-            $scope.showReport = function() {
-                /*$scope.groupedViolations = $scope.selectedReport.violations.violations.reduce(function(arr, item){
-                    arr[item['violation_type']] = arr[item['violation_type']] || { type: item['violation_type'], violations: []};
-                    arr[item['violation_type']].violations.push(item);
-                    return arr;
-                }, []);*/
+            $scope.showViolationReport = function() {
                 var dialog = ngDialog.open({
-                    template: 'app/modules/reports/reportdefault.tpl.html',
+                    template: 'app/modules/reports/violation.tpl.html',
+                    showClose: true,
+                    className:"ngdialog-theme-default",
+                    scope:$scope
+                });
+
+                dialog.closePromise.then(function () {
+
+                });
+            };
+
+            $scope.showComparisonReport = function() {
+                var dialog = ngDialog.open({
+                    template: 'app/modules/reports/comparison.tpl.html',
                     showClose: true,
                     className:"ngdialog-theme-default",
                     scope:$scope
@@ -273,24 +282,25 @@
                 });
             };
 
-            $scope.select = function(api, version, revision, report){
+            $scope.select = function(api, version, revision, violationreport, comparisonreport){
+                $scope.selectedComparisonReport = undefined;
+                $scope.selectedViolationReport = undefined;
+                $scope.selectedVersion = undefined;
+                $scope.selectedFile = undefined;
+
                 if(api) {
                     $scope.selectedApi = api;
-                    $scope.selectedVersion = undefined;
-                    $scope.selectedFile = undefined;
-                    $scope.selectedReport = undefined;
                 }
                 if(version){
                     $scope.selectedVersion = version;
-                    $scope.selectedFile = undefined;
-                    $scope.selectedReport = undefined;
                 }
                 if(revision) {
                     $scope.selectedFile = revision;
-                    $scope.selectedReport = undefined;
                 }
                 setcurrentFileUrl();
-                if(report) $scope.selectedReport = report;
+                console.log(violationreport);
+                if(violationreport) $scope.selectedViolationReport = violationreport;
+                if(comparisonreport) $scope.selectedComparisonReport = comparisonreport;
             };
 
             function setcurrentFileUrl(){

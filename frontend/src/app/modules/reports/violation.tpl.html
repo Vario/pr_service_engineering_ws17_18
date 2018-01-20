@@ -1,0 +1,53 @@
+<button class="btn btn-primary" ng-print print-element-id="printThisElement">
+    <i class="fa fa-print"></i> <img src="/icons/printer.svg" />
+</button>
+</br>
+<div class="reportContainer" id="printThisElement">
+    <h1>Violation Report</h1>
+    <div>
+        <b>API:</b> {{selectedApi.name}}</br>
+        <b>Version:</b> {{selectedVersion.number}}</br>
+        <b>Revision:</b> {{selectedFile.timestamp}}</br>
+    </div>
+
+    <p ng-show="selectedViolationReport.message">Message: {{selectedViolationReport.message}}</p>
+    </br>
+    <h2>Violation Log:</h2>
+    <div>
+        <h3 class="mustViolation">Must:{{selectedViolationReport.violations_count.must}}</h3>
+        <h3 class="shouldViolation">Should:{{selectedViolationReport.violations_count.should}}</h3>
+        <h3 class="mayViolation">May:{{selectedViolationReport.violations_count.may}}</h3>
+        <h3 class="couldViolation">Could:{{selectedViolationReport.violations_count.could}}</h3>
+        <h3 class="hintViolation">Hints:{{selectedViolationReport.violations_count.hint}}</h3>
+    </div>
+    </br>
+    <h2>Violations:</h2>
+    <div ng-show="selectedViolationReport.violations.length > 0">
+        <ul>
+            <div ng-repeat = "violation in selectedViolationReport.violations">
+                <li>
+                    <div>
+                        <b>{{violation.title}} ({{violation.violation_type}})</b></br>
+                        {{violation.description}}</br></br>
+                        More information here:</br>
+                        <a href="{{violation.rule_link}}" target="_blank" class="infoLink">{{violation.rule_link}}</a></br>
+                        <div ng-show="violation.paths.length > 0">
+                            Paths:</br>
+                            <ul>
+                                <div ng-repeat = "path in violation.paths">
+                                    <li>
+                                        {{path}}
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                        <br>
+                    </div>
+                </li>
+            </div>
+        </ul>
+    </div>
+    <div ng-hide="selectedViolationReport.violations.length">
+        No Violations
+    </div>
+</div>

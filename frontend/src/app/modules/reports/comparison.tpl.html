@@ -1,0 +1,51 @@
+<button class="btn btn-primary" ng-print print-element-id="printThisElement">
+    <i class="fa fa-print"></i> <img src="/icons/printer.svg" />
+</button>
+</br>
+<div class="reportContainer" id="printThisElement">
+    <h1>Comparison Report</h1>
+
+    <span class="border border-primary"></span>
+    <div>
+        <b>API:</b> API</br>
+        <b>Version:</b> Version</br>
+        <b>Revision:</b> Revision</br>
+    </div>
+    <b><p class="p-3 mb-2 bg-primary text-white text-center">COMPARED TO</p></b>
+    <div>
+        <b>API:</b> API</br>
+        <b>Version:</b> Version</br>
+        <b>Revision:</b> Revision</br>
+    </div>
+    </br>
+    <h2>Change Log:</h2>
+    <div>
+        <h3 class="newEndpoints">New Endpoints:{{selectedReport.violations.violations_count.must}}</h3>
+        <h3 class="removedEndpoints">Removed Endpoints:{{selectedReport.violations.violations_count.should}}</h3>
+        <h3 class="changedEndpoints">Changed Endpoints:{{selectedReport.violations.violations_count.may}}</h3>
+    </div>
+    </br>
+    <h2>Changes:</h2>
+    <h3><b>What's new</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+    </ul>
+
+    <h3><b>What's removed</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+    </ul>
+
+    <h3><b>What's changed</b></h3>
+    <ul>
+        <li>Endpoint // Description</li>
+        <ul>
+            Parameter
+            <li>p1</li>
+            <li>...</li>
+            Return Type
+            <li>rt1</li>
+            <li>...</li>
+        </ul>
+    </ul>
+</div>

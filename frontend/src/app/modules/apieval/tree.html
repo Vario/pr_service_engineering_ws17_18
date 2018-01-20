@@ -56,7 +56,7 @@
                       <label>
                         <input type="checkbox" ng-checked="revision.checked" ng-disabled="selectedComparison.length >= 2 && !revision.checked"
                                ng-click="selectComparison(api, version, revision); apifileurl = revision.url">
-                        <a ng-click = "showRevision(revision); select(api,version, revision)">
+                        <a ng-click = "showRevision(revision); select(api,version, revision,revision.violationreport,revision.comparisonreport)">
                            <img src="./icons/file2.svg" class="img-fluid" alt="Responsive image">
                             {{revision.timestamp}}
                         </a>
@@ -73,22 +73,21 @@
                       </label>
                     </li>
                     <ul>
-                      <div ng-repeat = "violation in revision.reports.violation">
+                      <div ng-show = "revision.violationreport">
                         <li ng-show = "revision.expanded">
-                            <a ng-click = "select(api,version, revision, violation)">
                               <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
-                              <span ng-if="violation.violations === 0">
+                              <span ng-if="revision.violationreport.violations === 0">
                               <img src="./icons/validationtrue.svg"/>
                             </span>
-                              <span ng-if="violation.violations !=0">
+                              <span ng-if="revision.violationreport.violations !=0">
                               <img src="./icons/validationfalse.svg"/>
                             </span>
-                              {{violation.type}} ({{violation.violations.violations.length}})
-                            </a>
+                              Violation Report ({{revision.violationreport.violations.length}})
+
                         </li>
                       </div>
 
-                      <div ng-repeat = "comparison in revision.reports.comparison">
+                      <div ng-repeat = "comparison in revision.comparisonreports">
                         <li ng-show = "revision.expanded">
                           <a ng-click = "select(api,version, revision, comparison)">
                             <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">

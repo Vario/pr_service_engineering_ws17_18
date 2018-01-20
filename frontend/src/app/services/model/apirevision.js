@@ -8,14 +8,16 @@
     'use strict';
     angular.module('apieval.services')
         .factory('APIRevisionModel', [
-            'APIReportModel',
             '$filter',
-            function (APIReportModel, $filter) {
+            'APIViolationReportModel',
+            'APIComparisonReportModel',
+            function ($filter,APIViolationReportModel,APIComparisonReportModel) {
                 var self = this;
 
                 self.id = undefined;
                 self.file = undefined;
-                self.reports = undefined;
+                self.violationreports = undefined;
+                self.comparisonreport = undefined;
                 self.expanded = undefined;
                 self.timestamp = undefined;
                 self.checked = undefined;
@@ -27,18 +29,14 @@
                     self.id = data.id;
                     self.expanded = false;
                     self.checked = false;
-                    self.reports = [];
-                    console.log("url" + data.url);
-                    self.apifileurl ="http://petstore.swagger.io/v2/swagger.json"; // data.url; //
+                    self.violationreport = data.reports.violation; //APIViolationReportModel(data.reports.violation);
+                    self.comparisonreport = data.reports.comparison; //APIComparisonReportModel(data.reports.comparison);
+                    self.apifileurl = data.url;
                     self.timestamp = $filter('date')(self.id,"dd/MM/yyyy h:mm:ss a");
-                    angular.forEach(data.reports, function (value) {
-                        var rep = new APIReportModel(value);
-                        self.reports.push(rep);
-                    });
                 }
 
                 APIRevisionModel.prototype.getValidPropertyList = function () {
-                    return ['id','file','reports', 'checked','apifileurl'];
+                    return ['id','file','reports', 'checked','apifileurl','violationreports','comparisonreports'];
                 };
 
                 return APIRevisionModel;

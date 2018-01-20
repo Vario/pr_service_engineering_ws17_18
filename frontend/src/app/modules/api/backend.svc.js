@@ -116,7 +116,7 @@
                 };
 
                 self.validteAPIreport = function (validation) {
-                    return self.post('/reports/validation',validation);
+                    return self.post('/reports/violation',validation);
                 };
 
                 self.compareAPIReport = function (apiids) {
