@@ -65,18 +65,19 @@
                 };
 
                 self.postNewAPIs = function(api) {
-                    //remove all \n
-                    var newapi = api.replace(/(\r\n|\n|\r)/gm,"");
+                    var apiString = JSON.stringify(eval("(" + api + ")"));
+                    var newApi = JSON.parse(apiString);
+                    console.log(newApi);
                     var model =
                         {
                             "title": "",
                             "version": "",
-                            "swagger": newapi,
+                            "swagger": newApi,
                             "settings-id": ""
                         };
-
-                    console.log(angular.toJson(model));
-                    return BackendAPIService.postAPIfile(angular.toJson(model)).then(function () {
+                    console.log(model);
+                    //console.log(angular.toJson(model));
+                    return BackendAPIService.postAPIfile(model).then(function () {
                         console.log('api sent -> reload');
                     });
                 };
