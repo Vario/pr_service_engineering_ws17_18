@@ -1,0 +1,17 @@
+<h1>Compare API's</h1>
+<h3 class="p-3 mb-2 bg-danger text-white">Compare the following two apis</h3>
+</br>
+<h2>API's</h2>
+<ul class="apicompareList">
+    <div ng-repeat = "api in ngDialogData">
+        <label>
+            <li>
+                <h3>{{api.timestamp}}</h3>
+            </li>
+        </label>
+    </div>
+</ul>
+</br>
+<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="closeDialog()">
+    Evaluate now
+</button>

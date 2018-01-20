@@ -42,32 +42,6 @@
                 console.log($scope.selectedComparison);
             };
 
-            /*$scope.canCompare = function(e) {
-                var ct = 0;
-                if($scope.selectedApi) {
-                    for(var i = 0; i < $scope.selectedApi.versions.length; i++){
-                        var version =  $scope.selectedApi.versions[i];
-                        //console.log("Checked"+""+version.checked);
-                        if(version.checked) {
-                            ct+=1;
-                            //console.log(version.checked)
-                        }
-
-                        for(var j = 0; j < version.revisions.length; j++){
-                            var revision = version.revisions[j];
-                            if(revision.checked) {
-                                ct+= 1;
-                            }
-                        }
-                    }
-                }
-
-                if(ct == 2) {
-                    return true;
-                }
-                return false;
-            };*/
-
             loadData();
 
             function loadData() {
@@ -156,7 +130,7 @@
                         angular.forEach(rules, function (rule) {
                             rule.checked = true;
                         });
-                        $scope.showValidationDialog(rules);
+                        $scope.showValidationDialog(e.file,rules);
                     }
                 });
             };
@@ -168,7 +142,41 @@
                 });
             };
 
-            $scope.showValidationDialog = function(file, evalRules) {
+            $scope.showCompareDialog = function() {
+                var dialog = ngDialog.open({
+                    template: 'app/modules/apieval/compare.tpl.html',
+                    showClose: true,
+                    className:"ngdialog-theme-default",
+                    data:$scope.selectedComparison,
+                    controller: ['$scope', function($scope) {
+                        // controller logic
+                        $scope.closeDialog = function() {
+                            //Pass apis to close handler
+                            dialog.close($scope.ngDialogData);
+                        };
+                    }]
+                });
+
+                dialog.closePromise.then(function (data) {
+                    console.log("compare");
+                    $scope.loading.inc();
+                    var apis = [data.value[0].id, data.value[1].id];
+                    APIEvalService.compareAPIS(apis).then(function (data) {
+                        console.log(data);
+                        $scope.loading.dec();
+                        loadData();
+                        $scope.selectedApi.expanded = true;
+                        $scope.selectedVersion.expanded = true;
+                        $scope.selectedFile.expanded = true;
+                    }).catch(function (error) {
+                        $scope.loading.dec();
+                        console.log("Error comparing api");
+                        console.error(error);
+                    });
+                });
+            };
+
+            $scope.showValidationDialog = function(fileid, evalRules) {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/settings.apieval.tpl.html',
                     showClose: true,
@@ -208,14 +216,18 @@
                 }).then(function (){
                     console.log("validate");
                     $scope.loading.inc();
-                    APIEvalService.validateAPI([file]).then(function (data) {
+                    APIEvalService.validateAPI(fileid).then(function (data) {
                         console.log(data);
                         $scope.loading.dec();
                         loadData();
                         $scope.selectedApi.expanded = true;
                         $scope.selectedVersion.expanded = true;
                         $scope.selectedFile.expanded = true;
-                     });
+                     }).catch(function (error) {
+                        $scope.loading.dec();
+                        console.log("Error validating  api");
+                        console.error(error);
+                    });
                 });
             };
 
@@ -311,10 +323,14 @@
                             //console.log('e readAsText target = ', e.target);
                             APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
                                 loadData();
+                            }).catch(function (error) {
+                                console.log("Error uploading new api");
+                                console.error(error);
                             });
                         };
                     })(file);
                     reader.readAsText(file);
+
                 }
             };
 
@@ -328,8 +344,11 @@
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
                             APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
-                                console.log("new api response: " + resp);
+                                console.log("new api version response: " + resp);
                                 loadData();
+                            }).catch(function (error) {
+                                console.log("Error uploading api to existing api");
+                                console.error(error);
                             });
                         };
                     })(file);

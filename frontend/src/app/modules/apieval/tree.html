@@ -63,7 +63,7 @@
                         <a ng-click="validate(revision)">
                           <img src="/icons/validate.svg" class="img-validate" alt="validate api" />
                         </a>
-                        <a ng-show="selectedComparison.length >= 2 && revision.checked">
+                        <a ng-show="selectedComparison.length >= 2 && revision.checked" ng-click="showCompareDialog()">
                           <img src="/icons/compare.svg" class="img-validate" alt="validate api" />
                         </a>
                         <a target="_blank" href="{{revision.apifileurl}}" download="swagger-api.pdf">

@@ -81,14 +81,23 @@
                     });
                 };
 
-                self.validateAPI = function(fileids) {
+                self.validateAPI = function(fileid) {
                     var validationObject =
                         {
-                            "type": "validation",
+                            "file-id": fileid
+                        };
+                    return BackendAPIService.validteAPIreport(validationObject).then(function () {
+                        console.log('api validation sent -> reload');
+                    });
+                };
+
+                self.compareAPIS = function(fileids) {
+                    var comparisonObject =
+                        {
                             "file-ids": fileids
                         };
-                    return BackendAPIService.postAPIreport(validationObject).then(function () {
-                        console.log('api validation sent -> reload');
+                    return BackendAPIService.compareAPIReport(comparisonObject).then(function () {
+                        console.log('api compare sent');
                     });
                 };
             }
