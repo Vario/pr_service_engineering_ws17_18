@@ -41,19 +41,19 @@ public class ReportsApiController implements ReportsApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        UUID settingsId;
+        /*UUID settingsId;
         try {
             UUID apiId = FileHelpers.getApiIdForFileIds(fileIds);
             settingsId = SettingsHelpers.getSettingsForApi(apiId);
         } catch (MultipleResultsException e) {
             System.out.println("Given apis to compare must have the same settings");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        }*/
 
         //Changes von doc1 zu doc2
-        FileHelpers fileHelpers = new FileHelpers();
+        /*FileHelpers fileHelpers = new FileHelpers();
         Object s = fileHelpers.getSwaggerDocForFileId(fileIds.get(0));
-        System.out.println(s);
+        System.out.println(s);*/
 
         String url1 = ControllerLinkBuilder.linkTo(
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
@@ -63,8 +63,10 @@ public class ReportsApiController implements ReportsApi {
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(1))
         ).toUri().toString();
 
+        //System.out.println(url1);
+        //System.out.println(url2);
 
-        SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration("http://petstore.swagger.io/v2/swagger.json","http://petstore.swagger.io/v2/swagger.json");
+        SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration(url1,url2);
         HashMap<String,List<Change>> changes = swaggerDiffIntegration.render();
         ComparisonReportResponse response = new ComparisonReportResponse();
 
@@ -72,6 +74,8 @@ public class ReportsApiController implements ReportsApi {
         paths.setChanged(changes.get("changed"));
         paths.setNew(changes.get("new"));
         paths.setRemoved(changes.get("removed"));
+
+        //System.out.println(paths);
 
         response.setFileIds(file.getFileIds());
         response.setPaths(paths);
