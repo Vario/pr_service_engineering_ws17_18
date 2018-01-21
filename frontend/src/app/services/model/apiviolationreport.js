@@ -13,7 +13,7 @@
 
                 self.violations = undefined;
                 self.violations_count = undefined;
-                self.message = undefined
+                self.message = undefined;
                 function APIViolationReportModel(data) {
                     var self = this;
                     console.log(data);
