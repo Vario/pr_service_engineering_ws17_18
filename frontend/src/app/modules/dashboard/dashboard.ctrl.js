@@ -266,6 +266,7 @@
             };
 
             $scope.showComparisonReport = function() {
+                console.log($scope.selectedComparisonReport);
                 var dialog = ngDialog.open({
                     template: 'app/modules/reports/comparison.tpl.html',
                     showClose: true,

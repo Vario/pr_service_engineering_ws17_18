@@ -7,9 +7,9 @@
 
     <span class="border border-primary"></span>
     <div>
-        <b>API:</b> API</br>
-        <b>Version:</b> Version</br>
-        <b>Revision:</b> Revision</br>
+        <b>API:</b> {{selectedApi.name}}</br>
+        <b>Version:</b> {{selectedVersion.number}}</br>
+        <b>Revision:</b> {{selectedFile.timestamp}}</br>
     </div>
     <b><p class="p-3 mb-2 bg-primary text-white text-center">COMPARED TO</p></b>
     <div>
@@ -20,32 +20,51 @@
     </br>
     <h2>Change Log:</h2>
     <div>
-        <h3 class="newEndpoints">New Endpoints:{{selectedReport.violations.violations_count.must}}</h3>
-        <h3 class="removedEndpoints">Removed Endpoints:{{selectedReport.violations.violations_count.should}}</h3>
-        <h3 class="changedEndpoints">Changed Endpoints:{{selectedReport.violations.violations_count.may}}</h3>
+        <h3 class="newEndpoints">New Endpoints: </h3>
+        <h3 class="removedEndpoints">Removed Endpoints: </h3>
+        <h3 class="changedEndpoints">Changed Endpoints: </h3>
     </div>
     </br>
     <h2>Changes:</h2>
-    <h3><b>What's new</b></h3>
+    <div class="p-3 mb-2 bg-success text-white"><b>What's new</b></div>
     <ul>
-        <li>Endpoint // Description</li>
+        <div ng-repeat=" new in selectedComparisonReport.paths.new">
+            <li><b>{{new.endpoint}}</b> // {{new.description}}</li>
+        </div>
     </ul>
 
-    <h3><b>What's removed</b></h3>
+    <div class="p-3 mb-2 bg-danger text-white"><h3><b>What's removed</b></h3></div>
     <ul>
-        <li>Endpoint // Description</li>
+        <div ng-repeat=" removed in selectedComparisonReport.paths.removed">
+            <li><b>{{removed.endpoint}}</b> // {{removed.description}}</li>
+        </div>
     </ul>
 
-    <h3><b>What's changed</b></h3>
+    <div class="p-3 mb-2 bg-warning text-dark"><h3><b>What's changed</b></h3></div>
     <ul>
-        <li>Endpoint // Description</li>
-        <ul>
-            Parameter
-            <li>p1</li>
-            <li>...</li>
-            Return Type
-            <li>rt1</li>
-            <li>...</li>
-        </ul>
+        <div ng-repeat=" changed in selectedComparisonReport.paths.changed">
+            <br>
+            <li><b>{{changed.endpoint}}</b> // {{changed.description}}</li>
+            <ul>
+                <div ng-if = "changed.parameter != null">
+                    <p class="text-info">Parameter</p>
+                    <ul>
+                        <div ng-repeat="parameter in changed.parameter">
+                            <li><b>{{parameter.change}}</b> // {{parameter.description}}</li>
+                        </div>
+                    </ul>
+                </div>
+                <div ng-if = "changed.returntype != null">
+                    <p class="text-info">Return Type</p>
+                    <ul>
+                        <div ng-repeat="returntype in changed.returntype">
+                            <li><b>{{returntype.change}}</b> // {{returntype.description}}</li>
+                        </div>
+                    </ul>
+                </div>
+            </ul>
+            <br>
+            -------------------------------------------------------------------
+        </div>
     </ul>
 </div>
