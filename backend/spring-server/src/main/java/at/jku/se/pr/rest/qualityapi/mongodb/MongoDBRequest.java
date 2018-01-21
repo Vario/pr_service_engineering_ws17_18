@@ -23,7 +23,7 @@ public class MongoDBRequest {
     private MongoCollection<Document> collection;
 
     public MongoDBRequest(String collectionName){
-        this.mongo = new MongoClient( "localhost" , 27017 );
+        this.mongo = MongoClientFactory.getMongoClient();
         this.database = mongo.getDatabase("restquality");
         this.collection = database.getCollection(collectionName);
     }
