@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ChangeItem;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -170,6 +172,41 @@ public class Change   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Document toBsonDocument(){
+    Document d = new Document();
+
+    /* Endpoint */
+    d.append("endpoint", this.endpoint);
+
+    /* Description */
+    d.append("description", this.description);
+
+    /* Parameter */
+    if(this.parameter != null) {
+      List<Document> dParameter = new ArrayList<>();
+      for (ChangeItem c : this.parameter) {
+        dParameter.add(c.toBsonDocument());
+      }
+      d.append("parameter", dParameter);
+    } else {
+      d.append("parameter", null);
+    }
+
+    /* Return Types */
+    if(this.returntype != null){
+      List<Document> dReturnTypes = new ArrayList<>();
+      for (ChangeItem c : this.returntype){
+        dReturnTypes.add(c.toBsonDocument());
+      }
+      d.append("returntype", dReturnTypes);
+    } else {
+      d.append("returntype", null);
+    }
+
+
+    return d;
   }
 }
 

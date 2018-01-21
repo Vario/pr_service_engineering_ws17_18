@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Change;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -155,5 +157,33 @@ public class ComparisonReportResponsePaths   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public Document toBsonDocument(){
+    Document d = new Document();
+
+    /* new */
+    List<Document> dNew = new ArrayList<>();
+    for (Change c : this._new){
+      dNew.add(c.toBsonDocument());
+    }
+    d.append("new", dNew);
+
+    /* Changed */
+    List<Document> dChanged = new ArrayList<>();
+    for (Change c : this.changed){
+      dChanged.add(c.toBsonDocument());
+    }
+    d.append("changed", dChanged);
+
+    /* Removed */
+    List<Document> dRemoved = new ArrayList<>();
+    for (Change c : this.removed){
+      dRemoved.add(c.toBsonDocument());
+    }
+    d.append("removed", dRemoved);
+
+    return d;
+  }
+
 }
 

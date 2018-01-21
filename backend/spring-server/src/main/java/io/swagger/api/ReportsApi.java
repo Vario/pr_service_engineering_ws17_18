@@ -40,7 +40,7 @@ public interface ReportsApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<ComparisonReportResponse> reportsComparisonPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ComparisonReportRequest file);
+    ResponseEntity<?> reportsComparisonPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ComparisonReportRequest file);
 
 
     @ApiOperation(value = "Create a new violation report", notes = "", response = ViolationReportResponse.class, tags={ "Reports API", })
@@ -53,6 +53,6 @@ public interface ReportsApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<ViolationReportResponse> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file);
+    ResponseEntity<?> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file);
 
 }

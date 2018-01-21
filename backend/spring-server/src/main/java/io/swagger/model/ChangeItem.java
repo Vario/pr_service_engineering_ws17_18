@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.bson.Document;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -100,6 +102,12 @@ public class ChangeItem   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Document toBsonDocument(){
+    return new Document()
+            .append("change", this.change)
+            .append("description", this.description);
   }
 }
 

@@ -33,27 +33,26 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class ReportsApiController implements ReportsApi {
 
 
-    public ResponseEntity<ComparisonReportResponse> reportsComparisonPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ComparisonReportRequest file) {
+    public ResponseEntity<?> reportsComparisonPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ComparisonReportRequest file) {
         List<UUID> fileIds = file.getFileIds();
 
         if(fileIds.size() != 2){
-            System.out.println("For comparison are two revisions needed");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            ApplicationError error = new ApplicationError();
+            error.setCode(400);
+            error.setMessage("For comparison are exactly two files needed");
+            return new ResponseEntity<>(error ,HttpStatus.BAD_REQUEST);
         }
 
-        /*UUID settingsId;
+        UUID settingsId;
         try {
             UUID apiId = FileHelpers.getApiIdForFileIds(fileIds);
             settingsId = SettingsHelpers.getSettingsForApi(apiId);
         } catch (MultipleResultsException e) {
-            System.out.println("Given apis to compare must have the same settings");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }*/
-
-        //Changes von doc1 zu doc2
-        /*FileHelpers fileHelpers = new FileHelpers();
-        Object s = fileHelpers.getSwaggerDocForFileId(fileIds.get(0));
-        System.out.println(s);*/
+            ApplicationError error = new ApplicationError();
+            error.setCode(400);
+            error.setMessage("Given apis to compare must have the same settings");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
 
         String url1 = ControllerLinkBuilder.linkTo(
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
@@ -62,9 +61,6 @@ public class ReportsApiController implements ReportsApi {
         String url2 = ControllerLinkBuilder.linkTo(
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(1))
         ).toUri().toString();
-
-        //System.out.println(url1);
-        //System.out.println(url2);
 
         SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration(url1,url2);
         HashMap<String,List<Change>> changes = swaggerDiffIntegration.render();
@@ -75,15 +71,20 @@ public class ReportsApiController implements ReportsApi {
         paths.setNew(changes.get("new"));
         paths.setRemoved(changes.get("removed"));
 
-        //System.out.println(paths);
-
         response.setFileIds(file.getFileIds());
         response.setPaths(paths);
 
-        return new ResponseEntity<ComparisonReportResponse>(HttpStatus.OK);
+        /* Add to Database */
+        Document docToInsert = new Document()
+                .append("file-ids", fileIds)
+                .append("paths", paths.toBsonDocument());
+        MongoDBRequest mongo = new MongoDBRequest("files");
+        mongo.createAndAddToSet("file-id", fileIds.get(0), "comparison-reports", docToInsert);
+
+        return new ResponseEntity<ComparisonReportResponse>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ViolationReportResponse> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file) {
+    public ResponseEntity<?> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file) {
         UUID fileId = file.getFileId();
 
         if (fileId == null) {
@@ -107,13 +108,6 @@ public class ReportsApiController implements ReportsApi {
 
 
         /* Create Report in MongoDB */
-        /*Document docToInsert = new Document()
-                .append("type", "violation")
-                .append("violations", violations);
-        MongoDBRequest mongo = new MongoDBRequest("files");
-        mongo.createAndAddToSet("file-id", fileId, "violation-reports", docToInsert);*/
-        Document docToInsert = new Document()
-                .append("violations", violations);
         MongoDBRequest mongo = new MongoDBRequest("files");
         mongo.update(
                 eq("file-id", fileId),
