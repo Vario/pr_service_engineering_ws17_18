@@ -57,6 +57,7 @@
                     }, console.error);
                 }
 
+
                 // all calls without authorization check
                 self.post = function (path, data, headers) {
                     return backendCall(self, 'POST', path, data, headers);
@@ -120,7 +121,7 @@
                 };
 
                 self.compareAPIReport = function (apiids) {
-                    return self.post('/reports/comparison',[apiids]);
+                    return self.post('/reports/comparison',apiids);
                 };
 
                 self.getRules = function() {
