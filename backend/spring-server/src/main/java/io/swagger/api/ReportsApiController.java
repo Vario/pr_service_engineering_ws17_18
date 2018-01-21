@@ -43,17 +43,6 @@ public class ReportsApiController implements ReportsApi {
             return new ResponseEntity<>(error ,HttpStatus.BAD_REQUEST);
         }
 
-        UUID settingsId;
-        /*try {
-            UUID apiId = FileHelpers.getApiIdForFileIds(fileIds);
-            settingsId = SettingsHelpers.getSettingsForApi(apiId);
-        } catch (MultipleResultsException e) {
-            ApplicationError error = new ApplicationError();
-            error.setCode(400);
-            error.setMessage("Given apis to compare must have the same settings");
-            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }*/
-
         String url1 = ControllerLinkBuilder.linkTo(
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
         ).toUri().toString();
@@ -88,8 +77,10 @@ public class ReportsApiController implements ReportsApi {
         UUID fileId = file.getFileId();
 
         if (fileId == null) {
-            System.out.println("No file-id given");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            ApplicationError error = new ApplicationError();
+            error.setCode(400);
+            error.setMessage("No file-id given");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
 
         UUID apiId = FileHelpers.getApiIdForFileId(fileId);
