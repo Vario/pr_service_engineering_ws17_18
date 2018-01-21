@@ -4,7 +4,16 @@
     <h3 ng-show="selectedVersion">Version: {{selectedVersion.number}}</h3>
     <h3 ng-show="selectedFile">Revision: {{selectedFile.timestamp}}</h3>
     <h3 ng-show="selectedReport">Report: {{selectedReport.type}} Violations:{{selectedReport.violations.violations.length}}</h3>
+
     <div>
+      <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showViolationReport()" ng-show="selectedViolationReport">
+        Show Violation Report
+      </button>
+      <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showComparisonReport()" ng-show="selectedComparisonReport">
+        Show Comparison Report
+      </button>
+    </div>
+    <div class="swagger-ui-box">
       <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showSwaggerUI=!showSwaggerUI" ng-show="selectedFile">
         <div  ng-show="!showSwaggerUI">
           Show Swagger-UI
@@ -19,12 +28,5 @@
       </div>
     </div>
   </div>
-  <div>
-    <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showViolationReport()" ng-show="selectedViolationReport">
-      Show Violation Report
-    </button>
-    <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showComparisonReport()" ng-show="selectedComparisonReport">
-      Show Comparison Report
-    </button>
-  </div>
+
 </div>
