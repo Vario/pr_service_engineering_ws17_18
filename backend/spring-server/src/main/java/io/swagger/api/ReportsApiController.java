@@ -44,7 +44,7 @@ public class ReportsApiController implements ReportsApi {
         }
 
         UUID settingsId;
-        try {
+        /*try {
             UUID apiId = FileHelpers.getApiIdForFileIds(fileIds);
             settingsId = SettingsHelpers.getSettingsForApi(apiId);
         } catch (MultipleResultsException e) {
@@ -52,7 +52,7 @@ public class ReportsApiController implements ReportsApi {
             error.setCode(400);
             error.setMessage("Given apis to compare must have the same settings");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }
+        }*/
 
         String url1 = ControllerLinkBuilder.linkTo(
                 methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
