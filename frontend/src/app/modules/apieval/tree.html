@@ -98,7 +98,8 @@
                             <span ng-if="violation.violations !=0">
                               <img src="./icons/validationfalse.svg"/>
                             </span>-->
-                            comparison (0)
+                            Comparison Report - {{comparedTo(comparison).api}} ({{comparison.paths.new.length}}, {{comparison.paths.removed.length}},
+                            {{comparison.paths.changed.length}})
                           </a>
                         </li>
                       </div>

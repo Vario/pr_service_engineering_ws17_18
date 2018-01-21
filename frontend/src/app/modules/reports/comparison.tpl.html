@@ -13,27 +13,27 @@
     </div>
     <b><p class="p-3 mb-2 bg-primary text-white text-center">COMPARED TO</p></b>
     <div>
-        <b>API:</b> API</br>
-        <b>Version:</b> Version</br>
-        <b>Revision:</b> Revision</br>
+        <b>API:</b> {{comparedTo(selectedComparisonReport).api}}</br>
+        <b>Version:</b> {{comparedTo(selectedComparisonReport).version}}</br>
+        <b>Revision:</b> {{comparedTo(selectedComparisonReport).revision}}</br>
     </div>
     </br>
     <h2>Change Log:</h2>
     <div>
-        <h3 class="newEndpoints">New Endpoints: </h3>
-        <h3 class="removedEndpoints">Removed Endpoints: </h3>
-        <h3 class="changedEndpoints">Changed Endpoints: </h3>
+        <h3 class="newEndpoints">New Endpoints: {{selectedComparisonReport.paths.new.length}}</h3>
+        <h3 class="removedEndpoints">Removed Endpoints: {{selectedComparisonReport.paths.removed.length}}</h3>
+        <h3 class="changedEndpoints">Changed Endpoints: {{selectedComparisonReport.paths.changed.length}}</h3>
     </div>
     </br>
     <h2>Changes:</h2>
-    <div class="p-3 mb-2 bg-success text-white"><b>What's new</b></div>
+    <div class="p-3 mb-2 bg-success text-dark"><b>What's new</b></div>
     <ul>
         <div ng-repeat=" new in selectedComparisonReport.paths.new">
             <li><b>{{new.endpoint}}</b> // {{new.description}}</li>
         </div>
     </ul>
 
-    <div class="p-3 mb-2 bg-danger text-white"><h3><b>What's removed</b></h3></div>
+    <div class="p-3 mb-2 bg-danger text-dark"><h3><b>What's removed</b></h3></div>
     <ul>
         <div ng-repeat=" removed in selectedComparisonReport.paths.removed">
             <li><b>{{removed.endpoint}}</b> // {{removed.description}}</li>
