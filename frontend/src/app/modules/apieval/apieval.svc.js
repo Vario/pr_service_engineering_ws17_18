@@ -93,6 +93,7 @@
                         {
                             "file-ids": fileids
                         };
+                    console.log(comparisonObject);
                     return BackendAPIService.compareAPIReport(comparisonObject).then(function () {
                         console.log('api compare sent');
                     });

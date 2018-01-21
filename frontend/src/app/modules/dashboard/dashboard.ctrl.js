@@ -42,6 +42,7 @@
                         version : v,
                         revision : r
                     };
+
                     r.checked = true;
                     $scope.selectedComparison.push(o);
                 }else{
@@ -49,7 +50,7 @@
                         if($scope.selectedComparison[g].revision == r){
                             r.checked = false;
                             if($scope.selectedComparison.length == 1) $scope.selectedComparison = [];
-                            $scope.selectedComparison.splice(g,g);
+                            $scope.selectedComparison = $scope.selectedComparison.splice(g,g);
                         }
                     }
                 }
@@ -166,17 +167,21 @@
                     scope: $scope,
                     controller: ['$scope', function ($scope) {
                         // controller logic
-                        $scope.closeDialog = function () {
+                        $scope.closeDialog = function (compare) {
                             //Pass apis to close handler
-                            dialog.close($scope.ngDialogData);
+                            if(compare) {
+                                dialog.close($scope.ngDialogData);
+                            } else {
+                                dialog.closeByEscape();
+                            }
                         };
                     }]
                 });
 
                 dialog.closePromise.then(function (data) {
-                    console.log("compare");
                     $scope.loading.inc();
-                    var apis = [data.value[0].id, data.value[1].id];
+                    var apis = [data.value[0].revision.file, data.value[1].revision.file];
+                    console.log("compare:" + apis);
                     APIEvalService.compareAPIS(apis).then(function (data) {
                         console.log(data);
                         $scope.loading.dec();
