@@ -90,7 +90,8 @@
 
                       <div ng-repeat = "comparison in revision.comparisonreport">
                         <li ng-show = "revision.expanded">
-                          <a ng-click = "select(api,version, revision, null, comparison)">
+                          <a ng-click = "select(api,version, revision, null, comparison)" data-toggle="tooltip" data-html="true"
+                             title="{{comparedTo(comparison).api}} - {{comparedTo(comparison).version}} - {{comparedTo(comparison).revision}}">
                             <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
                             <!--<span ng-if="violation.violations === 0">
                               <img src="./icons/validationtrue.svg"/>
@@ -98,8 +99,9 @@
                             <span ng-if="violation.violations !=0">
                               <img src="./icons/validationfalse.svg"/>
                             </span>-->
-                            Comparison Report - {{comparedTo(comparison).api}} ({{comparison.paths.new.length}}, {{comparison.paths.removed.length}},
+                            Comparison Report ({{comparison.paths.new.length}}, {{comparison.paths.removed.length}},
                             {{comparison.paths.changed.length}})
+
                           </a>
                         </li>
                       </div>
