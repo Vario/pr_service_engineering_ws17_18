@@ -280,8 +280,9 @@
             };
 
             $scope.comparedTo = function(comparison) {
-                console.log("ay");
+                //console.log("ay");
                 //console.log(comparison["file-ids"]);
+                var obj = {};
                 var id = comparison["file-ids"][1];
                 for(var i = 0; i < $scope.apis.length; i++){
                     var api = $scope.apis[i];
@@ -292,7 +293,7 @@
                         for(var h = 0; h < revisions.length; h++){
                             var revision = revisions[h];
                             if(revision.file == id){
-                                var obj = {
+                                obj = {
                                     revision : revision.timestamp,
                                     version : version.number,
                                     api : api.name
