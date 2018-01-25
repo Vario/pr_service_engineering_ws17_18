@@ -199,6 +199,7 @@
                 });
             };
 
+
             $scope.showValidationDialog = function(fileid, evalRules) {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/settings.apieval.tpl.html',
@@ -280,9 +281,6 @@
                     scope:$scope
                 });
 
-                dialog.closePromise.then(function () {
-
-                });
             };
 
             $scope.comparedTo = function(comparison) {

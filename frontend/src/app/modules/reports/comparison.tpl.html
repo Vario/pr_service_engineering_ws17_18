@@ -1,8 +1,10 @@
-<button class="btn btn-primary" ng-print print-element-id="printThisElement">
-    <i class="fa fa-print"></i> <img src="/icons/printer.svg" />
+<button class="btn btn-primary" ng-print print-element-id="printComparisonElement">
+    <i class="fa fa-print"></i><img src="/icons/printer.svg" />
 </button>
 </br>
-<div class="reportContainer" id="printThisElement">
+<div class="reportContainer" id="printComparisonElement">
+    <div id="printSection">
+
     <h1>Comparison Report</h1>
 
     <span class="border border-primary"></span>
@@ -41,30 +43,33 @@
     </ul>
 
     <div class="p-3 mb-2 bg-warning text-dark"><h3><b>What's changed</b></h3></div>
-    <ul>
-        <div ng-repeat=" changed in selectedComparisonReport.paths.changed">
-            <br>
-            <li><b>{{changed.endpoint}}</b> // {{changed.description}}</li>
-            <ul>
-                <div ng-if = "changed.parameter != null">
-                    <p class="text-info">Parameter</p>
-                    <ul>
-                        <div ng-repeat="parameter in changed.parameter">
-                            <li><b>{{parameter.change}}</b> // {{parameter.description}}</li>
-                        </div>
-                    </ul>
-                </div>
-                <div ng-if = "changed.returntype != null">
-                    <p class="text-info">Return Type</p>
-                    <ul>
-                        <div ng-repeat="returntype in changed.returntype">
-                            <li><b>{{returntype.change}}</b> // {{returntype.description}}</li>
-                        </div>
-                    </ul>
-                </div>
-            </ul>
-            <br>
-            -------------------------------------------------------------------
-        </div>
-    </ul>
+    <div>
+        <ul>
+            <div ng-repeat="changed in selectedComparisonReport.paths.changed">
+                <br>
+                <li><b>{{changed.endpoint}}</b> // {{changed.description}}</li>
+                <ul>
+                    <div ng-if = "changed.parameter != null">
+                        <p class="text-info">Parameter</p>
+                        <ul>
+                            <div ng-repeat="parameter in changed.parameter">
+                                <li><b>{{parameter.change}}</b> // {{parameter.description}}</li>
+                            </div>
+                        </ul>
+                    </div>
+                    <div ng-if = "changed.returntype != null">
+                        <p class="text-info">Return Type</p>
+                        <ul>
+                            <div ng-repeat="returntype in changed.returntype">
+                                <li><b>{{returntype.change}}</b> // {{returntype.description}}</li>
+                            </div>
+                        </ul>
+                    </div>
+                </ul>
+                <br>
+                -------------------------------------------------------------------
+            </div>
+        </ul>
+    </div>
+    </div>
 </div>
