@@ -205,14 +205,18 @@
                     data:evalRules,
                     controller: ['$scope', function($scope) {
                         // controller logic
-                        $scope.closeDialog = function() {
-                            var checkedRules = [];
-                            angular.forEach($scope.ngDialogData, function (rule) {
-                                if(rule.checked) {
-                                    checkedRules.push(rule.code);
-                                }
-                            });
-                            dialog.close(checkedRules);
+                        $scope.closeDialog = function(validate) {
+                            if(validate) {
+                                var checkedRules = [];
+                                angular.forEach($scope.ngDialogData, function (rule) {
+                                    if(rule.checked) {
+                                        checkedRules.push(rule.code);
+                                    }
+                                });
+                                dialog.close(checkedRules);
+                            } else {
+                                dialog.closeByEscape();
+                            }
                         };
                     }]
                 });
