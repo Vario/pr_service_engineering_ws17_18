@@ -309,15 +309,9 @@
                 return obj;
             };
 
-            $scope.showSwagger = function(){
-                var dialog = ngDialog.open({
-                    template: 'app/modules/swaggerui/swaggerinfo.tpl.html',
-                    showClose: true,
-                    className:"ngdialog-theme-default",
-                    scope:$scope
-                });
-            };
-
+            /*
+            Method to handle a selection in the tree template for api, version, revision or report
+             */
             $scope.select = function(api, version, revision, violationreport, comparisonreport){
                 $scope.selectedComparisonReport = undefined;
                 $scope.selectedViolationReport = undefined;
@@ -339,7 +333,10 @@
                 if(comparisonreport) $scope.selectedComparisonReport = comparisonreport;
             };
 
-            function setcurrentFileUrl(){
+            /*
+            Method to set current File which should be shown in info view template
+             */
+             function setcurrentFileUrl(){
                 if ($scope.selectedFile) {
                     $scope.apifileurl = $scope.selectedFile.apifileurl;
                 } else {
@@ -355,13 +352,10 @@
                 console.log("current apifileurl:" + $scope.apifileurl);
             }
 
-            $scope.trustSrc = function(src) {
-                var trust = $sce.trustAsResourceUrl(src);
-                console.log("trust:" + trust);
-                return trust;
-            };
-
-            function getMaxRevisionFor(api) {
+            /*
+            Helper Method to get the max revision for an api
+             */
+             function getMaxRevisionFor(api) {
                 {
                     var maxrev;
                     //console.log("check max revision for api:" + api.name);
@@ -382,6 +376,10 @@
                     return maxrev;
                 }
             }
+
+            /*
+            Method which is called, when a new api should be uploaded
+             */
             $scope.uploadNewApi = function (files){
                 var file = files[0];
                 if(file != undefined) {
@@ -392,7 +390,7 @@
                     reader.onload = (function (file) {
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
-                            APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                            APIEvalService.postAPI(e.target.result).then(function (resp) {
                                 $scope.loading.dec();
                                 loadData();
                             }).catch(function (error) {
@@ -408,6 +406,9 @@
                 }
             };
 
+            /*
+            Method which is called, to Upload an api file to an existing api
+             */
             $scope.uploadToExistingApi = function (files, api) {
                 var file = files[0];
                 if(file != undefined) {
@@ -417,7 +418,7 @@
                     reader.onload = (function (file) {
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
-                            APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                            APIEvalService.postAPI(e.target.result, api).then(function (resp) {
                                 console.log("new api version response: " + resp);
                                 loadData();
                             }).catch(function (error) {
