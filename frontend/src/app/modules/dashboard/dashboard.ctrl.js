@@ -279,6 +279,32 @@
                 });
             };
 
+            $scope.comparedTo = function(comparison) {
+                //console.log("ay");
+                //console.log(comparison["file-ids"]);
+                var obj = {};
+                var id = comparison["file-ids"][1];
+                for(var i = 0; i < $scope.apis.length; i++){
+                    var api = $scope.apis[i];
+                    var versions = api.versions;
+                    for(var j = 0; j < versions.length; j++){
+                        var version = versions[j];
+                        var revisions = version.revisions;
+                        for(var h = 0; h < revisions.length; h++){
+                            var revision = revisions[h];
+                            if(revision.file == id){
+                                obj = {
+                                    revision : revision.timestamp,
+                                    version : version.number,
+                                    api : api.name
+                                };
+                            }
+                        }
+                    }
+                }
+                return obj;
+            };
+
             $scope.showSwagger = function(){
                 var dialog = ngDialog.open({
                     template: 'app/modules/swaggerui/swaggerinfo.tpl.html',
