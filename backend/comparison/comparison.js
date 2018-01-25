@@ -9,10 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post("/comparison", function(req, res){
-  //var oldSpec = req.body.oldSpec;
-  //var newSpec = req.body.newSpec;
-  var oldSpec = "http://quality.rest.patrickbuchner.at/api/v1/files/92165178-ac8c-4758-a8ee-f11787da6bf1"
-  var newSpec = "http://quality.rest.patrickbuchner.at/api/v1/files/ce8028d8-56a0-4097-8841-facd4fb547c9"
+  var oldSpec = req.body.oldSpec;
+  var newSpec = req.body.newSpec;
+  //var oldSpec = "http://quality.rest.patrickbuchner.at/api/v1/files/92165178-ac8c-4758-a8ee-f11787da6bf1"
+  //var newSpec = "http://quality.rest.patrickbuchner.at/api/v1/files/ce8028d8-56a0-4097-8841-facd4fb547c9"
 
   /*
     3-error
