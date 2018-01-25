@@ -36,25 +36,27 @@
             };
 
             $scope.selectComparison = function(a, v, r){
+                //if selected components are lower than 2 and passed revision is not checked
+                //check revision and add object to array
                 if($scope.selectedComparison.length < 2 && !r.checked){
                     var o = {
                         api : a,
                         version : v,
                         revision : r
                     };
-
                     r.checked = true;
                     $scope.selectedComparison.push(o);
-                }else{
-                    for(var g = 0; g < $scope.selectedComparison.length; g++){
-                        if($scope.selectedComparison[g].revision == r){
+                }
+                //if revision is checked, find it and remove it from selection
+                else if(r.checked) {
+                    for(var g = $scope.selectedComparison.length -1; g >= 0; g--){
+                        console.log($scope.selectedComparison[g].revision.id + "-" + r.id);
+                        if($scope.selectedComparison[g].revision.id == r.id){
+                            $scope.selectedComparison.splice(g,1);
                             r.checked = false;
-                            if($scope.selectedComparison.length == 1) $scope.selectedComparison = [];
-                            $scope.selectedComparison = $scope.selectedComparison.splice(g,g);
                         }
                     }
                 }
-                console.log($scope.selectedComparison);
             };
 
             loadData();
