@@ -10,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZallyIntegration {
-    private String uri = "http://localhost:7243";
+    private String uri;
     private List<Rule> enabledRules;
     private static ZallyIntegration instance;
     /*
         Singleton
     */
     private ZallyIntegration(){
-
+        String zallyHostname = System.getenv("JKU_REST_QUALITY_API_ZALLY_CONNECTION_STRING");
+        if(zallyHostname == null)
+            zallyHostname = "http://localhost:7243";
+        this.uri = zallyHostname;
     }
 
     public static synchronized ZallyIntegration getInstance () {

@@ -13,6 +13,8 @@ rest-quality-api:
         - "8080:8500"
     environment:
       JKU_REST_QUALITY_API_MONGO_DB_HOSTNAME: mongo-db
+      JKU_REST_QUALITY_API_ZALLY_CONNECTION_STRING: http://violation-api:7243
     links:
         - mongo-db
         - violation-api
+        - comparison-api

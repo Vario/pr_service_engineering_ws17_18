@@ -9,7 +9,6 @@ public class MongoClientFactory {
 
     public static MongoClient getMongoClient() {
         if(mongoClient == null){
-            System.out.println("NEW MONGOCLIENT INSTANCE");
             String mongoDbHostname = System.getenv("JKU_REST_QUALITY_API_MONGO_DB_HOSTNAME");
             if(mongoDbHostname == null)
                 mongoDbHostname = "localhost";
