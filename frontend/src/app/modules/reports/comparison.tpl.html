@@ -30,18 +30,18 @@
     <div>
         <div class="p-3 mb-2 bg-danger text-white"><b>Errors</b></div>
 
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr class = "table-info">
-                <th scope="col">RuleID</th>
-                <th scope="col">Method</th>
-                <th scope="col">Path</th>
-                <th scope="col">Message</th>
-            </tr>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">RuleID</th>
+                    <th scope="col">Method</th>
+                    <th scope="col">Path</th>
+                    <th scope="col">Message</th>
+                </tr>
             </thead>
             <tbody>
                 <tr ng-repeat = "error in selectedComparisonReport.changes.errors">
-                    <th class = "col-sm-3" style="vertical-align:middle">{{error.ruleId}}</th>
+                    <th style="vertical-align:middle">{{error.ruleId}}</th>
                     <td style="vertical-align:middle">{{error.method}}</td>
                     <td style="vertical-align:middle">{{error.path}}</td>
                     <td style="vertical-align:middle">{{error.message}}</td>
@@ -53,18 +53,18 @@
     <div>
         <div class="p-3 mb-2 bg-warning text-white"><h3><b>Warnings</b></h3></div>
 
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr class = "table-info">
-                <th scope="col">RuleID</th>
-                <th scope="col">Method</th>
-                <th scope="col">Path</th>
-                <th scope="col">Message</th>
-            </tr>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">RuleID</th>
+                    <th scope="col">Method</th>
+                    <th scope="col">Path</th>
+                    <th scope="col">Message</th>
+                </tr>
             </thead>
             <tbody>
             <tr ng-repeat = "warning in selectedComparisonReport.changes.warnings">
-                <th class = "col-sm-3" style="vertical-align:middle">{{warning.ruleId}}</th>
+                <th style="vertical-align:middle">{{warning.ruleId}}</th>
                 <td style="vertical-align:middle">{{warning.method}}</td>
                 <td style="vertical-align:middle">{{warning.path}}</td>
                 <td style="vertical-align:middle">{{warning.message}}</td>
@@ -74,20 +74,20 @@
     </div>
 
     <div>
-        <div class="p-3 mb-2 bg-success text-white"><h3><b>Infos</b></h3></div>
+        <div class="p-3 mb-2 bg-info text-white"><h3><b>Infos</b></h3></div>
 
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr class = "table-info">
-                <th scope="col">RuleID</th>
-                <th scope="col">Method</th>
-                <th scope="col">Path</th>
-                <th scope="col">Message</th>
-            </tr>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">RuleID</th>
+                    <th scope="col">Method</th>
+                    <th scope="col">Path</th>
+                    <th scope="col">Message</th>
+                </tr>
             </thead>
             <tbody>
             <tr ng-repeat = "info in selectedComparisonReport.changes.infos">
-                <th class = "col-sm-3" style="vertical-align:middle">{{info.ruleId}}</th>
+                <th style="vertical-align:middle">{{info.ruleId}}</th>
                 <td style="vertical-align:middle">{{info.method}}</td>
                 <td style="vertical-align:middle">{{info.path}}</td>
                 <td style="vertical-align:middle">{{info.message}}</td>
