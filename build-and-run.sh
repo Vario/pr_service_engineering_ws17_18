@@ -1,3 +1,5 @@
+set -e
+
 currdir=$(pwd)
 
 cd backend/spring-server

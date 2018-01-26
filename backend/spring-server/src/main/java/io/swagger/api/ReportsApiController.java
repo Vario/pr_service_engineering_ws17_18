@@ -1,7 +1,5 @@
 package io.swagger.api;
 
-import at.jku.se.pr.rest.qualityapi.integrations.SwaggerDiffIntegration;
-import at.jku.se.pr.rest.qualityapi.exceptions.MultipleResultsException;
 import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
 import at.jku.se.pr.rest.qualityapi.integrations.SwaggerDiffServiceIntegration;
 import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
@@ -19,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,8 +56,6 @@ public class ReportsApiController implements ReportsApi {
         } else {
             url1 = String.format("%s/api/v1/files/%s",apiDockerConnectionString,fileIds.get(0));
             url2 = String.format("%s/api/v1/files/%s",apiDockerConnectionString,fileIds.get(1));
-            System.out.println(url1);
-            System.out.println(url2);
         }
 
 
@@ -77,17 +72,20 @@ public class ReportsApiController implements ReportsApi {
         response.setPaths(paths);*/
 
         SwaggerDiffServiceIntegration diffService = new SwaggerDiffServiceIntegration();
-        Object diff = diffService.getDiff(url1, url2);
-        return new ResponseEntity<Object>(diff, HttpStatus.OK);
+        Object changes = diffService.getDiff(url1, url2);
+
+        ComparisonReportResponse response = new ComparisonReportResponse();
+        response.setFileIds(file.getFileIds());
+        response.setChanges(diffService.getChanges(changes));
 
         /* Add to Database */
-        /*Document docToInsert = new Document()
+        Document docToInsert = new Document()
                 .append("file-ids", fileIds)
-                .append("paths", paths.toBsonDocument());
+                .append("changes", changes);
         MongoDBRequest mongo = new MongoDBRequest("files");
         mongo.createAndAddToSet("file-id", fileIds.get(0), "comparison-reports", docToInsert);
 
-        return new ResponseEntity<ComparisonReportResponse>(response, HttpStatus.OK);*/
+        return new ResponseEntity<ComparisonReportResponse>(response, HttpStatus.OK);
     }
 
     public ResponseEntity<?> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file) {

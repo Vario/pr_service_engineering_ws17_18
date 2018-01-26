@@ -360,17 +360,17 @@ definitions:
       versions:
         type: array
         items:
-          $ref: '#/definitions/Version'
+          $ref: '#/definitions/VersionRequest'
   ApiTitle:
     type: object
     properties:
       title:
         type: string
         example: Petstore API
-  Version:
+  VersionRequest:
     type: object
     properties:
-      id:
+      number:
         type: string
         description: API Versioning
         example: "v1"
@@ -512,48 +512,36 @@ definitions:
           type: string
           format: uuid
           example: '3efc7632-e833-40cd-b002-abdfaf426e6c'
-      paths:
+      changes:
         type: object
         properties:
-          new:
+          errors:
             type: array
             items:
               $ref: '#/definitions/Change'
-          removed:
+          warnings:
             type: array
             items:
               $ref: '#/definitions/Change'
-          changed:
+          infos:
             type: array
             items:
               $ref: '#/definitions/Change'
   Change:
     type: object
     properties:
-      endpoint:
+      ruleId:
         type: string
-        example: "GET /pet"
-      description:
+        example: "delete-object-property"
+      message:
         type: string
-        example: "Find pets"
-      parameter:
-        type: array
-        items:
-          $ref: '#/definitions/ChangeItem'
-      returntype:
-        type: array
-        items:
-          $ref: '#/definitions/ChangeItem'
-  ChangeItem:
-    type: object
-    required: [change]
-    properties:
-      change:
+        example: "definitions/Order - Property complete deleted"
+      path:
         type: string
-        example: "ADDED body.newpet"
-      description:
+        example: "definitions/Order"
+      method:
         type: string
-        example: "A field for new pets"
+        example: ""
   SettingsCreationRequest:
     type: object
     properties:
@@ -607,4 +595,11 @@ definitions:
         type: integer
         format: int32
       message:
+        type: string
+  SwaggerDiffRequest:
+    type: object
+    properties:
+      oldSpec:
+        type: string
+      newSpec:
         type: string

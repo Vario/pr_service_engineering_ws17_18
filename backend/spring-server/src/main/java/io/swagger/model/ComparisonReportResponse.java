@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ComparisonReportResponsePaths;
+import io.swagger.model.ComparisonReportResponseChanges;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,14 +15,14 @@ import javax.validation.constraints.*;
 /**
  * ComparisonReportResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T11:43:31.507Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-26T10:05:32.415Z")
 
 public class ComparisonReportResponse   {
   @JsonProperty("file-ids")
   private List<UUID> fileIds = null;
 
-  @JsonProperty("paths")
-  private ComparisonReportResponsePaths paths = null;
+  @JsonProperty("changes")
+  private ComparisonReportResponseChanges changes = null;
 
   public ComparisonReportResponse fileIds(List<UUID> fileIds) {
     this.fileIds = fileIds;
@@ -53,25 +53,25 @@ public class ComparisonReportResponse   {
     this.fileIds = fileIds;
   }
 
-  public ComparisonReportResponse paths(ComparisonReportResponsePaths paths) {
-    this.paths = paths;
+  public ComparisonReportResponse changes(ComparisonReportResponseChanges changes) {
+    this.changes = changes;
     return this;
   }
 
    /**
-   * Get paths
-   * @return paths
+   * Get changes
+   * @return changes
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public ComparisonReportResponsePaths getPaths() {
-    return paths;
+  public ComparisonReportResponseChanges getChanges() {
+    return changes;
   }
 
-  public void setPaths(ComparisonReportResponsePaths paths) {
-    this.paths = paths;
+  public void setChanges(ComparisonReportResponseChanges changes) {
+    this.changes = changes;
   }
 
 
@@ -85,12 +85,12 @@ public class ComparisonReportResponse   {
     }
     ComparisonReportResponse comparisonReportResponse = (ComparisonReportResponse) o;
     return Objects.equals(this.fileIds, comparisonReportResponse.fileIds) &&
-        Objects.equals(this.paths, comparisonReportResponse.paths);
+        Objects.equals(this.changes, comparisonReportResponse.changes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileIds, paths);
+    return Objects.hash(fileIds, changes);
   }
 
   @Override
@@ -99,7 +99,7 @@ public class ComparisonReportResponse   {
     sb.append("class ComparisonReportResponse {\n");
     
     sb.append("    fileIds: ").append(toIndentedString(fileIds)).append("\n");
-    sb.append("    paths: ").append(toIndentedString(paths)).append("\n");
+    sb.append("    changes: ").append(toIndentedString(changes)).append("\n");
     sb.append("}");
     return sb.toString();
   }

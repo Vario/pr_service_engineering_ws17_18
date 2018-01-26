@@ -5,128 +5,105 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ChangeItem;
-import org.bson.Document;
-
-import java.util.ArrayList;
-import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Change
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-18T11:43:31.507Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-26T10:05:32.415Z")
 
 public class Change   {
-  @JsonProperty("endpoint")
-  private String endpoint = null;
+  @JsonProperty("ruleId")
+  private String ruleId = null;
 
-  @JsonProperty("description")
-  private String description = null;
+  @JsonProperty("message")
+  private String message = null;
 
-  @JsonProperty("parameter")
-  private List<ChangeItem> parameter = null;
+  @JsonProperty("path")
+  private String path = null;
 
-  @JsonProperty("returntype")
-  private List<ChangeItem> returntype = null;
+  @JsonProperty("method")
+  private String method = null;
 
-  public Change endpoint(String endpoint) {
-    this.endpoint = endpoint;
+  public Change ruleId(String ruleId) {
+    this.ruleId = ruleId;
     return this;
   }
 
    /**
-   * Get endpoint
-   * @return endpoint
+   * Get ruleId
+   * @return ruleId
   **/
-  @ApiModelProperty(example = "GET /pet", value = "")
+  @ApiModelProperty(example = "delete-object-property", value = "")
 
 
-  public String getEndpoint() {
-    return endpoint;
+  public String getRuleId() {
+    return ruleId;
   }
 
-  public void setEndpoint(String endpoint) {
-    this.endpoint = endpoint;
+  public void setRuleId(String ruleId) {
+    this.ruleId = ruleId;
   }
 
-  public Change description(String description) {
-    this.description = description;
+  public Change message(String message) {
+    this.message = message;
     return this;
   }
 
    /**
-   * Get description
-   * @return description
+   * Get message
+   * @return message
   **/
-  @ApiModelProperty(example = "Find pets", value = "")
+  @ApiModelProperty(example = "definitions/Order - Property complete deleted", value = "")
 
 
-  public String getDescription() {
-    return description;
+  public String getMessage() {
+    return message;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setMessage(String message) {
+    this.message = message;
   }
 
-  public Change parameter(List<ChangeItem> parameter) {
-    this.parameter = parameter;
-    return this;
-  }
-
-  public Change addParameterItem(ChangeItem parameterItem) {
-    if (this.parameter == null) {
-      this.parameter = new ArrayList<ChangeItem>();
-    }
-    this.parameter.add(parameterItem);
+  public Change path(String path) {
+    this.path = path;
     return this;
   }
 
    /**
-   * Get parameter
-   * @return parameter
+   * Get path
+   * @return path
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "definitions/Order", value = "")
 
-  @Valid
 
-  public List<ChangeItem> getParameter() {
-    return parameter;
+  public String getPath() {
+    return path;
   }
 
-  public void setParameter(List<ChangeItem> parameter) {
-    this.parameter = parameter;
+  public void setPath(String path) {
+    this.path = path;
   }
 
-  public Change returntype(List<ChangeItem> returntype) {
-    this.returntype = returntype;
-    return this;
-  }
-
-  public Change addReturntypeItem(ChangeItem returntypeItem) {
-    if (this.returntype == null) {
-      this.returntype = new ArrayList<ChangeItem>();
-    }
-    this.returntype.add(returntypeItem);
+  public Change method(String method) {
+    this.method = method;
     return this;
   }
 
    /**
-   * Get returntype
-   * @return returntype
+   * Get method
+   * @return method
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "", value = "")
 
-  @Valid
 
-  public List<ChangeItem> getReturntype() {
-    return returntype;
+  public String getMethod() {
+    return method;
   }
 
-  public void setReturntype(List<ChangeItem> returntype) {
-    this.returntype = returntype;
+  public void setMethod(String method) {
+    this.method = method;
   }
 
 
@@ -139,15 +116,15 @@ public class Change   {
       return false;
     }
     Change change = (Change) o;
-    return Objects.equals(this.endpoint, change.endpoint) &&
-        Objects.equals(this.description, change.description) &&
-        Objects.equals(this.parameter, change.parameter) &&
-        Objects.equals(this.returntype, change.returntype);
+    return Objects.equals(this.ruleId, change.ruleId) &&
+        Objects.equals(this.message, change.message) &&
+        Objects.equals(this.path, change.path) &&
+        Objects.equals(this.method, change.method);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(endpoint, description, parameter, returntype);
+    return Objects.hash(ruleId, message, path, method);
   }
 
   @Override
@@ -155,10 +132,10 @@ public class Change   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Change {\n");
     
-    sb.append("    endpoint: ").append(toIndentedString(endpoint)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    parameter: ").append(toIndentedString(parameter)).append("\n");
-    sb.append("    returntype: ").append(toIndentedString(returntype)).append("\n");
+    sb.append("    ruleId: ").append(toIndentedString(ruleId)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    path: ").append(toIndentedString(path)).append("\n");
+    sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -172,41 +149,6 @@ public class Change   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  public Document toBsonDocument(){
-    Document d = new Document();
-
-    /* Endpoint */
-    d.append("endpoint", this.endpoint);
-
-    /* Description */
-    d.append("description", this.description);
-
-    /* Parameter */
-    if(this.parameter != null) {
-      List<Document> dParameter = new ArrayList<>();
-      for (ChangeItem c : this.parameter) {
-        dParameter.add(c.toBsonDocument());
-      }
-      d.append("parameter", dParameter);
-    } else {
-      d.append("parameter", null);
-    }
-
-    /* Return Types */
-    if(this.returntype != null){
-      List<Document> dReturnTypes = new ArrayList<>();
-      for (ChangeItem c : this.returntype){
-        dReturnTypes.add(c.toBsonDocument());
-      }
-      d.append("returntype", dReturnTypes);
-    } else {
-      d.append("returntype", null);
-    }
-
-
-    return d;
   }
 }
 
