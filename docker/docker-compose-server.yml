@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  mongo-db:
+      image: mongo:3.7.1
+      networks:
+        main:
+          aliases:
+            - mongo-db
+
+  comparison-api:
+      image: 689213771070.dkr.ecr.eu-central-1.amazonaws.com/rest-quality-api:comparison-api
+      ports:
+              - "9000:9000"
+      networks:
+        main:
+          aliases:
+            - comparison-api
+  violation-api:
+      image: 689213771070.dkr.ecr.eu-central-1.amazonaws.com/rest-quality-api:violation-api
+      networks:
+        main:
+          aliases:
+            - violation-api
+
+  rest-quality-api:
+      image: 689213771070.dkr.ecr.eu-central-1.amazonaws.com/rest-quality-api:rest-quality-api
+      ports:
+          - "12567:8500"
+      environment:
+        JKU_REST_QUALITY_API_MONGO_DB_HOSTNAME: mongo-db
+        JKU_REST_QUALITY_API_ZALLY_CONNECTION_STRING: http://violation-api:7243
+        JKU_REST_QUALITY_API_SWAGGERDIFF_CONNECTION_STRING: http://comparison-api:9000
+        JKU_REST_QUALITY_API_DOCKER_CONNECTION_STRING: http://rest-quality-api:8500
+      networks:
+        main:
+          aliases:
+            - rest-quality-api
+networks:
+  main:
