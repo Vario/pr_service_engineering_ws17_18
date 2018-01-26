@@ -64,6 +64,48 @@
             function loadData() {
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {
+                    if($scope.apis != undefined) {
+                        for (var i = 0; i < $scope.apis.length; i++) {
+                            var api1 = $scope.apis[i];
+                            if (api1.expanded) {
+                                for (var j = 0; j < apis.length; j++) {
+                                    var api2 = apis[j];
+                                    if (api1.id == api2.id) {
+                                        apis[j].expanded = true;
+                                        var versions1 = api1.versions;
+                                        var versions2 = api2.versions;
+                                        for (var a = 0; a < versions1.length; a++) {
+                                            var v1 = versions1[a];
+                                            if (v1.expanded) {
+                                                v1 = versions1[a].number;
+                                                for (var b = 0; b < versions2.length; b++) {
+                                                    var v2 = versions1[b].number;
+                                                    if (v1 == v2) {
+                                                        apis[j].versions[b].expanded = true;
+                                                        var revisions1 = api1.versions[a].revisions;
+                                                        var revisions2 = api2.versions[b].revisions;
+                                                        for(var x = 0; x < revisions1.length; x++){
+                                                            var r1 = revisions1[x];
+                                                            if(r1.expanded){
+                                                                r1 = revisions1[x].id;
+                                                                for(var y = 0; y < revisions2.length; y++){
+                                                                    var r2 = revisions2[y].id;
+                                                                    if(r1 == r2){
+                                                                        apis[j].versions[b].revisions[y].expanded = true;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     $scope.apis = apis;
                     console.log(apis);
                 }).catch(function (error) {
