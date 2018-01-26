@@ -31,14 +31,15 @@
                             controller: 'DashboardController'
                         },
                         'treeview@main.dashboard': {
-                            templateUrl: 'app/modules/apieval/tree.html'
+                            templateUrl: 'app/modules/dashboard/tree.html'
                         },
                         'infoview@main.dashboard': {
-                            templateUrl: 'app/modules/apieval/info.html'
-                        },
+                            templateUrl: 'app/modules/dashboard/info.html'
+                        }
+                        /*,
                         'swaggerinfo@main.dashboard': {
                             templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
-                        }
+                        }*/
                     }
                 };
             }

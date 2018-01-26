@@ -1,8 +1,8 @@
-<button class="btn btn-primary" ng-print print-element-id="printThisElement">
-    <i class="fa fa-print"></i> <img src="/icons/printer.svg" />
+<button class="btn btn-primary" ng-print print-element-id="printComparisonElement">
+    <i class="fa fa-print"></i><img src="/icons/printer.svg" />
 </button>
 </br>
-<div class="reportContainer" id="printThisElement">
+<div class="reportContainer" id="printComparisonElement">
     <h1>Comparison Report</h1>
 
     <span class="border border-primary"></span>
@@ -28,43 +28,45 @@
     <h2>Changes:</h2>
     <div class="p-3 mb-2 bg-success text-dark"><b>What's new</b></div>
     <ul>
-        <div ng-repeat=" new in selectedComparisonReport.paths.new">
+        <div ng-repeat=" new in selectedComparisonReport.paths.new track by $index">
             <li><b>{{new.endpoint}}</b> // {{new.description}}</li>
         </div>
     </ul>
 
     <div class="p-3 mb-2 bg-danger text-dark"><h3><b>What's removed</b></h3></div>
     <ul>
-        <div ng-repeat=" removed in selectedComparisonReport.paths.removed">
+        <div ng-repeat=" removed in selectedComparisonReport.paths.removed track by $index">
             <li><b>{{removed.endpoint}}</b> // {{removed.description}}</li>
         </div>
     </ul>
 
     <div class="p-3 mb-2 bg-warning text-dark"><h3><b>What's changed</b></h3></div>
-    <ul>
-        <div ng-repeat=" changed in selectedComparisonReport.paths.changed">
-            <br>
-            <li><b>{{changed.endpoint}}</b> // {{changed.description}}</li>
-            <ul>
-                <div ng-if = "changed.parameter != null">
-                    <p class="text-info">Parameter</p>
-                    <ul>
-                        <div ng-repeat="parameter in changed.parameter">
-                            <li><b>{{parameter.change}}</b> // {{parameter.description}}</li>
-                        </div>
-                    </ul>
-                </div>
-                <div ng-if = "changed.returntype != null">
-                    <p class="text-info">Return Type</p>
-                    <ul>
-                        <div ng-repeat="returntype in changed.returntype">
-                            <li><b>{{returntype.change}}</b> // {{returntype.description}}</li>
-                        </div>
-                    </ul>
-                </div>
-            </ul>
-            <br>
-            -------------------------------------------------------------------
-        </div>
-    </ul>
+    <div>
+        <ul>
+            <div ng-repeat="changed in selectedComparisonReport.paths.changed track by $index">
+                <br>
+                <li><b>{{changed.endpoint}}</b> // {{changed.description}}</li>
+                <ul>
+                    <div ng-if = "changed.parameter != null">
+                        <p class="text-info">Parameter</p>
+                        <ul>
+                            <div ng-repeat="parameter in changed.parameter track by $index">
+                                <li><b>{{parameter.change}}</b> // {{parameter.description}}</li>
+                            </div>
+                        </ul>
+                    </div>
+                    <div ng-if = "changed.returntype != null">
+                        <p class="text-info">Return Type</p>
+                        <ul>
+                            <div ng-repeat="returntype in changed.returntype track by $index">
+                                <li><b>{{returntype.change}}</b> // {{returntype.description}}</li>
+                            </div>
+                        </ul>
+                    </div>
+                </ul>
+                <br>
+                -------------------------------------------------------------------
+            </div>
+        </ul>
+    </div>
 </div>

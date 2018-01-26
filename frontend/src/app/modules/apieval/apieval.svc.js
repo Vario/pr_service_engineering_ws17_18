@@ -11,14 +11,16 @@
             '$q',
             function (BackendAPIService, APIModel, $filter, $q) {
                 var self = this;
+                self.apis = undefined;
 
                 self.getAllAPIs = function() {
                     return BackendAPIService.getAPIs().then(function (data) {
                         if (data.length <= 0) {
                             //return $q.reject();
                         }
-                        var apis = self.getApiModelsMapped(data);
-                        return apis;
+                        var newApis = self.getApiModelsMapped(data);
+                        self.apis = newApis;
+                        return newApis;
                     });
                 };
 
@@ -64,11 +66,21 @@
                     }
                 };
 
-                self.postNewAPIs = function(api) {
+                self.postAPI = function(api, toAPI) {
                     var newApi = JSON.parse(api);
+                    var newAPIName =  newApi.info.title;
+                    //check if api exists if it should not be linked to an api
+                    if(toAPI == undefined) {
+                        //if exists and it should be a new api, add timestamp
+                        if(self.apiExists(newAPIName)) {
+                            newAPIName = newAPIName + "-" + self.apis.length;
+                        }
+                    } else {
+                        newAPIName = toAPI.name;
+                    }
                     var model =
                         {
-                            "title": newApi.info.title,
+                            "title": newAPIName,
                             "version": newApi.info.version,
                             "swagger": newApi,
                             "settings-id": ""
@@ -78,6 +90,15 @@
                     });
                 };
 
+                self.apiExists = function(toCheckApiName) {
+                    var exists = false;
+                    angular.forEach(self.apis, function (api) {
+                        if(angular.equals(api.name, toCheckApiName)) {
+                            exists = true;
+                        }
+                    });
+                    return exists;
+                };
                 self.validateAPI = function(fileid) {
                     var validationObject =
                         {

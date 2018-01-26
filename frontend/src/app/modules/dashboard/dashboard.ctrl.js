@@ -36,25 +36,27 @@
             };
 
             $scope.selectComparison = function(a, v, r){
+                //if selected components are lower than 2 and passed revision is not checked
+                //check revision and add object to array
                 if($scope.selectedComparison.length < 2 && !r.checked){
                     var o = {
                         api : a,
                         version : v,
                         revision : r
                     };
-
                     r.checked = true;
                     $scope.selectedComparison.push(o);
-                }else{
-                    for(var g = 0; g < $scope.selectedComparison.length; g++){
-                        if($scope.selectedComparison[g].revision == r){
+                }
+                //if revision is checked, find it and remove it from selection
+                else if(r.checked) {
+                    for(var g = $scope.selectedComparison.length -1; g >= 0; g--){
+                        console.log($scope.selectedComparison[g].revision.id + "-" + r.id);
+                        if($scope.selectedComparison[g].revision.id == r.id){
+                            $scope.selectedComparison.splice(g,1);
                             r.checked = false;
-                            if($scope.selectedComparison.length == 1) $scope.selectedComparison = [];
-                            $scope.selectedComparison = $scope.selectedComparison.splice(g,g);
                         }
                     }
                 }
-                console.log($scope.selectedComparison);
             };
 
             loadData();
@@ -197,6 +199,7 @@
                 });
             };
 
+
             $scope.showValidationDialog = function(fileid, evalRules) {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/settings.apieval.tpl.html',
@@ -205,14 +208,18 @@
                     data:evalRules,
                     controller: ['$scope', function($scope) {
                         // controller logic
-                        $scope.closeDialog = function() {
-                            var checkedRules = [];
-                            angular.forEach($scope.ngDialogData, function (rule) {
-                                if(rule.checked) {
-                                    checkedRules.push(rule.code);
-                                }
-                            });
-                            dialog.close(checkedRules);
+                        $scope.closeDialog = function(validate) {
+                            if(validate) {
+                                var checkedRules = [];
+                                angular.forEach($scope.ngDialogData, function (rule) {
+                                    if(rule.checked) {
+                                        checkedRules.push(rule.code);
+                                    }
+                                });
+                                dialog.close(checkedRules);
+                            } else {
+                                dialog.closeByEscape();
+                            }
                         };
                     }]
                 });
@@ -266,14 +273,12 @@
             };
 
             $scope.showComparisonReport = function() {
-                console.log($scope.selectedComparisonReport);
                 var dialog = ngDialog.open({
                     template: 'app/modules/reports/comparison.tpl.html',
                     showClose: true,
                     className:"ngdialog-theme-default",
                     scope:$scope
                 });
-
                 dialog.closePromise.then(function () {
 
                 });
@@ -305,21 +310,16 @@
                 return obj;
             };
 
-            $scope.showSwagger = function(){
-                var dialog = ngDialog.open({
-                    template: 'app/modules/swaggerui/swaggerinfo.tpl.html',
-                    showClose: true,
-                    className:"ngdialog-theme-default",
-                    scope:$scope
-                });
-            };
-
+            /*
+            Method to handle a selection in the tree template for api, version, revision or report
+             */
             $scope.select = function(api, version, revision, violationreport, comparisonreport){
                 $scope.selectedComparisonReport = undefined;
                 $scope.selectedViolationReport = undefined;
                 $scope.selectedVersion = undefined;
                 $scope.selectedFile = undefined;
 
+                $scope.showSwaggerUI = false;
                 if(api) {
                     $scope.selectedApi = api;
                 }
@@ -330,12 +330,17 @@
                     $scope.selectedFile = revision;
                 }
                 setcurrentFileUrl();
-                console.log(violationreport);
                 if(violationreport) $scope.selectedViolationReport = violationreport;
                 if(comparisonreport) $scope.selectedComparisonReport = comparisonreport;
+
+                console.log("scope:" + $scope);
+                console.log("showSwaggerUI:" + $scope.showSwaggerUI);
             };
 
-            function setcurrentFileUrl(){
+            /*
+            Method to set current File which should be shown in info view template
+             */
+             function setcurrentFileUrl(){
                 if ($scope.selectedFile) {
                     $scope.apifileurl = $scope.selectedFile.apifileurl;
                 } else {
@@ -351,13 +356,14 @@
                 console.log("current apifileurl:" + $scope.apifileurl);
             }
 
-            $scope.trustSrc = function(src) {
-                var trust = $sce.trustAsResourceUrl(src);
-                console.log("trust:" + trust);
-                return trust;
+            $scope.toggleShowSwaggerUI = function() {
+                $scope.showSwaggerUI = !$scope.showSwaggerUI;
+                console.log("showswaggerUI:"+ $scope.showSwaggerUI);
             };
-
-            function getMaxRevisionFor(api) {
+            /*
+            Helper Method to get the max revision for an api
+             */
+             function getMaxRevisionFor(api) {
                 {
                     var maxrev;
                     //console.log("check max revision for api:" + api.name);
@@ -378,6 +384,10 @@
                     return maxrev;
                 }
             }
+
+            /*
+            Method which is called, when a new api should be uploaded
+             */
             $scope.uploadNewApi = function (files){
                 var file = files[0];
                 if(file != undefined) {
@@ -388,7 +398,7 @@
                     reader.onload = (function (file) {
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
-                            APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                            APIEvalService.postAPI(e.target.result).then(function (resp) {
                                 $scope.loading.dec();
                                 loadData();
                             }).catch(function (error) {
@@ -404,6 +414,9 @@
                 }
             };
 
+            /*
+            Method which is called, to Upload an api file to an existing api
+             */
             $scope.uploadToExistingApi = function (files, api) {
                 var file = files[0];
                 if(file != undefined) {
@@ -413,7 +426,7 @@
                     reader.onload = (function (file) {
                         return function (e) {
                             //console.log('e readAsText target = ', e.target);
-                            APIEvalService.postNewAPIs(e.target.result).then(function (resp) {
+                            APIEvalService.postAPI(e.target.result, api).then(function (resp) {
                                 console.log("new api version response: " + resp);
                                 loadData();
                             }).catch(function (error) {
