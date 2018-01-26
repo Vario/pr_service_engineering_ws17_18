@@ -318,6 +318,7 @@
                 $scope.selectedVersion = undefined;
                 $scope.selectedFile = undefined;
 
+                $scope.showSwaggerUI = false;
                 if(api) {
                     $scope.selectedApi = api;
                 }
@@ -328,9 +329,11 @@
                     $scope.selectedFile = revision;
                 }
                 setcurrentFileUrl();
-                console.log(violationreport);
                 if(violationreport) $scope.selectedViolationReport = violationreport;
                 if(comparisonreport) $scope.selectedComparisonReport = comparisonreport;
+
+                console.log("scope:" + $scope);
+                console.log("showSwaggerUI:" + $scope.showSwaggerUI);
             };
 
             /*
@@ -352,6 +355,10 @@
                 console.log("current apifileurl:" + $scope.apifileurl);
             }
 
+            $scope.toggleShowSwaggerUI = function() {
+                $scope.showSwaggerUI = !$scope.showSwaggerUI;
+                console.log("showswaggerUI:"+ $scope.showSwaggerUI);
+            };
             /*
             Helper Method to get the max revision for an api
              */

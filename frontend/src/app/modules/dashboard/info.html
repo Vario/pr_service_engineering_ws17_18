@@ -13,20 +13,20 @@
         Show Comparison Report
       </button>
     </div>
+
     <div class="swagger-ui-box">
-      <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="showSwaggerUI=!showSwaggerUI" ng-show="selectedFile">
-        <div  ng-show="!showSwaggerUI">
+      <button type = "button" class="btn btn-primary btn-sm btn-block" ng-click="toggleShowSwaggerUI()" ng-if="selectedFile">
+        <div ng-if="!showSwaggerUI">
           Show Swagger-UI
         </div>
-        <div ng-show="showSwaggerUI">
+        <div ng-if="showSwaggerUI">
           Hide Swagger-UI
         </div>
       </button>
       </br>
       <div ng-if="showSwaggerUI">
-        <div swagger-ui input="apifileurl" input-type="url" api-explorer="true" ng-show="apifileurl"></div>
+       <div swagger-ui input="apifileurl" input-type="url" api-explorer="true"></div>
       </div>
     </div>
   </div>
-
 </div>

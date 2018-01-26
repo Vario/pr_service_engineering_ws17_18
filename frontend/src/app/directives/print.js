@@ -27,7 +27,7 @@
             window.onafterprint = function () {
                 // clean the print section before adding new content
                 printSection.innerHTML = '';
-            }
+            };
         }
 
         function printElement(elem) {
