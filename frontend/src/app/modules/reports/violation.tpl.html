@@ -24,7 +24,7 @@
     <h2>Violations:</h2>
     <div ng-show="selectedViolationReport.violations.length > 0">
         <ul>
-            <div ng-repeat = "violation in selectedViolationReport.violations">
+            <div ng-repeat = "violation in selectedViolationReport.violations track by $index">
                 <li>
                     <div>
                         <b>{{violation.title}} ({{violation.violation_type}})</b></br>
@@ -34,7 +34,7 @@
                         <div ng-show="violation.paths.length > 0">
                             Paths:</br>
                             <ul>
-                                <div ng-repeat = "path in violation.paths">
+                                <div ng-repeat = "path in violation.paths track by $index">
                                     <li>
                                         {{path}}
                                     </li>

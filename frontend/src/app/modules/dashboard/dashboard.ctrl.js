@@ -273,14 +273,15 @@
             };
 
             $scope.showComparisonReport = function() {
-                console.log($scope.selectedComparisonReport);
                 var dialog = ngDialog.open({
                     template: 'app/modules/reports/comparison.tpl.html',
                     showClose: true,
                     className:"ngdialog-theme-default",
                     scope:$scope
                 });
+                dialog.closePromise.then(function () {
 
+                });
             };
 
             $scope.comparedTo = function(comparison) {
