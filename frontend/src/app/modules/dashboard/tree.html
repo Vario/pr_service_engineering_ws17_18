@@ -75,7 +75,7 @@
                     <ul>
                       <div ng-show = "revision.violationreport">
                         <li ng-show = "revision.expanded">
-                          <a ng-click = "select(api,version, revision, revision.violationreport, null)">
+                          <a ng-click = "select(api,version, revision, revision.violationreport, undefined)">
                               <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
                               <span ng-if="revision.violationreport.violations === 0">
                               <img src="./icons/validationtrue.svg"/>
@@ -90,19 +90,11 @@
 
                       <div ng-repeat = "comparison in revision.comparisonreport">
                         <li ng-show = "revision.expanded">
-                          <a ng-click = "select(api,version, revision, null, comparison)" data-toggle="tooltip" data-html="true"
+                          <a ng-click = "select(api,version, revision, undefined, comparison)" data-toggle="tooltip" data-html="true"
                              title="{{comparedTo(comparison).api}} - {{comparedTo(comparison).version}} - {{comparedTo(comparison).revision}}">
                             <img src="./icons/report.svg" class="img-fluid" alt="Responsive image">
-                            <!--<span ng-if="violation.violations === 0">
-                              <img src="./icons/validationtrue.svg"/>
-                            </span>
-                            <span ng-if="violation.violations !=0">
-                              <img src="./icons/validationfalse.svg"/>
-                            </span>-->
                             Comparison Report - ({{comparison.changes.errors.length}}, {{comparison.changes.warnings.length}}, {{comparison.changes.infos.length}})
                             <br> &emsp; &emsp; <span class="text-muted">{{comparedTo(comparison).api}} - {{comparedTo(comparison).version}} - {{comparedTo(comparison).revision}}</span>
-
-
                           </a>
                         </li>
                       </div>

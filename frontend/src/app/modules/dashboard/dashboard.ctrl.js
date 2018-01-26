@@ -61,6 +61,7 @@
 
             loadData();
 
+/*
             function loadData() {
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {
@@ -113,6 +114,67 @@
                 }).finally(function () {
                     $scope.loading.dec();
                 });
+            }
+            */
+
+            function loadData() {
+                $scope.loading.inc();
+                APIEvalService.getAllAPIs().then(function (apis) {
+                    $scope.apis = apis;
+                }).catch(function (error) {
+                    console.error(error);
+                }).finally(function () {
+                    $scope.loading.dec();
+                });
+            }
+
+            function reloadData() {
+                $scope.loading.inc();
+                APIEvalService.getAllAPIs().then(function (apis) {
+                    $scope.apis = mapToExistingModels(apis);
+                }).catch(function (error) {
+                    console.error(error);
+                }).finally(function () {
+                    $scope.loading.dec();
+                });
+            }
+            /*
+            Method to map backend return apis to existing models and apply existing GUI Properties as checked or expanded
+             */
+            function mapToExistingModels(newAPIS) {
+                var newMappedAPIS = [];
+                angular.forEach(newAPIS, function (newApi) {
+                    var index = $scope.apis.map(function(e) { return e.id; }).indexOf(newApi.id);
+                    if(index >= 0) {
+                        //map existing gui properties to api
+                        newApi.expanded = $scope.apis[index].expanded;
+                        //Iterrate versions
+                        angular.forEach(newApi.versions, function (newVersion) {
+                            var indexV = $scope.apis[index].versions.map(function(e) { return e.id; }).indexOf(newVersion.id);
+                           //if version existed, update properties
+                            if(indexV >= 0) {
+                                //map all gui properties to version
+                                newVersion.expanded =  $scope.apis[index].versions[indexV].expanded;
+                            }
+                            //Iterrate Revisions
+                            angular.forEach(newVersion.revisions, function (newRevision) {
+                                var indexR = $scope.apis[index].versions[indexV].revisions.map(function(e) { return e.id; }).indexOf(newRevision.id);
+                                //if revision existed, update properties
+                                if(indexR >= 0) {
+                                    //map all GUI properties to revision
+                                    newRevision.expanded =  $scope.apis[index].versions[indexV].revisions[indexR].expanded;
+                                    newRevision.checked =  $scope.apis[index].versions[indexV].revisions[indexR].checked;
+                                }
+                            });
+                        });
+                        //add api with all updated properties
+                        newMappedAPIS.push(newApi);
+                    } else {
+                        //api is new add to array
+                        newMappedAPIS.push(newApi);
+                    }
+                });
+                return newMappedAPIS;
             }
 
             $scope.showAPI = function(e) {
@@ -229,7 +291,7 @@
                     APIEvalService.compareAPIS(apis).then(function (data) {
                         console.log(data);
                         $scope.loading.dec();
-                        loadData();
+                        reloadData();
                         $scope.selectedApi.expanded = true;
                         $scope.selectedVersion.expanded = true;
                         $scope.selectedFile.expanded = true;
@@ -289,7 +351,7 @@
                     APIEvalService.validateAPI(fileid).then(function (data) {
                         console.log(data);
                         $scope.loading.dec();
-                        loadData();
+                        reloadData();
                         $scope.selectedApi.expanded = true;
                         $scope.selectedVersion.expanded = true;
                         $scope.selectedFile.expanded = true;
@@ -356,8 +418,6 @@
             Method to handle a selection in the tree template for api, version, revision or report
              */
             $scope.select = function(api, version, revision, violationreport, comparisonreport){
-                $scope.selectedComparisonReport = undefined;
-                $scope.selectedViolationReport = undefined;
                 $scope.selectedVersion = undefined;
                 $scope.selectedFile = undefined;
 
@@ -372,8 +432,8 @@
                     $scope.selectedFile = revision;
                 }
                 setcurrentFileUrl();
-                if(violationreport) $scope.selectedViolationReport = violationreport;
-                if(comparisonreport) $scope.selectedComparisonReport = comparisonreport;
+                $scope.selectedViolationReport = violationreport;
+                $scope.selectedComparisonReport = comparisonreport;
 
                 console.log("scope:" + $scope);
                 console.log("showSwaggerUI:" + $scope.showSwaggerUI);
@@ -442,7 +502,7 @@
                             //console.log('e readAsText target = ', e.target);
                             APIEvalService.postAPI(e.target.result).then(function (resp) {
                                 $scope.loading.dec();
-                                loadData();
+                                reloadData();
                             }).catch(function (error) {
                                 console.log("Error uploading new api");
                                 console.error(error);
@@ -470,7 +530,7 @@
                             //console.log('e readAsText target = ', e.target);
                             APIEvalService.postAPI(e.target.result, api).then(function (resp) {
                                 console.log("new api version response: " + resp);
-                                loadData();
+                                reloadData();
                             }).catch(function (error) {
                                 console.log("Error uploading api to existing api");
                                 console.error(error);
