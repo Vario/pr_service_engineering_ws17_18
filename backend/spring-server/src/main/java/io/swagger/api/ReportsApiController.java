@@ -3,6 +3,7 @@ package io.swagger.api;
 import at.jku.se.pr.rest.qualityapi.integrations.SwaggerDiffIntegration;
 import at.jku.se.pr.rest.qualityapi.exceptions.MultipleResultsException;
 import at.jku.se.pr.rest.qualityapi.files.FileHelpers;
+import at.jku.se.pr.rest.qualityapi.integrations.SwaggerDiffServiceIntegration;
 import at.jku.se.pr.rest.qualityapi.integrations.ZallyIntegration;
 import at.jku.se.pr.rest.qualityapi.mongodb.MongoDBRequest;
 import at.jku.se.pr.rest.qualityapi.settings.SettingsHelpers;
@@ -43,15 +44,27 @@ public class ReportsApiController implements ReportsApi {
             return new ResponseEntity<>(error ,HttpStatus.BAD_REQUEST);
         }
 
-        String url1 = ControllerLinkBuilder.linkTo(
-                methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
-        ).toUri().toString();
 
-        String url2 = ControllerLinkBuilder.linkTo(
-                methodOn(FilesApiController.class).filesIdGet(fileIds.get(1))
-        ).toUri().toString();
+        String apiDockerConnectionString = System.getenv("JKU_REST_QUALITY_API_DOCKER_CONNECTION_STRING");
+        String url1;
+        String url2;
+        if(apiDockerConnectionString == null){
+            url1 = ControllerLinkBuilder.linkTo(
+                    methodOn(FilesApiController.class).filesIdGet(fileIds.get(0))
+            ).toUri().toString();
 
-        SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration(url1,url2);
+            url2 = ControllerLinkBuilder.linkTo(
+                    methodOn(FilesApiController.class).filesIdGet(fileIds.get(1))
+            ).toUri().toString();
+        } else {
+            url1 = String.format("%s/api/v1/files/%s",apiDockerConnectionString,fileIds.get(0));
+            url2 = String.format("%s/api/v1/files/%s",apiDockerConnectionString,fileIds.get(1));
+            System.out.println(url1);
+            System.out.println(url2);
+        }
+
+
+        /*SwaggerDiffIntegration swaggerDiffIntegration = new SwaggerDiffIntegration(url1,url2);
         HashMap<String,List<Change>> changes = swaggerDiffIntegration.render();
         ComparisonReportResponse response = new ComparisonReportResponse();
 
@@ -61,16 +74,20 @@ public class ReportsApiController implements ReportsApi {
         paths.setRemoved(changes.get("removed"));
 
         response.setFileIds(file.getFileIds());
-        response.setPaths(paths);
+        response.setPaths(paths);*/
+
+        SwaggerDiffServiceIntegration diffService = new SwaggerDiffServiceIntegration();
+        Object diff = diffService.getDiff(url1, url2);
+        return new ResponseEntity<Object>(diff, HttpStatus.OK);
 
         /* Add to Database */
-        Document docToInsert = new Document()
+        /*Document docToInsert = new Document()
                 .append("file-ids", fileIds)
                 .append("paths", paths.toBsonDocument());
         MongoDBRequest mongo = new MongoDBRequest("files");
         mongo.createAndAddToSet("file-id", fileIds.get(0), "comparison-reports", docToInsert);
 
-        return new ResponseEntity<ComparisonReportResponse>(response, HttpStatus.OK);
+        return new ResponseEntity<ComparisonReportResponse>(response, HttpStatus.OK);*/
     }
 
     public ResponseEntity<?> reportsViolationPost(@ApiParam(value = "Report Creation" ,required=true )  @Valid @RequestBody ViolationReportRequest file) {
