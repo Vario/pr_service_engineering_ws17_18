@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 30/11/2017.
+ * Host where the backend is published
  */
 (function (angular) {
     'use strict';
@@ -19,8 +20,6 @@
                 if (!!this.host) {
                     return this.host;
                 }
-
-                //return "http://localhost:8500/api";
                 return "http://quality.rest.patrickbuchner.at/api"; //backend api url
             };
 

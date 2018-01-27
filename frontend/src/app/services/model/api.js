@@ -32,26 +32,6 @@
                     });
                 }
 
-                /*self.maxRevision = function() {
-                    var maxrev;
-                    console.log("check max revision for api:" + self.name);
-                    angular.forEach(self.versions, function (vers) {
-                        console.log("look in vers:" + vers.number);
-                        angular.forEach(vers.revisions, function (rev) {
-                            if(maxrev) {
-                                console.log("check maxrev:" + maxrev.timestamp + "< rev.timstamp" + maxrev.timestamp);
-                                if(maxrev.timestamp < rev.timestamp) {
-                                    maxrev = rev;
-                                }
-                            } else {
-                                console.log("maxrev is null, set:" + rev.file);
-                                maxrev = rev;
-                            }
-                        });
-                    });
-                    return maxrev;
-                };*/
-
                 APIModel.prototype.getValidPropertyList = function () {
                     return ['id','version','name','expanded', 'description','settingsid'];
                 };

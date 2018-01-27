@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 30/11/2017.
+ * Module for api evaluation
  */
 (function (angular) {
     'use strict';

@@ -14,9 +14,7 @@
                   </div>
                 </a>
                   <div ng-if="api.edit">
-                    <!--<div class = "col-lg-8 offset-1"><input type="text" class="form-control" ng-model= "api.name"></div>
-                    <img src="./icons/save.svg" ng-click="saveNewAPIName(api)" class="img-fluid">-->
-                    <div class="input-group mb-3">
+                   <div class="input-group mb-3">
                       <div class="input-group-append">
                         <img src="./icons/api2.svg" alt="Responsive image">
                       </div>
@@ -43,7 +41,6 @@
               <div ng-repeat = "version in api.versions" ng-if="!api.edit">
                 <li ng-show = "api.expanded">
                   <label>
-                    <!--<input type="checkbox" ng-checked="version.checked" ng-disabled="canCompare()">-->
                     <a ng-click = "showVersion(version); select(api,version)">
                       <img src="./icons/folder_closed.svg" class="img-fluid" alt="Responsive image">
                       {{version.number}}

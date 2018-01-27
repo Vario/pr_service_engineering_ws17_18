@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 04/12/2017.
+ * Controller which handles all dashboard related methods
  */
 (function (angular) {
     'use strict';
@@ -14,19 +15,19 @@
         'APIEvalService',
         'APIEvalSettingsService',
         function ($filter, $scope, $rootScope,ngDialog, $http, APIEvalService, APIEvalSettingsService, $sce) {
-            console.log("dashboard loaded");
 
-            $scope.selectedApi = undefined;
-            $scope.selectedVersion = undefined;
-            $scope.selectedFile = undefined;
-            $scope.selectedViolationReport = undefined;
-            $scope.selectedComparisonReport = undefined;
-            $scope.apis = undefined;
-            $scope.apifileurl = undefined;
-            $scope.apifile = undefined;
-            $scope.showSwaggerUI = undefined;
-            $scope.selectedComparison = [];
+            //define needed variables
+            $scope.selectedApi = undefined; //currently selected api
+            $scope.selectedVersion = undefined; //currently selected api version
+            $scope.selectedFile = undefined; //currently selected api revision
+            $scope.selectedViolationReport = undefined; //selected violation report for revision
+            $scope.selectedComparisonReport = undefined; // selected comparison report in revision
+            $scope.apis = undefined; //all apis
+            $scope.apifileurl = undefined; //url to currently selected api revision
+            $scope.showSwaggerUI = undefined; //flag to identifiy if swagger UI should be shown
+            $scope.selectedComparison = []; //array which
 
+            //change comparison order for apis
             $scope.switchComparison = function(data){
                 var o = $scope.selectedComparison[0];
                 $scope.selectedComparison[0] = $scope.selectedComparison[1];
@@ -35,6 +36,7 @@
                 data[1] = $scope.selectedComparison[1];
             };
 
+            //method to handle selection of apis which should be compared
             $scope.selectComparison = function(a, v, r){
                 //if selected components are lower than 2 and passed revision is not checked
                 //check revision and add object to array
@@ -47,10 +49,9 @@
                     r.checked = true;
                     $scope.selectedComparison.push(o);
                 }
-                //if revision is checked, find it and remove it from selection
+                //if revision is checked and should be unchecked, find it and remove it from selection
                 else if(r.checked) {
                     for(var g = $scope.selectedComparison.length -1; g >= 0; g--){
-                        console.log($scope.selectedComparison[g].revision.id + "-" + r.id);
                         if($scope.selectedComparison[g].revision.id == r.id){
                             $scope.selectedComparison.splice(g,1);
                             r.checked = false;
@@ -59,64 +60,10 @@
                 }
             };
 
+            //load data from backend
             loadData();
 
-/*
-            function loadData() {
-                $scope.loading.inc();
-                APIEvalService.getAllAPIs().then(function (apis) {
-                    if($scope.apis != undefined) {
-                        for (var i = 0; i < $scope.apis.length; i++) {
-                            var api1 = $scope.apis[i];
-                            if (api1.expanded) {
-                                for (var j = 0; j < apis.length; j++) {
-                                    var api2 = apis[j];
-                                    if (api1.id == api2.id) {
-                                        apis[j].expanded = true;
-                                        var versions1 = api1.versions;
-                                        var versions2 = api2.versions;
-                                        for (var a = 0; a < versions1.length; a++) {
-                                            var v1 = versions1[a];
-                                            if (v1.expanded) {
-                                                v1 = versions1[a].number;
-                                                for (var b = 0; b < versions2.length; b++) {
-                                                    var v2 = versions1[b].number;
-                                                    if (v1 == v2) {
-                                                        apis[j].versions[b].expanded = true;
-                                                        var revisions1 = api1.versions[a].revisions;
-                                                        var revisions2 = api2.versions[b].revisions;
-                                                        for(var x = 0; x < revisions1.length; x++){
-                                                            var r1 = revisions1[x];
-                                                            if(r1.expanded){
-                                                                r1 = revisions1[x].id;
-                                                                for(var y = 0; y < revisions2.length; y++){
-                                                                    var r2 = revisions2[y].id;
-                                                                    if(r1 == r2){
-                                                                        apis[j].versions[b].revisions[y].expanded = true;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    $scope.apis = apis;
-                    console.log(apis);
-                }).catch(function (error) {
-                    console.error(error);
-                }).finally(function () {
-                    $scope.loading.dec();
-                });
-            }
-            */
-
+            //Method to load data from backend
             function loadData() {
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {
@@ -128,6 +75,7 @@
                 });
             }
 
+            //method which loads data from backend and preserves treeview state (checked, ....)
             function reloadData() {
                 $scope.loading.inc();
                 APIEvalService.getAllAPIs().then(function (apis) {
@@ -178,6 +126,7 @@
                 return newMappedAPIS;
             }
 
+
             $scope.showAPI = function(e) {
                 $scope.show(e);
                 //if expanded, close others too
@@ -210,18 +159,17 @@
                 } else e.expanded = true;
             };
 
+            //validate an api revision
             $scope.validate = function(e){
                 $scope.loading.inc();
+                //get available rules form backend
                 APIEvalSettingsService.getRules().then(function (rules) {
                     $scope.loading.dec();
                     if($scope.selectedApi.settingsid) {
-                        console.log("get settings for id:" + $scope.selectedApi.settingsid);
-
                         //get api settings for api
                         APIEvalSettingsService.getSetting($scope.selectedApi.settingsid).then(function (settings) {
                             if(settings) {
                                 //if there are settings, match them with the rules list
-                                console.log("map settings (" + settings.rules.length + " rules) to rulelist");
                                 var newRules = [];
                                 angular.forEach(rules, function (rule) {
                                     var foundrule = false;
@@ -239,7 +187,6 @@
                                 });
                                 $scope.showValidationDialog(e.file,newRules);
                             } else {
-                                console.log("no settings found");
                                 //if no settings, activate all rules
                                 angular.forEach(rules, function (rule) {
                                     rule.checked = true;
@@ -248,7 +195,6 @@
                             }
                         });
                     } else {
-                        console.log("no settings id for api yet");
                         //if no settings, activate all rules
                         angular.forEach(rules, function (rule) {
                             rule.checked = true;
@@ -258,13 +204,14 @@
                 });
             };
 
+            //store new name for api
             $scope.saveNewAPIName = function(api) {
-                console.log("new api name: " + api.name);
                 APIEvalService.updateApiTitle(api,api.name).then(function () {
                     api.edit = false;
                 });
             };
 
+            //show dialog to compare apis
             $scope.showCompareDialog = function() {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/compare.tpl.html',
@@ -285,12 +232,11 @@
                     }]
                 });
 
+                //continue when dialog is closed
                 dialog.closePromise.then(function (data) {
                     $scope.loading.inc();
                     var apis = [data.value[0].revision.file, data.value[1].revision.file];
-                    console.log("compare:" + apis);
                     APIEvalService.compareAPIS(apis).then(function (data) {
-                        console.log(data);
                         $scope.loading.dec();
                         reloadData();
                         $scope.selectedApi.expanded = true;
@@ -298,13 +244,12 @@
                         $scope.selectedFile.expanded = true;
                     }).catch(function (error) {
                         $scope.loading.dec();
-                        console.log("Error comparing api");
                         console.error(error);
                     });
                 });
             };
 
-
+            //show dialog for api validation
             $scope.showValidationDialog = function(fileid, evalRules) {
                 var dialog = ngDialog.open({
                     template: 'app/modules/apieval/settings.apieval.tpl.html',
@@ -329,41 +274,42 @@
                     }]
                 });
 
+                //Continue when dialog is closed
                 dialog.closePromise.then(function (data) {
                     if($scope.selectedApi.settingsid) {
                         //Update settings
-                        console.log("update settings");
-                        APIEvalSettingsService.updateSetting($scope.selectedApi, data.value).then(function (settings) {
-                            console.log("settings update for api:" + $scope.selectedApi.name);
+                        APIEvalSettingsService.updateSetting($scope.selectedApi, data.value).catch(function (error) {
+                            console.error(error);
                         });
                     } else {
-                        //Create Settings
-                        console.log("create settings");
+                        //Create Settings for api
                         APIEvalSettingsService.createSetting($scope.selectedApi.name, data.value).then(function (settings) {
                             //settings created, update api
-                            APIEvalService.updateApiSetting($scope.selectedApi.id,settings.id).then(function () {
-                                console.log("Api updated");
+                            APIEvalService.updateApiSetting($scope.selectedApi.id,settings.id).catch(function (error) {
+                                console.error(error);
                             });
+                        }).catch(function (error) {
+                            console.error(error);
                         });
                     }
                 }).then(function (){
-                    console.log("validate");
                     $scope.loading.inc();
                     APIEvalService.validateAPI(fileid).then(function (data) {
-                        console.log(data);
                         $scope.loading.dec();
                         reloadData();
                         $scope.selectedApi.expanded = true;
                         $scope.selectedVersion.expanded = true;
-                        $scope.selectedFile.expanded = true;
+                        if($scope.selectedFile) {
+                            $scope.selectedFile.expanded = true;
+                        }
                      }).catch(function (error) {
                         $scope.loading.dec();
-                        console.log("Error validating  api");
                         console.error(error);
                     });
                 });
             };
 
+            //show existing violation report
             $scope.showViolationReport = function() {
                 var dialog = ngDialog.open({
                     template: 'app/modules/reports/violation.tpl.html',
@@ -377,6 +323,7 @@
                 });
             };
 
+            //show existing comparison report
             $scope.showComparisonReport = function() {
                 var dialog = ngDialog.open({
                     template: 'app/modules/reports/comparison.tpl.html',
@@ -389,9 +336,8 @@
                 });
             };
 
+
             $scope.comparedTo = function(comparison) {
-                //console.log("ay");
-                //console.log(comparison["file-ids"]);
                 var obj = {};
                 var id = comparison["file-ids"][1];
                 for(var i = 0; i < $scope.apis.length; i++){
@@ -439,8 +385,6 @@
                 if(comparisonreport) {
                     $scope.selectedComparisonReport = comparisonreport;
                 }
-
-                console.log("comparisonreport:" + $scope.selectedComparisonReport);
             };
 
             /*
@@ -459,30 +403,26 @@
                         $scope.apifileurl = undefined;
                     }
                 }
-                console.log("current apifileurl:" + $scope.apifileurl);
             }
 
+            //toggle switch to show/hide swaggerUI
             $scope.toggleShowSwaggerUI = function() {
                 $scope.showSwaggerUI = !$scope.showSwaggerUI;
-                console.log("showswaggerUI:"+ $scope.showSwaggerUI);
             };
+
             /*
             Helper Method to get the max revision for an api
              */
              function getMaxRevisionFor(api) {
                 {
                     var maxrev;
-                    //console.log("check max revision for api:" + api.name);
                     angular.forEach(api.versions, function (vers) {
-                        //console.log("look in vers:" + vers.number);
                         angular.forEach(vers.revisions, function (rev) {
                             if(maxrev) {
-                                //console.log("check maxrev:" + maxrev.timestamp + "< rev.timstamp" + maxrev.timestamp);
                                 if(maxrev.timestamp < rev.timestamp) {
                                     maxrev = rev;
                                 }
                             } else {
-                                //console.log("maxrev is null, set:" + rev.file);
                                 maxrev = rev;
                             }
                         });
@@ -503,12 +443,10 @@
                     // Closure to capture the file information.
                     reader.onload = (function (file) {
                         return function (e) {
-                            //console.log('e readAsText target = ', e.target);
                             APIEvalService.postAPI(e.target.result).then(function (resp) {
                                 $scope.loading.dec();
                                 reloadData();
                             }).catch(function (error) {
-                                console.log("Error uploading new api");
                                 console.error(error);
                                 $scope.loading.dec();
 
@@ -531,12 +469,9 @@
                     // Closure to capture the file information.
                     reader.onload = (function (file) {
                         return function (e) {
-                            //console.log('e readAsText target = ', e.target);
                             APIEvalService.postAPI(e.target.result, api).then(function (resp) {
-                                console.log("new api version response: " + resp);
                                 reloadData();
                             }).catch(function (error) {
-                                console.log("Error uploading api to existing api");
                                 console.error(error);
                             });
                         };

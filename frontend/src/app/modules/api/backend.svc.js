@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 30/11/2017.
+ * Service which communicates with own backend
  */
 (function (angular) {
     'use strict';
@@ -81,68 +82,57 @@
                 //##########################################################
                 //##########################################################
 
-                /*
-                self.getAPI = function (id) {
-                    return self.get(sprintf('/apis/%s/', id));
-                };
-
-                self.updateAPI = function (id, version, data) {
-                    return self.put(sprintf('/api/%s?version=%s', id, version), data);
-                };
-
-                self.postExample = function (arg) {
-                    return self.post('/api', {param: arg});
-                };
-
-                self.deleteAPI = function(id, version) {
-                    return self.delete(sprintf('/api/%s?version=%s', id, version));
-                };
-                */
+                //Get all apis
                 self.getAPIs = function () {
                     return self.get('/apis');
                 };
 
+                //update an api title
                 self.updateAPITitle = function (apiid, title) {
                     return self.put('/apis/' + apiid + "/title",title);
                 };
 
+                //Update settings for an api
                 self.updateAPISetting = function (apiid, setting) {
                     return self.put('/apis/' + apiid + "/settings",setting);
                 };
 
-
-
+                //Send a new api file to backend
                 self.postAPIfile = function (file) {
                     return self.post('/files',file);
                 };
 
+                //validate an api
                 self.validteAPIreport = function (validation) {
                     return self.post('/reports/violation',validation);
                 };
 
+                //compare two apis
                 self.compareAPIReport = function (apiids) {
                     return self.post('/reports/comparison',apiids);
                 };
 
+                //get all rules for violation report
                 self.getRules = function() {
                     return self.get('/rules');
                 };
 
+                //get settings for an api
                 self.getSettings = function() {
                     return self.get('/settings');
                 };
 
+                //get specific setting
                 self.getSetting = function(id) {
                     return self.get('/settings/' + id);
                 };
 
+                //create a new setting
                 self.postSetting = function (settings) {
-                    console.log("create settings: " + settings);
                     return self.post('/settings',settings);
                 };
 
                 self.putSetting = function (id, settings) {
-                    console.log("update settings: " + settings);
                     return self.put('/settings/' + id,settings);
                 };
 

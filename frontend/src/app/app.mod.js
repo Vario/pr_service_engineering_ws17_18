@@ -11,7 +11,6 @@
             'apieval.dashboard',
             'apieval.loading',
             'apieval.directives',
-            //'apieval.sanitize',
             'ngFileUpload',
             'ngDialog',
             'ngSanitize'

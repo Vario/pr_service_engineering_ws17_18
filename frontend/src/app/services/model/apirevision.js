@@ -9,9 +9,7 @@
     angular.module('apieval.services')
         .factory('APIRevisionModel', [
             '$filter',
-            'APIViolationReportModel',
-            'APIComparisonReportModel',
-            function ($filter,APIViolationReportModel,APIComparisonReportModel) {
+            function ($filter) {
                 var self = this;
 
                 self.id = undefined;
@@ -29,8 +27,8 @@
                     self.id = data.id;
                     self.expanded = false;
                     self.checked = false;
-                    self.violationreport = data.reports.violation; //APIViolationReportModel(data.reports.violation);
-                    self.comparisonreports = data.reports.comparison; //APIComparisonReportModel(data.reports.comparison);
+                    self.violationreport = data.reports.violation;
+                    self.comparisonreports = data.reports.comparison;
                     self.apifileurl = data.url;
                     self.timestamp = $filter('date')(self.id,"dd/MM/yyyy h:mm:ss a");
                 }

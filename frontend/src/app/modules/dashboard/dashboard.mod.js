@@ -36,10 +36,6 @@
                         'infoview@main.dashboard': {
                             templateUrl: 'app/modules/dashboard/info.html'
                         }
-                        /*,
-                        'swaggerinfo@main.dashboard': {
-                            templateUrl: 'app/modules/swaggerui/swaggerinfo.tpl.html'
-                        }*/
                     }
                 };
             }

@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 01/12/2017.
+ * Controller which handles the loading overlay to "block" UI
  */
 (function (angular) {
     'use strict';

@@ -15,14 +15,7 @@
 
                 function APISettingsModel(data) {
                     var self = this;
-                    self.id = data.id;
-                    self.name = data.name;
-                    self.rules = data.rules;
-                    /*angular.forEach(data.rules, function (value) {
-                        var rule = new APIRuleModel(value);
-                        console.log("settingsrule:" + rule.code);
-                        self.rules.push(rule);
-                    });*/
+                    angular.merge(self, data);
                 }
 
                 APISettingsModel.prototype.getValidPropertyList = function () {

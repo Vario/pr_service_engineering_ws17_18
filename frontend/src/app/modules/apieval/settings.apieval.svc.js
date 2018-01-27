@@ -15,18 +15,18 @@
                 var self = this;
                 self.getSetting = function(settingsid) {
                     return BackendAPIService.getSetting(settingsid).then(function (data) {
-                        //console.log('returned apis' + data);
                         if (data.length <= 0) {
                             return $q.reject();
                         }
                         var setting =  new APISettingsModel(data);
                         return setting;
+                    }).catch(function (error) {
+                        return null;
                     });
                 };
 
                 self.getRules = function() {
                     return BackendAPIService.getRules().then(function (data) {
-                        //console.log('returned apis' + data);
                         if (data.length <= 0) {
                             return $q.reject();
                         }
@@ -38,6 +38,8 @@
                         });
 
                         return rules;
+                    }).catch(function (error) {
+                       return [];
                     });
                 };
 
@@ -47,11 +49,11 @@
                             "name": name,
                             "rules": rules
                         };
-                    console.log("settings create:" + angular.toJson(model));
                     return BackendAPIService.postSetting(angular.toJson(model)).then(function (response) {
-                        console.log("settings create response:" + response.id);
                         var responseModel = new UpdateAPISettingsModelResponse(response);
                         return responseModel;
+                    }).catch(function (error) {
+                        return null;
                     });
                 };
 
@@ -62,9 +64,10 @@
                             "rules": rules
                         };
                     return BackendAPIService.putSetting(api.settingsid,angular.toJson(model)).then(function (response) {
-                        console.log("settings update response:" + response);
                         var responseModel = new UpdateAPISettingsModelResponse(response);
                         return responseModel;
+                    }).catch(function (error) {
+                        return null;
                     });
                 };
             }

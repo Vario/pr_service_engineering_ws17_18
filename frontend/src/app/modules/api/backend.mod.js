@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 30/11/2017.
+ * Define own Backend module
  */
 (function (angular) {
     'use strict';

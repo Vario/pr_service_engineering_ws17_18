@@ -20,11 +20,11 @@
 
                 function APIVersionModel(data) {
                     var self = this;
-                    //angular.merge(self, data);
                     self.revisions = [];
                     self.expanded = false;
                     self.checked = false;
                     self.number = data.id;
+                    //iterrate through revisions and create models
                     angular.forEach(data.revisions, function (value) {
                         var rev = new APIRevisionModel(value);
                         self.revisions.push(rev);

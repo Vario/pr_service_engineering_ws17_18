@@ -1,5 +1,6 @@
 /**
  * Created by wrichtsfeld on 30/11/2017.
+ * Service which handles all api related methods
  */
 (function (angular) {
     'use strict';
@@ -13,17 +14,20 @@
                 var self = this;
                 self.apis = undefined;
 
+                //get all apis from the backend
                 self.getAllAPIs = function() {
                     return BackendAPIService.getAPIs().then(function (data) {
                         if (data.length <= 0) {
                             //return $q.reject();
                         }
+                        //map api models to own structure
                         var newApis = self.getApiModelsMapped(data);
                         self.apis = newApis;
                         return newApis;
                     });
                 };
 
+                //update the title for an api
                 self.updateApiTitle = function(api, title) {
                     var model =
                         {
@@ -34,19 +38,19 @@
                     });
                 };
 
+                //Update settings id for an api
                 self.updateApiSetting = function(apiid, settingsid) {
                     var model =
                         {
                             "id": settingsid
                         };
-                    console.log("update api "+ apiid + " with settingsid:" + settingsid + " and model:" + angular.toJson(model));
 
                     return BackendAPIService.updateAPISetting(apiid, angular.toJson(model)).then(function (data) {
-                        console.log("api updated");
                         return;
                     });
                 };
 
+                //Map api models to FE models
                 self.getApiModelsMapped = function(data) {
                     if(data != undefined) {
 
@@ -66,6 +70,7 @@
                     }
                 };
 
+                //post a new api file
                 self.postAPI = function(api, toAPI) {
                     var newApi = JSON.parse(api);
                     var newAPIName =  newApi.info.title;
@@ -85,11 +90,10 @@
                             "swagger": newApi,
                             "settings-id": ""
                         };
-                    return BackendAPIService.postAPIfile(model).then(function () {
-                        console.log('api sent -> reload');
-                    });
+                    return BackendAPIService.postAPIfile(model);
                 };
 
+                //checks if an api exists
                 self.apiExists = function(toCheckApiName) {
                     var exists = false;
                     angular.forEach(self.apis, function (api) {
@@ -99,25 +103,22 @@
                     });
                     return exists;
                 };
+                //validate a api revision file
                 self.validateAPI = function(fileid) {
                     var validationObject =
                         {
                             "file-id": fileid
                         };
-                    return BackendAPIService.validteAPIreport(validationObject).then(function () {
-                        console.log('api validation sent -> reload');
-                    });
+                    return BackendAPIService.validteAPIreport(validationObject);
                 };
 
+                //compare apis
                 self.compareAPIS = function(fileids) {
                     var comparisonObject =
                         {
                             "file-ids": fileids
                         };
-                    console.log(comparisonObject);
-                    return BackendAPIService.compareAPIReport(comparisonObject).then(function () {
-                        console.log('api compare sent');
-                    });
+                    return BackendAPIService.compareAPIReport(comparisonObject);
                 };
             }
 

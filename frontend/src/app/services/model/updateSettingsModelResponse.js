@@ -7,8 +7,6 @@
         .factory('UpdateAPISettingsModelResponse', [
             function () {
                 var self = this;
-                //self.name = undefined;
-                //self.rules = undefined;
                 self.id = undefined;
 
                 function UpdateAPISettingsModelResponse(data) {
