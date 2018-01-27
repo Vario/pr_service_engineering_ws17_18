@@ -18,6 +18,10 @@ services:
             - comparison-api
   violation-api:
       build: ../zally/server
+      environment:
+        - SPRING_PROFILES_ACTIVE=dev
+        - MANAGEMENT_PORT=7979
+        - TOKEN_INFO_URI=https://url.not.set
       networks:
         main:
           aliases:
@@ -29,12 +33,20 @@ services:
           - "8080:8500"
       environment:
         JKU_REST_QUALITY_API_MONGO_DB_HOSTNAME: mongo-db
-        JKU_REST_QUALITY_API_ZALLY_CONNECTION_STRING: http://violation-api:7243
+        JKU_REST_QUALITY_API_ZALLY_CONNECTION_STRING: http://violation-api:8080
         JKU_REST_QUALITY_API_SWAGGERDIFF_CONNECTION_STRING: http://comparison-api:9000
         JKU_REST_QUALITY_API_DOCKER_CONNECTION_STRING: http://rest-quality-api:8500
       networks:
         main:
           aliases:
             - rest-quality-api
+  frontend:
+    build: frontend
+    ports:
+      - "12568:8000"
+    networks:
+      main:
+        aliases:
+          - frontend
 networks:
   main:
