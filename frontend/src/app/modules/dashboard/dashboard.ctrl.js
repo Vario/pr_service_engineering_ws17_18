@@ -156,6 +156,7 @@
                                 //map all gui properties to version
                                 newVersion.expanded =  $scope.apis[index].versions[indexV].expanded;
                             }
+
                             //Iterrate Revisions
                             angular.forEach(newVersion.revisions, function (newRevision) {
                                 var indexR = $scope.apis[index].versions[indexV].revisions.map(function(e) { return e.id; }).indexOf(newRevision.id);
@@ -417,11 +418,12 @@
             /*
             Method to handle a selection in the tree template for api, version, revision or report
              */
-            $scope.select = function(api, version, revision, violationreport, comparisonreport){
+            $scope.select = function(api, version, revision, comparisonreport){
                 $scope.selectedVersion = undefined;
                 $scope.selectedFile = undefined;
-
+                $scope.selectedComparisonReport = undefined;
                 $scope.showSwaggerUI = false;
+
                 if(api) {
                     $scope.selectedApi = api;
                 }
@@ -430,13 +432,15 @@
                 }
                 if(revision) {
                     $scope.selectedFile = revision;
+                    $scope.selectedViolationReport = revision.violationreport;
                 }
                 setcurrentFileUrl();
-                $scope.selectedViolationReport = violationreport;
-                $scope.selectedComparisonReport = comparisonreport;
 
-                console.log("scope:" + $scope);
-                console.log("showSwaggerUI:" + $scope.showSwaggerUI);
+                if(comparisonreport) {
+                    $scope.selectedComparisonReport = comparisonreport;
+                }
+
+                console.log("comparisonreport:" + $scope.selectedComparisonReport);
             };
 
             /*

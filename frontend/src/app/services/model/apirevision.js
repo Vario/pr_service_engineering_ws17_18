@@ -16,8 +16,8 @@
 
                 self.id = undefined;
                 self.file = undefined;
-                self.violationreports = undefined;
-                self.comparisonreport = undefined;
+                self.violationreport = undefined;
+                self.comparisonreports = undefined;
                 self.expanded = undefined;
                 self.timestamp = undefined;
                 self.checked = undefined;
@@ -30,13 +30,13 @@
                     self.expanded = false;
                     self.checked = false;
                     self.violationreport = data.reports.violation; //APIViolationReportModel(data.reports.violation);
-                    self.comparisonreport = data.reports.comparison; //APIComparisonReportModel(data.reports.comparison);
+                    self.comparisonreports = data.reports.comparison; //APIComparisonReportModel(data.reports.comparison);
                     self.apifileurl = data.url;
                     self.timestamp = $filter('date')(self.id,"dd/MM/yyyy h:mm:ss a");
                 }
 
                 APIRevisionModel.prototype.getValidPropertyList = function () {
-                    return ['id','file','reports', 'checked','apifileurl','violationreports','comparisonreports'];
+                    return ['id','file','reports', 'checked','apifileurl','violationreport','comparisonreports'];
                 };
 
                 return APIRevisionModel;
