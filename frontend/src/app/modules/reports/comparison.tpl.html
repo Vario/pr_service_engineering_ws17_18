@@ -27,8 +27,8 @@
     </br>
     <h2>Changes:</h2>
 
-    <div>
-        <div class="p-3 mb-2 bg-danger text-white"><b>Errors</b></div>
+    <div ng-if="selectedComparisonReport.changes.errors.length > 0">
+        <div class="p-3 mb-2 bg-danger text-black"><b>Errors</b></div>
 
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -50,8 +50,8 @@
         </table>
     </div>
 
-    <div>
-        <div class="p-3 mb-2 bg-warning text-white"><h3><b>Warnings</b></h3></div>
+    <div ng-if="selectedComparisonReport.changes.warnings.length > 0">
+        <div class="p-3 mb-2 bg-warning text-black"><h3><b>Warnings</b></h3></div>
 
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -73,8 +73,8 @@
         </table>
     </div>
 
-    <div>
-        <div class="p-3 mb-2 bg-info text-white"><h3><b>Infos</b></h3></div>
+    <div ng-if="selectedComparisonReport.changes.infos.length > 0">
+        <div class="p-3 mb-2 bg-info text-black"><h3><b>Infos</b></h3></div>
 
         <table class="table table-striped">
             <thead class="thead-dark">
