@@ -66,6 +66,7 @@
             //Method to load data from backend
             function loadData() {
                 $scope.loading.inc();
+                $scope.selectedComparison = [];
                 APIEvalService.getAllAPIs().then(function (apis) {
                     $scope.apis = apis;
                 }).catch(function (error) {
@@ -78,6 +79,7 @@
             //method which loads data from backend and preserves treeview state (checked, ....)
             function reloadData() {
                 $scope.loading.inc();
+                $scope.selectedComparison = [];
                 APIEvalService.getAllAPIs().then(function (apis) {
                     $scope.apis = mapToExistingModels(apis);
                 }).catch(function (error) {
@@ -112,7 +114,7 @@
                                 if(indexR >= 0) {
                                     //map all GUI properties to revision
                                     newRevision.expanded =  $scope.apis[index].versions[indexV].revisions[indexR].expanded;
-                                    newRevision.checked =  $scope.apis[index].versions[indexV].revisions[indexR].checked;
+                                    //newRevision.checked =  $scope.apis[index].versions[indexV].revisions[indexR].checked;
                                 }
                             });
                         });
